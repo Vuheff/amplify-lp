@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentoria TikTok Shop | Amplify</title>
+<meta name="description" content="Mentoria prática e gravada para estruturar produto, creators, vídeos, lives e anúncios no TikTok Shop.">
+<link rel="stylesheet" href="./assets/vendor/swiper-bundle.min.css?v=14.0.7">
+<link rel="stylesheet" href="./assets/css/landing.css?v=27">
+<link rel="shortcut icon" href="./assets/images/brand/amplify-logo.png" type="image/png">
+<script src="./assets/vendor/react.production.min.js?v=18.3.1" defer></script>
+<script src="./assets/vendor/react-dom.production.min.js?v=18.3.1" defer></script>
+<script src="./support.js?v=27" defer></script>
+<script src="./assets/vendor/scrollreveal.min.js?v=4.0.9" defer></script>
+<script src="./assets/vendor/swiper-bundle.min.js?v=14.0.7" defer></script>
+<noscript><style>.page-loader,.reading-progress{display:none!important}html.motion-pending,html.motion-pending body{overflow:auto!important}.hero-motion,.motion-media-reveal{opacity:1!important;transform:none!important;clip-path:none!important}</style></noscript>
+</head>
+<body>
+<div class="page-loader" data-page-loader role="status" aria-label="Carregando a mentoria">
+  <div class="page-loader-curtain" aria-hidden="true"></div>
+  <div class="page-loader-aura" aria-hidden="true"></div>
+  <div class="page-loader-content">
+    <div class="page-loader-mark">
+      <img src="assets/images/brand/amplify-logo.png" alt="">
+    </div>
+    <span class="page-loader-brand">Amplify</span>
+    <p>Preparando sua operação</p>
+  </div>
+</div>
+<div class="reading-progress" aria-hidden="true"><span data-reading-progress></span></div>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</helmet>
+
+<div class="landing-page apple-ui u-001">
+
+  <header class="site-header u-002">
+    <div class="u-003">
+      <span class="u-004">
+        <img src="assets/images/brand/amplify-logo.png" alt="Amplify" class="u-005">
+        Amplify
+      </span>
+      <nav class="u-006">
+        <a href="#resultados" class="u-007">Resultados</a>
+        <a href="#metodo" class="u-007">Conteúdo</a>
+        <a href="#entregas" class="u-007">Tudo que recebe</a>
+        <a href="#mentor" class="u-007">Mentor</a>
+        <a href="#faq" class="u-007">FAQ</a>
+      </nav>
+      <a href="{{ checkoutUrl }}" class="u-008 u-129 u-133" data-offer-open>Quero acessar</a>
+    </div>
+  </header>
+
+  <main>
+  <aside class="results-ribbon" aria-label="Oferta, resultados e benefícios da mentoria">
+    <div class="results-ribbon-track">
+      <div class="results-ribbon-group">
+        <span><strong>{{ descontoPercentual }}% OFF</strong> · de {{ precoDe }} por {{ precoPor }}</span>
+        <i aria-hidden="true"></i>
+        <span><strong>{{ economia }}</strong> de economia imediata</span>
+        <i aria-hidden="true"></i>
+        <span><strong>R$ 260 mil</strong> em 3 dias de operação</span>
+        <i aria-hidden="true"></i>
+        <span><strong>4 blocos</strong> para entender a operação</span>
+        <i aria-hidden="true"></i>
+        <span><strong>12 meses</strong> de acesso</span>
+        <i aria-hidden="true"></i>
+        <span><strong>7 dias</strong> de garantia</span>
+      </div>
+      <div class="results-ribbon-group" aria-hidden="true">
+        <span><strong>{{ descontoPercentual }}% OFF</strong> · de {{ precoDe }} por {{ precoPor }}</span>
+        <i aria-hidden="true"></i>
+        <span><strong>{{ economia }}</strong> de economia imediata</span>
+        <i aria-hidden="true"></i>
+        <span><strong>R$ 260 mil</strong> em 3 dias de operação</span>
+        <i aria-hidden="true"></i>
+        <span><strong>4 blocos</strong> para entender a operação</span>
+        <i aria-hidden="true"></i>
+        <span><strong>12 meses</strong> de acesso</span>
+        <i aria-hidden="true"></i>
+        <span><strong>7 dias</strong> de garantia</span>
+      </div>
+    </div>
+  </aside>
+
+  <section class="hero u-009" aria-labelledby="hero-title">
+    <div class="u-010"></div>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="u-012 hero-motion">
+          <i class="u-013"></i>
+          Para donos e gestores de marcas · mentoria gravada
+        </div>
+        <h1 id="hero-title" class="u-014 hero-motion">
+          Entre no TikTok Shop sabendo <span class="u-015">o que vender, com quem divulgar e como escalar.</span>
+        </h1>
+        <p class="u-016 hero-motion">
+          Um mapa prático em quatro blocos — Produto, Creators, Conteúdo e Escala — para decidir como entrar no canal antes de comprometer tempo, estoque e margem.
+        </p>
+        <div class="hero-result-card hero-motion">
+          <span class="hero-result-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"></path><path d="M17 7h4v4"></path></svg>
+          </span>
+          <span><strong>R$ 260 mil em 3 dias.</strong><small>Um dos resultados gerados com a operação aplicada.</small></span>
+        </div>
+        <div class="u-017 hero-motion">
+          <a href="{{ checkoutUrl }}" class="u-018 u-130 u-134" data-offer-open>Quero acessar a mentoria por&nbsp;{{ precoPor }}</a>
+          <a href="#metodo" class="u-019">
+            Conhecer os 4 blocos
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"></path></svg>
+          </a>
+        </div>
+        <p class="u-020 hero-motion">Acesso imediato · 12 meses para assistir · 7 dias de garantia</p>
+      </div>
+
+      <div class="hero-visual hero-question-deck hero-motion" aria-labelledby="question-deck-title">
+        <div class="question-deck-topline">
+          <span>Diagnóstico guiado</span>
+          <p><strong data-question-current>1</strong><span>/ 4</span><span class="sr-only" data-question-status aria-live="polite" aria-atomic="true">Pergunta 1 de 4</span></p>
+        </div>
+
+        <div class="question-deck-intro">
+          <small>Uma decisão destrava a próxima</small>
+          <h2 id="question-deck-title">As 4 perguntas que organizam sua entrada no TikTok Shop.</h2>
+          <p>Arraste os cartões e veja o que você precisa decidir antes de investir.</p>
+        </div>
+
+        <div class="swiper question-swiper" data-question-deck>
+          <div class="swiper-wrapper">
+            <article class="swiper-slide question-card question-card-product">
+              <div class="question-card-topline"><span>01</span><small>Produto</small></div>
+              <p class="question-card-kicker">Primeira decisão</p>
+              <h3>Qual produto merece ser sua porta de entrada?</h3>
+              <p class="question-card-context">Você cruza demanda, margem e potencial de conteúdo antes de colocar estoque em risco.</p>
+              <div class="question-card-answer"><small>Você define</small><strong>SKU prioritário + oferta viável</strong></div>
+            </article>
+
+            <article class="swiper-slide question-card question-card-creators">
+              <div class="question-card-topline"><span>02</span><small>Creators</small></div>
+              <p class="question-card-kicker">Segunda decisão</p>
+              <h3>Quem consegue colocar esse produto em circulação?</h3>
+              <p class="question-card-context">Você identifica perfis aderentes e cria uma rotina que estimula novas publicações.</p>
+              <div class="question-card-answer"><small>Você define</small><strong>Seleção + recorrência de creators</strong></div>
+            </article>
+
+            <article class="swiper-slide question-card question-card-content">
+              <div class="question-card-topline"><span>03</span><small>Conteúdo</small></div>
+              <p class="question-card-kicker">Terceira decisão</p>
+              <h3>Como transformar atenção em pedidos?</h3>
+              <p class="question-card-context">Você entende o papel de cada vídeo e live na jornada que leva o público à compra.</p>
+              <div class="question-card-answer"><small>Você define</small><strong>Vídeos + lives com função clara</strong></div>
+            </article>
+
+            <article class="swiper-slide question-card question-card-scale">
+              <div class="question-card-topline"><span>04</span><small>Escala</small></div>
+              <p class="question-card-kicker">Quarta decisão</p>
+              <h3>Quando aumentar a verba sem ampliar o prejuízo?</h3>
+              <p class="question-card-context">Você reconhece os sinais de uma operação saudável antes de acelerar a mídia.</p>
+              <div class="question-card-answer"><small>Você define</small><strong>Dados de escala + uso do GMV Max</strong></div>
+            </article>
+          </div>
+        </div>
+
+        <div class="question-deck-controls">
+          <button type="button" class="question-deck-arrow question-deck-prev" aria-label="Voltar para a pergunta anterior">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+          </button>
+          <div class="question-deck-pagination" aria-label="Progresso das perguntas"></div>
+          <button type="button" class="question-deck-arrow question-deck-next" aria-label="Avançar para a próxima pergunta">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+          </button>
+        </div>
+        <p class="question-deck-hint"><span aria-hidden="true">↔</span> Arraste para explorar</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="experiencia" class="journey-section product-experience u-037" aria-labelledby="experience-title" data-journey-step="01">
+    <div class="product-experience-heading journey-heading section-heading sr-reveal" data-motion="rise">
+      <div class="journey-question"><span aria-hidden="true">01</span><p><small>Pergunta do lead</small><strong>O que estou comprando?</strong></p></div>
+      <h2 id="experience-title" class="u-059">Uma mentoria gravada para entender a operação antes de executá-la.</h2>
+      <p class="u-060">Não é live e não exige horário marcado. Você recebe acesso a uma área de membros, assiste no seu ritmo e volta ao conteúdo durante a implementação.</p>
+    </div>
+    <div class="experience-swipe-hint journey-swipe-hint" aria-hidden="true"><span>Formato e acesso</span><strong>Deslize →</strong></div>
+    <div class="product-experience-grid journey-card-rail sr-reveal" data-motion="rise" data-rail-label="Formato e acesso">
+      <article class="product-snapshot journey-card">
+        <span class="product-format-badge">Acesso digital e imediato</span>
+        <h3>Você consegue visualizar exatamente o que recebe.</h3>
+        <dl>
+          <div><dt>Formato</dt><dd>Mentoria gravada em formato de aula</dd></div>
+          <div><dt>Conteúdo</dt><dd>4 blocos conectados, do produto à escala</dd></div>
+          <div><dt>Acesso</dt><dd>12 meses na área de membros</dd></div>
+          <div><dt>Ritmo</dt><dd>Assista e revise quando precisar</dd></div>
+        </dl>
+      </article>
+      <article class="purchase-journey journey-card">
+        <span class="product-format-badge">Depois da compra</span>
+        <h3>Do pagamento à primeira decisão.</h3>
+        <ol>
+          <li><span>01</span><div><strong>Pagamento confirmado</strong><small>Você conclui a compra no checkout seguro.</small></div></li>
+          <li><span>02</span><div><strong>Acesso por e-mail</strong><small>Os dados chegam no endereço usado na compra.</small></div></li>
+          <li><span>03</span><div><strong>Área de membros</strong><small>Os quatro blocos ficam disponíveis para começar.</small></div></li>
+          <li><span>04</span><div><strong>Aplicação na operação</strong><small>Você avalia sua marca e define as prioridades.</small></div></li>
+        </ol>
+      </article>
+    </div>
+  </section>
+
+  <section class="journey-section context u-037" aria-labelledby="context-title" data-journey-step="02">
+    <div class="context-card journey-shell sr-reveal u-038" data-motion="scale">
+      <div class="journey-question journey-question-inverse"><span aria-hidden="true">02</span><p><small>Pergunta do lead</small><strong>Por que olhar para isso agora?</strong></p></div>
+      <h2 id="context-title" class="u-040">A disputa não é só por mídia. É por quem aprende o canal primeiro.</h2>
+      <p class="u-041">O TikTok Shop conecta descoberta, prova social e compra no mesmo ambiente. Quem organiza produto, creator e oferta agora constrói processo enquanto boa parte do mercado ainda depende de improviso.</p>
+      <div class="journey-metric-grid u-042">
+        <sc-for list="{{ contexto }}" as="c" hint-placeholder-count="3">
+          <div>
+            <div class="u-043">{{ c.v }}</div>
+            <div class="u-044">{{ c.l }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section class="journey-section journey-subsection diagnosis u-037" aria-labelledby="diagnosis-title" data-journey-parent="02">
+    <div class="journey-shell u-045">
+      <div class="journey-heading section-heading sr-reveal u-058" data-motion="rise">
+        <div class="journey-question journey-subquestion"><span aria-hidden="true">↳</span><p><small>Aprofundamento</small><strong>Por que minha operação ainda trava?</strong></p></div>
+        <h2 id="diagnosis-title" class="u-059">Não falta esforço. Falta método.</h2>
+        <p class="u-060">Sem uma ordem clara, sua equipe trabalha mais, queima margem e continua sem saber o que repetir. As travas aparecem nas mesmas quatro decisões da operação.</p>
+      </div>
+      <div class="journey-swipe-hint" aria-hidden="true"><span>4 travas recorrentes</span><strong>Deslize →</strong></div>
+      <div class="journey-card-rail u-061 mobile-card-rail sr-reveal" data-motion="rise" aria-label="Principais problemas da operação" data-rail-label="Travas da operação">
+        <sc-for list="{{ dores }}" as="d" hint-placeholder-count="4">
+          <div class="journey-card card u-062">
+            <span class="u-063" aria-hidden="true">{{ d.n }}</span>
+            <small class="diagnosis-decision">{{ d.k }}</small>
+            <h3 class="u-064">{{ d.t }}</h3>
+            <p class="u-065">{{ d.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section class="journey-section outcomes-section u-037" aria-labelledby="outcomes-title" data-journey-step="03">
+    <div class="outcomes-heading journey-heading section-heading sr-reveal" data-motion="rise">
+      <div class="journey-question"><span aria-hidden="true">03</span><p><small>Pergunta do lead</small><strong>O que muda na prática?</strong></p></div>
+      <h2 id="outcomes-title" class="u-059">Você não sai com mais aulas. Sai com critérios para decidir.</h2>
+      <p class="u-060">O conteúdo só cria valor quando muda a forma como sua marca usa tempo, equipe, estoque e orçamento.</p>
+    </div>
+    <div class="journey-swipe-hint" aria-hidden="true"><span>3 níveis de transformação</span><strong>Deslize →</strong></div>
+    <div class="outcomes-grid journey-card-rail mobile-card-rail sr-reveal" data-motion="rise" aria-label="Benefícios funcionais, operacionais e emocionais" data-rail-label="Transformações esperadas">
+      <article class="journey-card outcome-card">
+        <span>01 · Capacidade</span>
+        <h3>Você entende o canal</h3>
+        <ul>
+          <li>Avaliar produtos e margem</li>
+          <li>Organizar creators</li>
+          <li>Planejar vídeos e lives</li>
+          <li>Entender o papel do GMV Max</li>
+        </ul>
+      </article>
+      <article class="journey-card outcome-card outcome-card-primary">
+        <span>02 · Impacto operacional</span>
+        <h3>Você reduz desperdício</h3>
+        <ul>
+          <li>Menos erros na entrada</li>
+          <li>Mais velocidade de aprendizado</li>
+          <li>Prioridades visíveis para o time</li>
+          <li>Melhor uso de estoque e verba</li>
+        </ul>
+      </article>
+      <article class="journey-card outcome-card">
+        <span>03 · Estado desejado</span>
+        <h3>Você decide com segurança</h3>
+        <ul>
+          <li>Menos perdido diante do canal</li>
+          <li>Mais preparado para executar</li>
+          <li>Confiante sobre o próximo passo</li>
+          <li>No controle da decisão de entrar</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="journey-section journey-subsection audience-section u-037" aria-labelledby="audience-title" data-journey-parent="03">
+    <div class="audience-heading journey-heading section-heading sr-reveal" data-motion="rise">
+      <div class="journey-question journey-subquestion"><span aria-hidden="true">↳</span><p><small>Aprofundamento</small><strong>Isso serve para o meu momento?</strong></p></div>
+      <h2 id="audience-title" class="u-059">Feita para quem quer processo — não depender de um viral.</h2>
+      <p class="u-060">Veja se o momento da sua marca combina com a proposta da mentoria.</p>
+    </div>
+    <div class="journey-swipe-hint" aria-hidden="true"><span>Compare com seu momento</span><strong>Deslize →</strong></div>
+    <div class="journey-card-rail u-078 mobile-card-rail sr-reveal" data-motion="rise" aria-label="Para quem é e para quem não é a mentoria" data-rail-label="Adequação da mentoria">
+      <div class="journey-card audience-card u-079">
+        <h3 class="u-080">É para a sua marca se…</h3>
+        <ul class="u-081">
+          <sc-for list="{{ paraQuem }}" as="i" hint-placeholder-count="4">
+            <li class="u-082">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#1e4ed2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="u-083"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span>{{ i }}</span>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+      <div class="journey-card audience-card u-084">
+        <h3 class="u-085">Não é para você se…</h3>
+        <ul class="u-081">
+          <sc-for list="{{ naoParaQuem }}" as="i" hint-placeholder-count="3">
+            <li class="u-086">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#b9c0cf" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" class="u-083"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              <span>{{ i }}</span>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="journey-section brand-proof" aria-labelledby="brand-proof-title" data-journey-step="04">
+    <div class="brands-heading journey-heading sr-reveal" data-motion="rise">
+      <div class="journey-question"><span aria-hidden="true">04</span><p><small>Pergunta do lead</small><strong>Quem já vive essa operação?</strong></p></div>
+      <h2 id="brand-proof-title">Marcas que fazem parte da experiência operacional da Amplify.</h2>
+    </div>
+    <div class="brands-rail" aria-label="Marcas atendidas pela Amplify">
+      <div class="brands-track">
+        <div class="brands-group">
+          <span class="brand-logo"><img src="assets/images/brands/brand-maxtitanium.png" alt="Max Titanium" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-sallve.png" alt="Sallve" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-aura.png" alt="Aura" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-gocase.png" alt="Gocase" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-bodyaction.png" alt="Body Action" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-gummy.png" alt="Gummy" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-mumais.png" alt="MuMais" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-spoiler.png" alt="Spoiler" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-dot.png" alt="Dot" loading="lazy"></span>
+        </div>
+        <div class="brands-group" aria-hidden="true">
+          <span class="brand-logo"><img src="assets/images/brands/brand-maxtitanium.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-sallve.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-aura.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-gocase.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-bodyaction.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-gummy.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-mumais.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-spoiler.png" alt="" loading="lazy"></span>
+          <span class="brand-logo"><img src="assets/images/brands/brand-dot.png" alt="" loading="lazy"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resultados" class="journey-section journey-subsection results u-037" aria-labelledby="results-title" data-journey-parent="04">
+    <div class="journey-shell u-045">
+      <div class="journey-heading section-heading sr-reveal u-046" data-motion="rise">
+        <div class="journey-question journey-question-inverse journey-subquestion"><span aria-hidden="true">↳</span><p><small>Aprofundamento</small><strong>Existe prova além da promessa?</strong></p></div>
+        <h2 id="results-title" class="u-048">Um case real, com marca, contexto e resultado.</h2>
+        <p class="results-intro">A oportunidade deixa de ser abstrata quando produto, creator, oferta e transmissão trabalham como uma única operação.</p>
+      </div>
+      <article class="journey-card case-study sr-reveal" data-motion="scale" aria-labelledby="case-study-title">
+        <div class="case-study-copy">
+          <span>Case real e identificado · Max Titanium</span>
+          <h3 id="case-study-title"><strong>R$ 260 mil de GMV</strong> em três dias de operação.</h3>
+          <p>A Amplify conectou as decisões de produto, creator, oferta e live em um plano de execução único.</p>
+        </div>
+        <div class="case-study-gallery motion-media-reveal">
+          <figure>
+            <img src="assets/images/proof/case-max-live.jpeg" alt="Operação de live da Max Titanium no estúdio da Amplify" loading="lazy">
+            <figcaption>Operação ao vivo</figcaption>
+          </figure>
+          <figure>
+            <img src="assets/images/proof/case-fabio-giga.jpeg" alt="Fábio Giga apresentando um produto da Max Titanium" loading="lazy">
+            <figcaption>Creator + produto</figcaption>
+          </figure>
+        </div>
+        <div class="case-logic" aria-label="Contexto, decisão e resultado do case">
+          <div><small>01 · Contexto</small><strong>Frentes que precisavam operar juntas</strong><span>Produto, creator, oferta e transmissão.</span></div>
+          <div><small>02 · Decisão</small><strong>Uma operação coordenada</strong><span>Responsáveis, mensagem e execução no mesmo plano.</span></div>
+          <div><small>03 · Resultado</small><strong>R$ 260 mil</strong><span>de GMV em três dias de operação.</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="mentor" class="journey-section mentor-section u-037" aria-labelledby="mentor-title" data-journey-step="05">
+    <div class="journey-shell mentor-shell u-087">
+      <figure class="mentor-media sr-reveal motion-media-reveal u-088" data-motion="left">
+        <img src="assets/images/people/matheus-head-operacoes-amplify.png" alt="Matheus, Head de Operações da Amplify, no escritório do TikTok" class="mentor-photo" loading="lazy">
+        <figcaption class="mentor-photo-caption"><i aria-hidden="true"></i> Operação TikTok Shop</figcaption>
+      </figure>
+      <div class="mentor-copy sr-reveal" data-motion="right">
+        <div class="journey-question journey-question-inverse"><span aria-hidden="true">05</span><p><small>Pergunta do lead</small><strong>Quem construiu esse método?</strong></p></div>
+        <h2 id="mentor-title" class="u-089">Matheus</h2>
+        <div class="u-090">Head de Operações na Amplify</div>
+        <p class="mentor-lead">Quem ensina também está operando.</p>
+        <p class="u-091">Conduz a operação de TikTok Shop da Amplify e acompanha marcas de suplemento, beleza e moda do catálogo até a escala. A mentoria concentra as decisões que ele toma todos os dias: o que sobe primeiro, onde está a margem e qual criador sustenta o volume.</p>
+        <div class="mentor-stats" aria-label="Experiência prática do mentor">
+          <div><strong>120+</strong><span>marcas acompanhadas</span></div>
+          <div><strong>R$ 260 mil</strong><span>em 3 dias de operação</span></div>
+        </div>
+        <ul class="u-092">
+          <sc-for list="{{ credenciais }}" as="c" hint-placeholder-count="3">
+            <li class="u-093">
+              <svg viewBox="0 0 24 24" width="19" height="19" fill="#1e4ed2" class="u-094"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm4.7 7.7-5.6 5.6a1 1 0 0 1-1.4 0l-2.4-2.4a1 1 0 1 1 1.4-1.4l1.7 1.7 4.9-4.9a1 1 0 0 1 1.4 1.4Z"></path></svg>
+              <span>{{ c }}</span>
+            </li>
+          </sc-for>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="metodo" class="journey-section method u-037" aria-labelledby="method-title" data-journey-step="06">
+    <div class="journey-shell u-045">
+      <div class="journey-heading section-heading sr-reveal u-066" data-motion="rise">
+        <div class="journey-question"><span aria-hidden="true">06</span><p><small>Pergunta do lead</small><strong>Como as decisões se conectam?</strong></p></div>
+        <h2 id="method-title" class="u-059">As quatro perguntas viram quatro decisões aplicáveis.</h2>
+        <p class="u-067">Cada card conecta a pergunta, os critérios ensinados e a decisão que prepara o próximo bloco.</p>
+      </div>
+      <div class="method-swipe-hint journey-swipe-hint" aria-hidden="true"><span>4 blocos práticos</span><strong>Deslize →</strong></div>
+      <div class="curriculum-grid journey-card-rail method-card-rail sr-reveal" data-motion="rise" aria-label="Quatro decisões da mentoria" data-rail-label="Quatro decisões da mentoria">
+        <sc-for list="{{ modulos }}" as="e" hint-placeholder-count="4">
+          <article class="journey-card curriculum-card">
+            <div class="curriculum-number">{{ e.n }}</div>
+            <div class="curriculum-copy">
+              <div class="curriculum-kicker">{{ e.k }}</div>
+              <h3>{{ e.t }}</h3>
+              <p class="curriculum-question">{{ e.q }}</p>
+              <p>{{ e.d }}</p>
+              <div class="curriculum-topics">{{ e.topicos }}</div>
+              <div class="curriculum-result"><small>Ao fim, você decide</small><strong>{{ e.r }}</strong></div>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section id="entregas" class="journey-section discount-section u-037" aria-labelledby="discount-title" data-journey-step="07">
+    <div class="deliverables-intro journey-heading sr-reveal" data-motion="rise">
+      <div class="journey-question"><span aria-hidden="true">07</span><p><small>Pergunta do lead</small><strong>O que recebo pelo investimento?</strong></p></div>
+      <h2 id="discount-title">Você não compra uma aula solta.<br> <span>Recebe uma mentoria em quatro decisões.</span></h2>
+      <p>Quatro blocos conectados para tirar sua marca do improviso e mostrar o caminho do primeiro produto à escala no TikTok Shop.</p>
+      <div class="deliverables-summary" aria-label="Resumo do que está incluído">
+        <div><strong>4</strong><span>blocos práticos</span></div>
+        <div><strong>12</strong><span>meses de acesso</span></div>
+        <div><strong>1</strong><span>método conectado</span></div>
+      </div>
+    </div>
+
+    <div class="journey-card discount-card value-offer-card sr-reveal" data-motion="scale">
+      <div class="discount-glow"></div>
+      <div class="discount-content">
+        <div class="value-ledger-heading">
+          <span>Valor da mentoria</span>
+          <strong>Veja o que compõe seu acesso</strong>
+          <p>Cada entrega resolve uma parte da operação — e todas trabalham juntas.</p>
+        </div>
+
+        <div class="discount-stack">
+          <div class="discount-stack-header">
+            <span>Entregas da mentoria</span>
+            <span>Valor individual</span>
+          </div>
+          <sc-for list="{{ entregas }}" as="e" hint-placeholder-count="5">
+            <div class="discount-course">
+              <span class="discount-course-number" aria-hidden="true">{{ e.n }}</span>
+              <div class="discount-course-copy">
+                <h3>{{ e.t }}</h3>
+                <p>{{ e.d }}</p>
+              </div>
+              <strong class="discount-course-value">{{ e.v }}</strong>
+            </div>
+          </sc-for>
+        <div class="discount-stack-total">
+            <span><small>Somando todas as entregas</small>Valor de referência</span>
+            <strong>{{ precoDe }}</strong>
+          </div>
+        </div>
+
+        <div class="offer-bridge">
+          <span>Resumo do investimento</span>
+          <strong>Acesse a mentoria completa por uma fração do valor.</strong>
+        </div>
+
+        <div class="discount-impact" aria-label="Oferta com {{ descontoPercentual }}% de desconto, de {{ precoDe }} por {{ precoPor }}">
+          <div class="discount-percent-block">
+            <span>Você recebe</span>
+            <div><strong>{{ descontoPercentual }}</strong><em>% OFF</em></div>
+          </div>
+          <div class="discount-offer-block">
+            <span class="discount-from">De <s>{{ precoDe }}</s> por</span>
+            <span class="discount-for">pagamento único</span>
+            <strong class="discount-big-price">{{ precoPor }}</strong>
+          </div>
+        </div>
+
+        <div class="discount-economy">
+          <span>Você economiza</span>
+          <strong>{{ economia }}</strong>
+          <span>nesta condição</span>
+        </div>
+
+        <div class="discount-reasons">
+          <div><strong>4 blocos</strong><span>em sequência</span></div>
+          <div><strong>12 meses</strong><span>de acesso</span></div>
+          <div><strong>7 dias</strong><span>de garantia</span></div>
+        </div>
+
+        <a href="{{ checkoutUrl }}" class="discount-cta u-132 u-135" data-offer-open>
+          Quero acessar a mentoria por&nbsp;{{ precoPor }}
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <p class="discount-note">Acesso imediato · 12 meses para assistir · 7 dias de garantia</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="oferta" class="offer-modal" aria-hidden="true">
+    <div class="offer-modal-backdrop" data-offer-close></div>
+    <div class="offer-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="offer-modal-title" tabindex="-1">
+      <button type="button" class="offer-modal-close" aria-label="Fechar oferta" data-offer-close>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+      </button>
+      <div class="offer-card u-095">
+        <div class="u-096"></div>
+        <div class="u-097">
+        <div class="offer-eyebrow">Condição especial</div>
+        <h2 id="offer-modal-title" class="u-098">Acesse a mentoria completa por uma fração do valor.</h2>
+        <p class="u-099">Acesso imediato à mentoria gravada na área de membros, com 12 meses para assistir e revisar.</p>
+        <ul class="u-100">
+          <sc-for list="{{ inclui }}" as="i" hint-placeholder-count="5">
+            <li class="u-101">
+              <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" class="u-102"><path d="M20 6 9 17l-5-5"></path></svg>
+              <span>{{ i }}</span>
+            </li>
+          </sc-for>
+        </ul>
+        <div class="u-103">
+          <span class="u-104">De {{ precoDe }}</span>
+          <span class="u-105">{{ precoPor }}</span>
+        </div>
+        <div class="u-106">{{ parcelas }}</div>
+        <a href="{{ checkoutUrl }}" class="u-107 u-132 u-135">
+          Ir para o checkout seguro
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+        </a>
+        <p class="u-108">Pagamento seguro · 7 dias de garantia · acesso liberado após a confirmação</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="journey-section journey-subsection u-109" aria-labelledby="faq-title" data-journey-parent="07">
+    <div class="journey-shell u-110">
+      <div class="journey-question journey-subquestion"><span aria-hidden="true">↳</span><p><small>Últimas objeções</small><strong>O que falta para eu decidir?</strong></p></div>
+      <h2 id="faq-title" class="u-111">Perguntas frequentes</h2>
+      <div class="u-112">
+        <sc-for list="{{ faq }}" as="f" hint-placeholder-count="8">
+          <div class="u-113 sr-reveal" data-motion="rise">
+            <button type="button" onClick="{{ f.toggle }}" class="u-114">
+              <span class="u-115">{{ f.q }}</span>
+              <span class="u-116">{{ f.sign }}</span>
+            </button>
+            <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+              <p class="u-117">{{ f.a }}</p>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <section class="journey-section journey-subsection final-decision" aria-labelledby="final-decision-title" data-journey-parent="07">
+    <div class="journey-shell final-decision-card sr-reveal" data-motion="scale">
+      <div class="final-decision-copy">
+        <div class="journey-question journey-question-inverse journey-subquestion"><span aria-hidden="true">→</span><p><small>Próximo passo</small><strong>Estou pronto para organizar minha entrada?</strong></p></div>
+        <h2 id="final-decision-title">Troque a próxima tentativa por uma decisão com critério.</h2>
+        <p>Acesse a mentoria, percorra Produto, Creators, Conteúdo e Escala na ordem e saia sabendo o que priorizar na sua marca.</p>
+      </div>
+      <div class="final-decision-action">
+        <div class="final-decision-signals" aria-label="Resumo da compra">
+          <span><strong>4 blocos</strong><small>conectados</small></span>
+          <span><strong>12 meses</strong><small>de acesso</small></span>
+          <span><strong>7 dias</strong><small>de garantia</small></span>
+        </div>
+        <a href="{{ checkoutUrl }}" class="final-decision-cta u-132 u-135" data-offer-open>Acessar a mentoria por&nbsp;{{ precoPor }}</a>
+        <small>{{ parcelas }}</small>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer class="u-118">
+    <div class="u-119">
+      <span class="u-120">
+        <img src="assets/images/brand/amplify-logo.png" alt="Amplify" class="u-121">
+        Amplify
+      </span>
+      <span class="u-122">© 2026 Amplify · Termos · Privacidade</span>
+    </div>
+  </footer>
+
+  <div class="conversion-dock u-123" data-conversion-dock aria-hidden="true">
+    <div class="u-124">
+      <div class="u-125">
+        <div class="u-126">{{ precoPor }}</div>
+        <div class="u-127">{{ barraLinha }}</div>
+      </div>
+      <a href="{{ checkoutUrl }}" class="u-128 u-129 u-133" data-offer-open>Acessar por&nbsp;{{ precoPor }}</a>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script src="./assets/js/motions.js?v=27" defer></script>
+<script type="text/x-dc" data-dc-script data-props="{&quot;checkoutUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#oferta&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Conversão&quot;},&quot;whatsappUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;#oferta&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Conversão&quot;},&quot;precoDe&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;R$ 1.632&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Oferta&quot;},&quot;precoPor&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;R$ 97&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Oferta&quot;},&quot;parcelas&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;R$ 97 à vista ou parcele no checkout&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Oferta&quot;}}">
+class Component extends DCLogic {
+  state = { openFaq: 0 };
+
+  renderVals() {
+    const p = this.props;
+    const precoDe = p.precoDe ?? "R$ 1.632";
+    const precoPor = p.precoPor ?? "R$ 97";
+    const parseMoney = (value) => Number(String(value).replace(/[^\d,.-]/g, "").replace(/\./g, "").replace(",", "."));
+    const formatMoney = (value) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(value);
+    const precoDeNumber = parseMoney(precoDe);
+    const precoPorNumber = parseMoney(precoPor);
+    const hasValidPrice = Number.isFinite(precoDeNumber) && Number.isFinite(precoPorNumber) && precoDeNumber > precoPorNumber;
+    const descontoPercentual = hasValidPrice ? Math.round((1 - (precoPorNumber / precoDeNumber)) * 100) : 0;
+    const economia = hasValidPrice ? formatMoney(precoDeNumber - precoPorNumber) : precoDe;
+
+    const faqRaw = [
+      { q: "A mentoria é ao vivo?", a: "Não. É uma mentoria gravada em formato de aula, para você começar imediatamente, assistir no seu ritmo e rever os pontos mais importantes durante 12 meses." },
+      { q: "O que exatamente está incluído?", a: "Quatro blocos conectados: Produto, Creators, Conteúdo — com vídeos e lives — e Escala com GMV Max." },
+      { q: "Preciso já vender no TikTok Shop?", a: "Não. O primeiro bloco ajuda você a entender o canal e avaliar produto, preço, margem e logística antes de avançar para a execução." },
+      { q: "O que eu preciso fazer para aplicar?", a: "Assistir aos blocos na ordem, comparar os critérios com a realidade da sua marca e transformar as decisões em testes de produto, creator, conteúdo e mídia." },
+      { q: "Por quanto tempo tenho acesso?", a: "Você terá 12 meses de acesso ao conteúdo na área de membros para assistir e revisar durante a implementação." },
+      { q: "Como recebo o acesso?", a: "Os dados de acesso são enviados após a confirmação do pagamento, usando o e-mail informado na compra." },
+      { q: "A mentoria garante faturamento?", a: "Não. Ela entrega critérios, processo e repertório operacional. O resultado depende do produto, da margem, da execução e das condições de cada marca." },
+      { q: "E se não for para mim?", a: "Você tem 7 dias a partir da compra para solicitar o reembolso integral." }
+    ];
+
+    return {
+      checkoutUrl: p.checkoutUrl ?? "#oferta",
+      whatsappUrl: p.whatsappUrl ?? "#oferta",
+      barraLinha: "Acesso imediato · 12 meses",
+      precoDe,
+      precoPor,
+      descontoPercentual,
+      economia,
+      parcelas: p.parcelas ?? "R$ 97 à vista ou parcele no checkout",
+
+      contexto: [
+        { v: "01", l: "conteúdo cria descoberta" },
+        { v: "02", l: "creator transforma atenção em confiança" },
+        { v: "03", l: "oferta converte dentro do canal" }
+      ],
+      dores: [
+        { n: "01", k: "Produto", t: "Você testa sem saber o que merece subir", d: "Sem cruzar demanda, preço e margem, o estoque entra antes de existir uma hipótese clara." },
+        { n: "02", k: "Creators", t: "Seus creators não voltam a publicar", d: "Sem seleção, incentivo e rotina, a distribuição depende de mensagens soltas e sorte." },
+        { n: "03", k: "Conteúdo", t: "A atenção não se transforma em pedido", d: "Vídeos e lives acontecem sem uma função definida na jornada de compra." },
+        { n: "04", k: "Escala", t: "Sua margem desaparece quando acelera", d: "Cupom, comissão, frete e mídia crescem antes de a operação provar que se sustenta." }
+      ],
+      modulos: [
+        { n: "01", k: "Base e viabilidade", t: "Produto", q: "O que vale vender?", d: "Entenda o canal, avalie o catálogo e escolha uma oferta que preserve margem.", topicos: "Jornada de compra · TikTok Shop x marketplaces · taxas, comissões, frete e logística · descontos · estoque, preço, inovação e margem · análise de concorrência com FastMoss", r: "SKU prioritário + oferta viável" },
+        { n: "02", k: "Distribuição e recorrência", t: "Creators", q: "Quem pode distribuir?", d: "Estruture prospecção, ativação e gestão para não depender de mensagens soltas e sorte.", topicos: "Creator Power · captação com tráfego + IA · automações · hunters · SDR, closer e comissões · afiliados · comunidades · gamificação · rituais e recorrência", r: "Seleção + recorrência de creators" },
+        { n: "03", k: "Atenção e conversão", t: "Conteúdo", q: "Como transformar atenção em pedido?", d: "Planeje vídeos e lives com função clara, oferta coerente e métricas de decisão.", topicos: "Vídeos de volume e vencedores · gancho, problema, solução e CTA · ToFu, MoFu e BoFu · pré-live e cronograma · estrutura mobile ou profissional · engajamento · GMV/hora, VDV, HR, CTR, CTOR e CVR", r: "Vídeos + lives com função clara" },
+        { n: "04", k: "Tráfego e crescimento", t: "Escala", q: "O que merece mais verba?", d: "Prepare produto, criativos, estoque e margem para o GMV Max ampliar o que funciona.", topicos: "Product GMV Max x Live GMV Max · ROI alvo · elegibilidade e catálogo · orçamento · volume de criativos · demanda · setup passo a passo", r: "Dados de escala + uso do GMV Max" }
+      ],
+      entregas: [
+        { n: "01", t: "Bloco Produto", d: "Canal, catálogo, preço, margem, logística e concorrência.", v: "R$ 297" },
+        { n: "02", t: "Bloco Creators", d: "Captação, automações, gestão, incentivos e recorrência.", v: "R$ 397" },
+        { n: "03", t: "Bloco Conteúdo", d: "Vídeos, lives, ofertas, engajamento e métricas de conversão.", v: "R$ 594" },
+        { n: "04", t: "Bloco Escala", d: "GMV Max, ROI, orçamento, criativos e setup na prática.", v: "R$ 297" },
+        { n: "05", t: "Acesso por 12 Meses", d: "Tempo para assistir no seu ritmo e revisar durante a implementação.", v: "R$ 47" }
+      ],
+      paraQuem: [
+        "Você quer começar no TikTok Shop entendendo o canal de ponta a ponta.",
+        "Já vende online, mas trava na escolha do produto, preço ou margem.",
+        "Trabalha com creators, vídeos ou lives sem um processo repetível.",
+        "Quer transformar métricas em decisões práticas de operação."
+      ],
+      naoParaQuem: [
+        "Você procura promessa de dinheiro rápido ou fórmula de viralização.",
+        "Não pretende testar produtos, criativos e ofertas na prática.",
+        "Quer apenas crescer seguidores, sem construir uma operação de vendas."
+      ],
+      credenciais: [
+        "+120 marcas acompanhadas",
+        "Especialista em TikTok Shop e live commerce",
+        "Método usado internamente na agência"
+      ],
+      inclui: [
+        "Mentoria gravada em formato de aula",
+        "4 blocos: produto, creators, conteúdo e escala",
+        "Conteúdo prático, organizado do básico à escala",
+        "Acesso por 12 meses para assistir e revisar",
+        "Garantia incondicional de 7 dias"
+      ],
+      faq: faqRaw.map((f, i) => ({
+        q: f.q, a: f.a,
+        open: this.state.openFaq === i,
+        sign: this.state.openFaq === i ? "–" : "+",
+        toggle: () => this.setState(st => ({ openFaq: st.openFaq === i ? -1 : i }))
+      }))
+    };
+  }
+}
+
+</script>
+</body>
+</html>

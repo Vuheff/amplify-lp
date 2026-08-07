@@ -1,0 +1,74 @@
+.c-proof {
+  overflow: clip;
+  background: var(--color-surface);
+}
+
+.c-proof__body {
+  background:
+    radial-gradient(circle at 100% 0, rgb(30 77 209 / 35%), transparent 30rem),
+    var(--color-ink);
+  color: var(--color-surface);
+}
+
+.c-proof__case {
+  display: grid;
+  gap: var(--space-6);
+  padding: clamp(var(--space-4), 4vw, var(--space-7));
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: var(--radius-feature);
+  background: rgb(255 255 255 / 5%);
+  box-shadow: 0 2rem 5rem rgb(0 0 0 / 22%);
+}
+
+.c-proof__copy { display: grid; align-content: center; gap: var(--space-4); }
+
+.c-proof__badge {
+  justify-self: start;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid rgb(54 215 240 / 30%);
+  border-radius: 999px;
+  background: rgb(54 215 240 / 8%);
+  color: var(--color-accent-cyan);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.c-proof__copy h4 {
+  max-width: 19ch;
+  font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.75rem);
+  letter-spacing: -0.045em;
+  line-height: 1.03;
+}
+
+.c-proof__copy > p:not(.c-proof__badge) { max-width: 48ch; color: rgb(255 255 255 / 66%); }
+.c-proof__logic { display: grid; margin-top: var(--space-3); border-top: 1px solid rgb(255 255 255 / 12%); }
+.c-proof__logic div { padding-block: var(--space-3); border-bottom: 1px solid rgb(255 255 255 / 12%); }
+.c-proof__logic dt { color: var(--color-accent-cyan); font-size: 0.6875rem; font-weight: 800; text-transform: uppercase; }
+.c-proof__logic dd { margin-top: var(--space-1); color: rgb(255 255 255 / 72%); font-size: 0.875rem; }
+
+.c-proof__gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+.c-proof__gallery figure { position: relative; overflow: hidden; border-radius: var(--radius-card); background: #282c36; }
+.c-proof__gallery figure:nth-child(2) { margin-top: var(--space-6); }
+.c-proof__gallery img { width: 100%; height: 100%; min-height: 19rem; object-fit: cover; }
+.c-proof__gallery figcaption {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  left: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 999px;
+  background: rgb(10 12 18 / 68%);
+  backdrop-filter: blur(0.75rem);
+  color: white;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+@media (min-width: 50rem) {
+  .c-proof__case { grid-template-columns: minmax(0, 0.9fr) minmax(25rem, 1.1fr); }
+  .c-proof__gallery img { min-height: 35rem; }
+}

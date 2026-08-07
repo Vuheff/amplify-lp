@@ -1,0 +1,47 @@
+.c-comparison { background: #eef1f7; }
+.c-comparison__grid { display: grid; gap: var(--space-4); }
+
+.c-comparison__card {
+  display: grid;
+  gap: var(--space-4);
+  padding: clamp(var(--space-5), 5vw, var(--space-7));
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-feature);
+  background: var(--color-surface);
+}
+
+.c-comparison__card[data-tone="muted"] { color: #626b78; }
+.c-comparison__card[data-tone="brand"] { border-color: var(--color-brand); background: var(--color-brand); box-shadow: 0 1.5rem 3rem rgb(30 77 209 / 20%); color: white; }
+
+.c-comparison__label {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.c-comparison__card[data-tone="brand"] .c-comparison__label { color: var(--color-accent-cyan); }
+.c-comparison__card h3 { max-width: 18ch; font-size: clamp(1.5rem, 1.35rem + 0.75vw, 2rem); letter-spacing: -0.04em; line-height: 1.05; }
+
+.c-comparison__row {
+  display: grid;
+  grid-template-columns: 1.75rem 1fr;
+  gap: var(--space-3);
+  align-items: start;
+  padding-top: var(--space-3);
+  border-top: 1px solid currentColor;
+}
+
+.c-comparison__row > span { display: grid; width: 1.5rem; aspect-ratio: 1; place-items: center; border: 1px solid currentColor; border-radius: 50%; font-size: 0.75rem; font-weight: 800; }
+.c-comparison__row p { font-size: 0.875rem; }
+.c-comparison__card[data-tone="brand"] .c-comparison__row { border-color: rgb(255 255 255 / 20%); }
+.c-comparison__card[data-tone="brand"] .c-comparison__row > span { border-color: rgb(54 215 240 / 45%); color: var(--color-accent-cyan); }
+
+.c-comparison__action { display: grid; justify-items: center; gap: var(--space-3); margin-top: var(--space-7); text-align: center; }
+.c-comparison__action .c-conversion-cta { width: min(100%, 24rem); }
+.c-comparison__action p { color: var(--color-muted); font-size: 0.75rem; }
+
+@media (min-width: 48rem) {
+  .c-comparison__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .c-comparison__card[data-tone="muted"] { margin-top: var(--space-6); }
+}

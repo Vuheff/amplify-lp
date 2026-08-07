@@ -1,0 +1,60 @@
+.c-method-timeline { background: var(--color-canvas); }
+.c-method-timeline__layout { display: grid; gap: var(--space-5); }
+
+.c-method-timeline__media {
+  position: relative;
+  min-height: 25rem;
+  overflow: hidden;
+  border-radius: var(--radius-feature);
+  background: var(--color-line);
+  box-shadow: var(--shadow-floating);
+}
+
+.c-method-timeline__media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 35%; }
+
+.c-method-timeline__media figcaption {
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  left: var(--space-4);
+  display: grid;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: var(--radius-control);
+  background: rgb(9 12 19 / 72%);
+  backdrop-filter: blur(0.75rem);
+  color: white;
+}
+
+.c-method-timeline__media figcaption span { color: var(--color-accent-cyan); font-size: 0.625rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.c-method-timeline__media figcaption strong { font-size: 0.875rem; }
+.c-method-timeline__steps { display: grid; gap: var(--space-3); }
+
+.c-method-timeline__steps article {
+  display: grid;
+  grid-template-columns: 3.25rem 1fr;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.c-method-timeline__steps article > span { color: var(--color-brand); font-size: 1.75rem; font-weight: 800; letter-spacing: -0.06em; line-height: 1; }
+.c-method-timeline__steps article > span small { display: block; margin-top: var(--space-2); color: var(--color-muted); font-size: 0.5625rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.c-method-timeline__steps h3 { margin-bottom: var(--space-1); font-size: 1rem; letter-spacing: -0.02em; }
+.c-method-timeline__steps article p { color: var(--color-muted); font-size: 0.8125rem; }
+
+.c-method-timeline__steps aside { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4) var(--space-5); border: 1px solid rgb(30 77 209 / 20%); border-radius: var(--radius-card); background: rgb(30 77 209 / 7%); }
+.c-method-timeline__steps aside strong { flex: none; color: var(--color-brand); font-size: 0.75rem; text-transform: uppercase; }
+.c-method-timeline__steps aside p { color: var(--color-muted); font-size: 0.8125rem; }
+
+@media (min-width: 52rem) {
+  .c-method-timeline__layout { grid-template-columns: minmax(20rem, 0.85fr) minmax(0, 1.15fr); align-items: stretch; }
+  .c-method-timeline__media { min-height: 43rem; }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .c-method-timeline__steps article { transition: transform var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard); }
+  .c-method-timeline__steps article:hover { box-shadow: var(--shadow-raised); transform: translateX(0.375rem); }
+}

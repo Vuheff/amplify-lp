@@ -1,0 +1,53 @@
+.c-final-cta { background: #eef1f7; }
+
+.c-final-cta__card {
+  position: relative;
+  display: grid;
+  gap: var(--space-7);
+  overflow: hidden;
+  padding: clamp(var(--space-6), 7vw, var(--space-9));
+  border-radius: var(--radius-feature);
+  background:
+    radial-gradient(circle at 95% 10%, rgb(54 215 240 / 20%), transparent 20rem),
+    linear-gradient(135deg, var(--color-brand-strong), var(--color-ink) 70%);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-surface);
+}
+
+.c-final-cta__card::after {
+  position: absolute;
+  right: -5rem;
+  bottom: -7rem;
+  width: 17rem;
+  aspect-ratio: 1;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 50%;
+  content: "";
+}
+
+.c-final-cta__copy,
+.c-final-cta__action { position: relative; z-index: 1; }
+.c-final-cta__copy { display: grid; gap: var(--space-4); }
+
+.c-final-cta__eyebrow {
+  color: var(--color-accent-cyan);
+  font-size: var(--font-size-label);
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.c-final-cta h2 { max-width: 16ch; font-size: var(--font-size-section-title); letter-spacing: -0.05em; line-height: 1.02; }
+.c-final-cta__copy > p:last-child { max-width: 47ch; color: rgb(255 255 255 / 68%); }
+.c-final-cta__action { display: grid; align-content: end; gap: var(--space-4); }
+.c-final-cta__action ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); list-style: none; }
+.c-final-cta__action li { display: grid; padding-top: var(--space-3); border-top: 1px solid rgb(255 255 255 / 18%); }
+.c-final-cta__action li strong { color: var(--color-accent-cyan); font-size: 1.75rem; line-height: 1; }
+.c-final-cta__action li span { color: rgb(255 255 255 / 60%); font-size: 0.75rem; }
+.c-final-cta__action .c-conversion-cta { width: 100%; border-color: white; background: white; color: var(--color-brand); box-shadow: none; }
+.c-final-cta__action .c-conversion-cta span { background: var(--color-brand); color: white; }
+.c-final-cta__action small { color: rgb(255 255 255 / 48%); font-size: 0.6875rem; text-align: center; }
+
+@media (min-width: 50rem) {
+  .c-final-cta__card { grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.6fr); align-items: end; }
+}

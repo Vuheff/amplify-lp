@@ -1,0 +1,217 @@
+Segue o texto reorganizado como um guia de direcionamento para a construção da Landing Page. A estrutura fica mais fácil de transformar em briefing para UX, Copy e Design.
+
+# Direcionamento para Construção da Landing Page
+
+## Objetivo da LP
+
+A Landing Page deve responder às principais dúvidas do visitante na ordem correta, conduzindo-o da descoberta até a decisão de inscrição.
+
+Toda seção da página deve responder uma das **7 Perguntas de Conversão**.
+
+---
+
+# 1. Qual é a promessa desta página?
+
+## Objetivo
+
+O visitante deve entender em poucos segundos o principal benefício e decidir continuar lendo.
+
+## A primeira dobra deve conter
+
+* Headline
+* Subheadline
+* CTA principal
+* Demonstração visual da transformação
+
+## Construção da Headline (4U)
+
+A headline deve ser:
+
+* **Ultraespecífica:** deixar claro para quem é e o que será conquistado.
+* **Urgente:** apresentar um motivo real para agir agora.
+* **Única:** mostrar um diferencial ou mecanismo que torne a oportunidade diferente.
+* **Útil:** comunicar um benefício relevante.
+
+## Direcionamento para o Design
+
+A imagem da primeira dobra não deve ser apenas ilustrativa.
+
+Ela precisa reforçar visualmente a promessa feita pela headline, ajudando o visitante a compreender a transformação proposta.
+
+## A seção deve responder
+
+* Qual é o principal benefício?
+* Para quem este webinar foi criado?
+* Por que vale a pena continuar lendo?
+
+## Checklist
+
+* Em até cinco segundos é possível entender a promessa?
+* A headline poderia servir para qualquer outro produto?
+* O visual reforça a promessa?
+* Existe continuidade entre headline, subheadline e CTA?
+
+---
+
+# 2. O que é isso?
+
+## Objetivo
+
+Eliminar qualquer dúvida sobre o produto.
+
+O visitante precisa conseguir visualizar exatamente o que está comprando.
+
+## A seção deve explicar
+
+* O que é o webinar.
+* Qual é o formato.
+* Como acontece.
+* Quanto tempo dura.
+* O que está incluído.
+* Onde será entregue.
+* O que o participante precisa fazer.
+* O que acontece após a compra.
+
+## Contexto do produto
+
+"Webinar TikTok Shop" ainda é um conceito abstrato.
+
+A LP deve explicar claramente que o conteúdo é organizado em **quatro blocos**, mostrando a jornada completa para entrada no TikTok Shop:
+
+* Produto
+* Creators
+* Conteúdo
+* Escala
+
+## A seção deve responder
+
+* O que exatamente estou comprando?
+* Como funciona?
+* O que vou receber?
+* Como será minha experiência após a inscrição?
+
+## Checklist
+
+* O formato ficou claro?
+* O visitante entende se será ao vivo, gravado ou híbrido?
+* Ele consegue imaginar toda a experiência?
+
+---
+
+# 3. Por que eu deveria ligar para isso?
+
+## Objetivo
+
+Mostrar transformação.
+
+A LP não deve vender aulas.
+
+Ela deve vender o resultado que o lojista poderá alcançar.
+
+## Benefícios Funcionais
+
+Mostrar o que o participante será capaz de fazer.
+
+Exemplos:
+
+* Entender como funciona o TikTok Shop.
+* Avaliar quais produtos possuem potencial.
+* Trabalhar com creators.
+* Planejar vídeos e lives.
+* Entender GMV Max.
+* Decidir se faz sentido entrar no canal.
+
+## Benefícios Operacionais
+
+Mostrar ganhos para a operação.
+
+Exemplos:
+
+* Menos desperdício.
+* Menos erros na implementação.
+* Aprendizado mais rápido.
+* Clareza sobre prioridades.
+* Melhor utilização do time.
+* Melhor gestão do estoque.
+
+## Benefícios Emocionais
+
+Mostrar como o participante irá se sentir.
+
+Exemplos:
+
+* Mais segurança.
+* Mais preparo.
+* Confiança para decidir.
+* Menos sensação de estar perdido.
+* Controle sobre a estratégia.
+
+## A seção deve responder
+
+* Por que isso importa para mim?
+* Como isso melhora minha operação?
+* O que muda na prática?
+
+## Checklist
+
+* Estamos vendendo transformação ou conteúdo?
+* Cada tópico responde "E daí?".
+* Existe conexão entre o webinar e uma dor real do lojista?
+
+---
+
+# 4. Quem como eu já fez isso?
+
+## Objetivo
+
+Gerar identificação e prova social.
+
+O visitante precisa perceber que empresas semelhantes já passaram por esse caminho e obtiveram resultados.
+
+## Utilizar apenas provas reais
+
+* Cases autorizados.
+* Marcas conhecidas.
+* Empresas semelhantes.
+* Resultados reais.
+* Depoimentos autorizados.
+* Operações reais.
+
+## Cases disponíveis
+
+* Max Titanium.
+* R$ 260 mil em GMV em três dias.
+* Operações de marketplace.
+* Donos e gestores de marcas.
+* Operações utilizando creators e Live Shop.
+
+## Estrutura recomendada
+
+Cada case deve apresentar:
+
+1. Contexto inicial.
+2. Desafio.
+3. Decisão tomada.
+4. O que a Amplify realizou.
+5. Resultado obtido.
+
+## A seção deve responder
+
+* Empresas parecidas com a minha fazem isso?
+* Isso realmente funciona?
+* Existe prova concreta?
+
+## Checklist
+
+* O visitante se identifica com os exemplos?
+* O case possui contexto?
+* Está claro qual foi o papel da Amplify?
+* A prova é real, verificável e autorizada?
+
+## Observação
+
+Não utilizar depoimentos genéricos ou de produtos semelhantes apenas para preencher espaço.
+
+Toda prova social apresentada deve ser verdadeira, autorizada e relacionada diretamente ao webinar ou à atuação da Amplify.
+
+Se desejar, posso reorganizar esse conteúdo nas **7 perguntas completas**, transformando-o em um blueprint de LP com a ordem exata das seções (Hero, Benefícios, Conteúdo, Cases, FAQ, Oferta e CTA final).

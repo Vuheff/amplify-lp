@@ -1,0 +1,25 @@
+.js [data-motion] {
+  transform: translate3d(0, 0.875rem, 0);
+  transition: transform var(--duration-slow) var(--ease-emphasized);
+  will-change: transform;
+}
+
+.js [data-motion="scale"] { transform: scale(0.985); }
+
+.js [data-motion][data-motion-state="visible"] {
+  transform: none;
+  will-change: auto;
+}
+
+.c-value__grid [data-motion]:nth-child(2),
+.c-comparison__grid [data-motion]:nth-child(2) { transition-delay: 80ms; }
+
+.c-value__grid [data-motion]:nth-child(3) { transition-delay: 160ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-motion] {
+    transform: none;
+    transition: none;
+    will-change: auto;
+  }
+}
