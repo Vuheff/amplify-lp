@@ -4,7 +4,8 @@ node_modules/
 coverage/
 test-results/
 playwright-report/
-v0/tests/artifacts/
+tests/artifacts/
+.netlify/
 .env*
 !.env.example
 .DS_Store

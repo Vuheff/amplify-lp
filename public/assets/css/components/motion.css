@@ -1,0 +1,5 @@
+.js [data-motion][data-motion-state="visible"] { will-change: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-motion] { transition: none; }
+}

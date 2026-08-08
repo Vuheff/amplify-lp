@@ -1,17 +1,42 @@
 # Landing Webinar Amplify
 
-O projeto foi reiniciado em **v0**. A landing mobile-first está integrada em HTML, CSS e JavaScript modular e segue em validação visual e comercial.
+Landing page estática e mobile-first para o Webinar TikTok Shop da Amplify.
 
-## Onde está cada coisa
+## Estrutura
 
-- [`v0/index.html`](v0/index.html) — entrypoint da nova landing.
-- [`v0/`](v0/) — nova fonte de verdade.
-- [`v0/docs/`](v0/docs/) — PRD, backlog, arquitetura, método e decisões.
-- [`v0/research/`](v0/research/) — estudos, briefing original, referências e ativos candidatos.
-- [`_legacy/`](_legacy/) — implementação DC anterior e previews históricos, isolados e não importáveis pela v0.
+```text
+public/          site enviado ao Netlify
+  index.html     entrada da landing
+  assets/        CSS, JavaScript, vendor, ícones e imagens otimizadas
+docs/            direção, backlog, arquitetura e decisões
+tests/           servidor local e validações de interface
+package.json     comandos de desenvolvimento
+netlify.toml     configuração do deploy
+```
 
-## Regra de trabalho
+Somente `public/` faz parte do deploy. Originais pesados, referências antigas e a implementação legada foram removidos da árvore atual e continuam recuperáveis pelo histórico do Git.
 
-Uma pergunta comercial e um container por vez. Nenhum container seguinte começa antes de o anterior cumprir seu critério de aceite e ser aprovado.
+## Prévia local
 
-Próximo gate: validar a narrativa e o sistema visual do protótipo antes da integração definitiva de checkout, mensuração e publicação.
+Abra `preview.cmd` ou execute:
+
+```text
+npm run preview:open
+```
+
+A landing ficará disponível em `http://127.0.0.1:4173`.
+
+## Validação
+
+```text
+npm run check:js
+npm run check:hero
+```
+
+## Netlify
+
+O arquivo `netlify.toml` define `public/` como diretório de publicação. Ao conectar o repositório, use a branch `main` e não informe comando de build.
+
+CSS e JavaScript próprios exigem revalidação a cada navegação. O vendor versionado usa cache imutável; imagens e ícones mantêm cache de 7 dias. O parâmetro de versão em `main.css` e em seus imports deve ser atualizado quando houver alteração visual publicada, evitando que um deploy novo reutilize componentes antigos armazenados pelo navegador.
+
+O ScrollReveal 4.0.9 é hospedado localmente em `public/assets/vendor/` e controla somente as entradas declaradas com `data-motion`. A landing não depende de CDN para inicializar esse comportamento.
