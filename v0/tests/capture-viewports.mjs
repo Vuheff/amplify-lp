@@ -199,6 +199,33 @@ console.log("photo-rail-390.png", railBox.result.value);
 await send("Runtime.evaluate", {
   awaitPromise: true,
   expression: `(async () => {
+    const section = document.querySelector('.c-product-value');
+    section.scrollIntoView({ block: 'start' });
+    await new Promise((resolve) => setTimeout(resolve, 400));
+  })()`,
+});
+
+const productValueBox = await send("Runtime.evaluate", {
+  returnByValue: true,
+  expression: `(() => {
+    const box = document.querySelector('.c-product-value').getBoundingClientRect();
+    return { x: box.left, y: box.top + scrollY, width: box.width, height: box.height };
+  })()`,
+});
+
+const productValueCapture = await send("Page.captureScreenshot", {
+  format: "png",
+  fromSurface: true,
+  captureBeyondViewport: true,
+  clip: { ...productValueBox.result.value, scale: 1 },
+});
+
+await writeFile(resolve(outputDirectory, "product-value-390.png"), Buffer.from(productValueCapture.data, "base64"));
+console.log("product-value-390.png", productValueBox.result.value);
+
+await send("Runtime.evaluate", {
+  awaitPromise: true,
+  expression: `(async () => {
     const rail = document.querySelector('.c-brand-rail');
     rail.scrollIntoView({ block: 'center' });
     await new Promise((resolve) => setTimeout(resolve, 500));

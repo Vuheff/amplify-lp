@@ -24,7 +24,7 @@ npm run check:js
 npm run check:hero
 ```
 
-`check:hero` captura 320, 360, 390, 430 e 1440 px, além do menu mobile aberto, dos estados formulário/oferta do modal e do trilho fotográfico em 390 px, hover em 1440 px, drag em 430 px e páginas completas em 390/1440 px. Valida a pilha de cards reais, loop em JavaScript, velocidade, pausa/retomada com foco, hover, resize, visibilidade da página, entradas de seção sempre visíveis, drag nos dois sentidos, gesto vertical, teclado, ARIA, controles de 44 px, overflow, fallback sem JS e reduced motion.
+`check:hero` captura 320, 360, 390, 430 e 1440 px, além do menu mobile aberto, dos estados formulário/oferta do modal, do trilho fotográfico e do bloco de produto/valor em 390 px, hover em 1440 px, drag em 430 px e páginas completas em 390/1440 px. Valida a pilha de cards reais, loop em JavaScript, preço e entrega confirmados, velocidade, pausa/retomada com foco, hover, resize, visibilidade da página, entradas de seção sempre visíveis, drag nos dois sentidos, gesto vertical, teclado, ARIA, controles de 44 px, overflow, fallback sem JS e reduced motion.
 
 O mesmo teste cobre o modal de captura com `fetch` simulado: 6 passos, mensagens de validação, motion de entrada/transição/oferta, fallback em reduced motion, payload de atribuição, liberação condicionada ao `lead_id`, intenção no mesmo registro, ausência de cobrança, foco e encaixe nos viewports aprovados. Nenhum webhook de produção é chamado durante o teste.
 

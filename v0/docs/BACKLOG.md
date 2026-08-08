@@ -22,6 +22,8 @@ WIP: **um container em execução; nenhum container posterior começa antes da a
 
 > Navegação e scroll — 2026-08-07: a navbar recebe menu mobile, fallback sem JavaScript, seção ativa, progresso de leitura e ocultação ao descer/revelação ao subir. Quatro Material Symbols Rounded locais ajudam a reconhecer os destinos no menu mobile sem carregar fonte ou runtime externo; o desktop preserva a leitura textual limpa. O comportamento permanece dentro do componente de navegação e não altera a ordem dos containers.
 
+> Produto e valor — 2026-08-07: o bloco abstrato “Mapa em uma leitura” passa a apresentar a entrega confirmada do webinar. A hierarquia usa 94% de desconto, calculado sobre R$ 1.632 e R$ 97, seguido por 4 blocos, 29 temas, 12 meses de acesso e 7 dias de garantia. “Mentoria” não entra na copy porque o formato confirmado é uma aula gravada.
+
 ## Gate R0 — pesquisa e direção, sem UI
 
 | ID | P | Status | Entrega | Critério de aceite |
@@ -71,7 +73,7 @@ Cada item passa pelo ciclo: texto puro → wireframe → estático responsivo �
 | Ordem | ID | Status | Pergunta | Critério de saída |
 |---:|---|---|---|---|
 | 01 | CNT-001 | Em validação | Por que vale continuar? | Faixa promocional em loop fica abaixo da navegação e identifica produto e condição atual; Hero noturno centraliza a leitura mobile, apresenta o resultado educacional, mantém a pilha real e conecta 8 registros Amplify; foco, teclado, fallback sem JS e estados de motion validados; ainda depende de aprovação visual. |
-| 02 | CNT-002 | Pendente | O que é e como acontece? | Participante explica modalidade, duração, acesso, suporte e pós-compra sem inferir algo inexistente. |
+| 02 | CNT-002 | Em validação | O que é e como acontece? | Participante identifica aula gravada, 4 blocos, 29 temas, 12 meses de acesso, preço atual e garantia sem inferir mentoria ou serviço feito pela Amplify; suporte e pós-compra continuam pendentes. |
 | 03 | CNT-003 | Pendente | Como o método tira minha operação da dúvida? | As quatro decisões são recordadas sem repetir literalmente o teaser do Hero; interação e fallback preservam o conteúdo. |
 | 04 | CNT-004 | Pendente | O que custa entrar sem critério e isso serve para minha marca? | Visitante reconhece riscos plausíveis, ganhos, pré-requisitos e não-fit sem medo artificial. |
 | 05 | CNT-005 | Em validação | Por que acreditar? | Repertório visual com 9 marcas e case contextualizado aparecem no mesmo container; trilho roda continuamente sem botão, preserva fallback manual e reduced motion; relação/fonte de cada marca segue pendente antes da publicação. |

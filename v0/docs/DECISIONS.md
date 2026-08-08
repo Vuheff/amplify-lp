@@ -198,6 +198,7 @@ Estados: `Proposta`, `Aceita`, `Substituída`.
 - Regra de negócio: envio do formulário e clique de intenção mantêm `Comprou? = Não`. Somente um webhook futuro autenticado de pagamento poderá registrar compra real. O evento de intenção declara `charged: false`.
 - Persuasão: o modal apresenta o contraste confirmado de R$ 1.632 por R$ 97, 4 blocos, 29 temas, 12 meses de acesso e 7 dias de garantia. Aversão à perda fica limitada à natureza promocional da condição; não entram contador, vagas limitadas, prazo ou reserva fictícia.
 - Acessibilidade e fallback: o diálogo fecha por botão, Escape e backdrop, restaura o foco e bloqueia a rolagem de fundo. Sem JavaScript, os links continuam levando à section `#inscricao` e nenhum dado é enviado.
+- Linguagem do CTA: por decisão explícita do usuário, todos os gatilhos usam “Garantir minha vaga”. O modal continua registrando lead e intenção; compra, cobrança, reserva operacional e acesso permanecem dependentes do checkout futuro.
 - Motion: backdrop, superfície e controle de fechamento entram de forma coordenada; perguntas usam transição direcional de 14 px via Web Animations API; preço, entregas e confirmação recebem revelação curta em cascata. Tudo usa apenas `transform`/`opacity` e é removido em `prefers-reduced-motion`.
 - Limite: o teste automatizado substitui `fetch` e não grava dados em produção. Homologação real do n8n/Notion, checkout, pagamento e confirmação de acesso permanecem pendentes.
 
@@ -220,3 +221,13 @@ Estados: `Proposta`, `Aceita`, `Substituída`.
 - Acessibilidade: botão de 44 px informa expansão, Escape fecha e restaura foco, clique externo fecha, links possuem alvos mínimos de 48 px e reduced motion reduz as transições a 1 ms.
 - Fallback: sem JavaScript, o botão não aparece e os quatro links ficam disponíveis em uma linha horizontal navegável.
 - Iconografia: o menu mobile usa quatro SVGs locais da coleção oficial Google Material Symbols Rounded (`home`, `route`, `compare_arrows` e `verified`). Os ícones são decorativos, possuem texto adjacente e ficam ocultos no desktop; não há fonte externa, pacote ou nova dependência de runtime.
+
+## ADR-023 — Produto e valor no segundo container
+
+- Estado: `Aceita`
+- Data: 2026-08-07
+- Contexto: “Mapa em uma leitura” repetia argumentos do método e seus números abstratos não explicavam o produto nem a condição disponível. O usuário pediu que o bloco apresentasse curso, valor anterior, valor atual e um número dominante de desconto.
+- Decisão: substituir o bloco por uma composição mobile-first que apresenta o Webinar TikTok Shop como aula gravada, destaca 94% de desconto e mostra R$ 1.632, R$ 97 à vista, 4 blocos, 29 temas, 12 meses de acesso e 7 dias de garantia.
+- Regra de produto: a palavra “mentoria” não entra na interface porque criaria uma expectativa incompatível com a aula única gravada confirmada em `BUS-001`.
+- Persuasão: o preço anterior cria referência, o percentual facilita a comparação e os detalhes reduzem ambiguidade. Não entram contador, lote, vagas ou prazo inventado.
+- Consequência: a faixa promocional continua como teaser do topo e este container passa a ser a explicação detalhada de produto e valor. Suporte, pós-compra, parcelamento, checkout e operação do reembolso continuam pendentes.

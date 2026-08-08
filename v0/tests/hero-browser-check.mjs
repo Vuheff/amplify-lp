@@ -141,6 +141,7 @@ async function readState() {
       publicCopyUsesEmDash: document.body.innerText.includes('\u2014') || [...document.querySelectorAll('[aria-label]')].some((element) => element.getAttribute('aria-label')?.includes('\u2014')),
       requiredSections: ['metodo', 'operacao', 'comparacao', 'prova', 'inscricao', 'proximo-passo'].every((id) => Boolean(document.getElementById(id))),
       heroCtaTarget: document.querySelector('.c-hero .c-conversion-cta')?.getAttribute('href'),
+      registrationCtas: [...document.querySelectorAll('[data-js="open-lead-modal"]')].map((link) => link.textContent.replace(/\\s+/g, ' ').trim()),
       proofImageDimensions: [...document.querySelectorAll('.c-proof img')].every((image) => Number(image.getAttribute('width')) > 0 && Number(image.getAttribute('height')) > 0 && image.loading === 'lazy'),
       fakeTestimonials: document.querySelectorAll('blockquote, [data-testimonial]').length,
       finalCtaInternal: (() => {
@@ -148,7 +149,21 @@ async function readState() {
         return link?.getAttribute('href') === '#inscricao' && !link?.hasAttribute('target');
       })(),
       noNotionLinks: ![...document.querySelectorAll('a[href]')].some((link) => link.href.includes('notion.so')),
-      fullJourney: Boolean(document.querySelector('.c-site-nav') && document.querySelector('.c-method-timeline') && document.querySelector('.c-operating-stats') && document.querySelector('.c-comparison') && document.querySelector('.c-offer')),
+      productValue: (() => {
+        const root = document.querySelector('.c-product-value');
+        return {
+          title: root.querySelector('h2')?.textContent.trim(),
+          discount: root.querySelector('.c-product-value__discount')?.textContent.replace(/\\s+/g, ' ').trim(),
+          price: root.querySelector('.c-product-value__price')?.getAttribute('aria-label'),
+          saving: root.querySelector('.c-product-value__saving')?.textContent.replace(/\\s+/g, ' ').trim(),
+          format: root.querySelector('.c-product-value__badge')?.textContent.trim(),
+          facts: [...root.querySelectorAll('.c-product-value__content li')].map((item) => item.textContent.replace(/\\s+/g, ' ').trim()),
+          cta: root.querySelector('.c-conversion-cta')?.textContent.replace(/\\s+/g, ' ').trim(),
+          ctaTarget: root.querySelector('.c-conversion-cta')?.getAttribute('href'),
+          mentionsMentoring: root.textContent.toLowerCase().includes('mentoria'),
+        };
+      })(),
+      fullJourney: Boolean(document.querySelector('.c-site-nav') && document.querySelector('.c-method-timeline') && document.querySelector('.c-product-value') && document.querySelector('.c-comparison') && document.querySelector('.c-offer')),
       methodImageReady: [...document.querySelectorAll('.c-method-timeline img')].length === 1 && [...document.querySelectorAll('.c-method-timeline img')].every((image) => image.width > 0 && image.height > 0 && image.loading === 'lazy'),
       photoRailReady: document.querySelector('[data-js="photo-rail"]')?.dataset.railReady === 'true',
       photoRailDuplicateHidden: document.querySelectorAll('.c-photo-rail__group')[1]?.getAttribute('aria-hidden') === 'true',
@@ -223,9 +238,13 @@ assert(initial.navigation.iconCount === 4 && initial.navigation.iconsReady && in
 assert(!initial.publicCopyUsesEmDash, "Public landing copy and accessible labels must not use em dashes");
 assert(initial.requiredSections, "The full reference structure must exist in the correct journey");
 assert(initial.heroCtaTarget === "#inscricao", "Hero CTA must lead to the final conversion section");
+assert(initial.registrationCtas.length === 7 && initial.registrationCtas.every((label) => label.includes("Garantir minha vaga")), `Every modal trigger must use the approved action label: ${JSON.stringify(initial.registrationCtas)}`);
 assert(initial.proofImageDimensions, "Proof images must reserve dimensions and lazy load");
 assert(initial.fakeTestimonials === 0, "The prototype must not fabricate testimonials");
 assert(initial.finalCtaInternal && initial.noNotionLinks, "Conversion paths must stay inside the landing while checkout is pending");
+assert(initial.productValue.title.includes("webinar completo") && initial.productValue.discount === "94% de desconto" && initial.productValue.price === "De R$ 1.632 por R$ 97 à vista", `Product value section must make format and current price legible: ${JSON.stringify(initial.productValue)}`);
+assert(initial.productValue.saving.includes("R$ 1.535") && initial.productValue.format === "Aula gravada" && initial.productValue.facts.length === 3 && initial.productValue.facts.join(" ").includes("29 temas") && initial.productValue.facts.join(" ").includes("12 meses"), "Product value section must explain the confirmed delivery without hiding it");
+assert(initial.productValue.cta.includes("Garantir minha vaga") && initial.productValue.ctaTarget === "#inscricao" && !initial.productValue.mentionsMentoring, "Product value CTA must use the approved action without misrepresenting the recorded webinar as mentoring");
 assert(initial.fullJourney, "Navigation, field context and comparison must compose the full journey");
 assert(initial.methodImageReady, "Method image must reserve dimensions and lazy load");
 assert(initial.photoRailReady && initial.photoRailDuplicateHidden && initial.photoRailGroupsEqual, "Photo rail must initialize with two equal groups and an assistive-technology-safe duplicate");
@@ -297,7 +316,7 @@ const modalInitial = await evaluate(`(() => {
   };
 })()`);
 assert(modalInitial.open && modalInitial.state === "form" && modalInitial.stepCount === 6 && modalInitial.visibleSteps === 1, `Every CTA must open the same six-step modal: ${JSON.stringify(modalInitial)}`);
-assert(modalInitial.triggerCount === 6 && modalInitial.label === "Pergunta 1 de 6" && modalInitial.bodyLocked === "true", "Modal opening must reset the journey and lock background scroll");
+assert(modalInitial.triggerCount === 7 && modalInitial.label === "Pergunta 1 de 6" && modalInitial.bodyLocked === "true", "Modal opening must reset the journey and lock background scroll");
 assert(modalInitial.activeName === "lead" && modalInitial.closeSize >= 44 && modalInitial.fitsViewport, `Mobile modal must focus the first field, fit the viewport and expose a 44px close target: ${JSON.stringify(modalInitial)}`);
 assert(modalInitial.entranceAnimation === "lead-modal-in" && modalInitial.backdropAnimation === "lead-modal-backdrop-in" && modalInitial.closeAnimation === "lead-modal-close-in", `Modal, backdrop and close control must enter with coordinated motion: ${JSON.stringify(modalInitial)}`);
 assert(modalInitial.pageViewCount === 1 && modalInitial.formStartCount === 1, "Webinar page and form-start events must be deduplicated");
