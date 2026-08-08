@@ -19,7 +19,7 @@ function initSectionMotion(root) {
   }
 
   const reducedProfile = reducedMotion.matches;
-  const duration = reducedProfile ? 480 : 760;
+  const duration = reducedProfile ? 650 : 720;
   const stepDelay = reducedProfile ? 50 : 80;
   const maximumDelay = reducedProfile ? 150 : 240;
 
@@ -46,10 +46,10 @@ function initSectionMotion(root) {
 
       scrollReveal.reveal(target, {
         delay: Math.min(index * stepDelay, maximumDelay),
-        distance: reducedProfile ? (scales ? "8px" : "12px") : (scales ? "16px" : "32px"),
-        opacity: reducedProfile ? (scales ? 0.88 : 0.84) : (scales ? 0.8 : 0.75),
+        distance: reducedProfile ? "0px" : (scales ? "20px" : "40px"),
+        opacity: reducedProfile ? 0.35 : (scales ? 0.3 : 0.25),
         origin: "bottom",
-        scale: scales ? (reducedProfile ? 0.985 : 0.965) : 1,
+        scale: scales && !reducedProfile ? 0.96 : 1,
         beforeReveal: show,
       });
     });
@@ -75,7 +75,7 @@ function initSectionMotion(root) {
     if (!event.matches) return;
     scrollReveal.destroy();
     showAll();
-    setEngine("static-changed-preference");
+    setEngine("static");
   };
 
   reducedMotion.addEventListener("change", handleReducedMotion);

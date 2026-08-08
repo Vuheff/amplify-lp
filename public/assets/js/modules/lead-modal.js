@@ -2,7 +2,7 @@ import {
   createWebinarLead,
   registerWebinarIntent,
   trackWebinarEvent,
-} from "./lead-funnel-api.js?v=20260808-4";
+} from "./lead-funnel-api.js?v=20260808-5";
 
 const FORM_ERROR = "Não conseguimos registrar agora. Tente novamente em instantes.";
 const INTENT_ERROR = "Não conseguimos verificar agora. Tente novamente em instantes.";

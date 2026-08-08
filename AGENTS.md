@@ -22,7 +22,7 @@ Escopo: todo o repositório.
 - Não ocultar conteúdo essencial para executar reveal.
 - ScrollReveal 4.0.9 é a única biblioteca de motion aprovada e fica restrita às entradas declaradas com `data-motion`, conforme `ADR-030`. Não usar Swiper, loader, marquee ou parallax. As exceções de autoplay são os trilhos fotográfico, promocional e de marcas aprovados nos `ADR-014`/`ADR-015`/`ADR-017`/`ADR-018`/`ADR-019`. O trilho fotográfico mantém pausa explícita e hover; por escolha explícita do usuário, os trilhos promocional e de marcas iniciam automaticamente, não dependem de controle visual e continuam em `prefers-reduced-motion`.
 - Toda interação por arraste precisa de alternativa por botão e teclado.
-- Motion deve respeitar reduced motion e funcionar como melhoria progressiva. Entradas de seção usam o perfil reduzido do `ADR-032`: uma única execução curta, com conteúdo sempre legível; componentes contínuos mantêm seus contratos próprios.
+- Motion deve respeitar reduced motion e funcionar como melhoria progressiva. Entradas de seção usam o perfil reduzido do `ADR-033`: um fade único sem deslocamento, com conteúdo sempre legível; componentes contínuos mantêm seus contratos próprios.
 - Se um arquivo atingir o budget, separar responsabilidade antes de acrescentar código.
 
 ## Entrega obrigatória

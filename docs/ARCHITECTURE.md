@@ -150,10 +150,10 @@ Sem JavaScript, a landing continuará legível, navegável e capaz de abrir o ch
 - biblioteca só entra por ADR;
 - apenas `transform` e `opacity` quando possível;
 - nenhum conteúdo essencial começa com `opacity: 0`;
-- deslocamento máximo de 24 px;
-- durações de 160, 240 ou 360 ms;
-- reduced motion elimina deslocamentos contínuos não aprovados e reduz as entradas de seção a no máximo 12 px por 480 ms;
-- entradas de section usam uma única instância local de ScrollReveal, inicializada por script clássico após `load` para preservar a geometria final e funcionar em `file://`; executam uma vez e mantêm opacidade inicial legível; sem biblioteca ou sem JavaScript, o conteúdo permanece estático;
+- componentes comuns usam durações de 160, 240 ou 360 ms; as entradas ScrollReveal aprovadas usam 720 ms;
+- entradas normais usam no máximo 40 px; reduced motion remove todo deslocamento e preserva apenas o fade de 650 ms;
+- entradas de section usam uma única instância local de ScrollReveal, inicializada por script clássico após `load` para preservar a geometria final e funcionar em `file://`; executam uma vez e começam com opacidade legível; sem biblioteca ou sem JavaScript, o conteúdo permanece estático;
+- Go Live, preview oficial e Netlify servem a mesma raiz `public/` na porta local preferencial 4173;
 - drag sempre possui alternativa por botão.
 - movimento contínuo usa JavaScript nativo: os dois trilhos usam Web Animations API. O fotográfico permanece a 22 px/s com pausa explícita; o de marcas inicia automaticamente a 56 px/s, sem botão, e usa dois grupos idênticos no HTML. Ambos medem a largura real e preservam o progresso no resize. Por escolha explícita registrada no `ADR-018`, o trilho de marcas continua em reduced motion; com JavaScript desativado, volta à navegação horizontal manual.
 - a faixa promocional fica abaixo da navegação e usa um controlador clássico isolado com Web Animations API a 72 px/s. Dois grupos idênticos formam o loop; a duplicata é `aria-hidden`, o fallback sem JavaScript permanece horizontal e, por decisão explícita no `ADR-019`, o movimento continua em reduced motion.

@@ -28,7 +28,7 @@ WIP: **um container em execução; nenhum container posterior começa antes da a
 
 > Hierarquia de conversão — 2026-08-07: a landing passa de sete para três botões “Garantir minha vaga”, posicionados no Hero, junto ao preço e no encerramento. Navbar, comparação e card de crescimento deixam de capturar; a faixa promocional apenas navega até `#operacao`.
 
-> Ancoragem e motion — 2026-08-08: o bloco `#operacao` passa a apresentar primeiro quatro componentes de valor sem preços individuais, seguidos por uma única referência de R$ 1.632 e pela oferta de R$ 97. A comunicação pública adota “Criadores de conteúdo”. Entradas de sections usam uma única instância local do ScrollReveal 4.0.9, com perfil curto em reduced motion e conteúdo estático sem biblioteca ou sem JavaScript.
+> Ancoragem e motion — 2026-08-08: o bloco `#operacao` passa a apresentar primeiro quatro componentes de valor sem preços individuais, seguidos por uma única referência de R$ 1.632 e pela oferta de R$ 97. A comunicação pública adota “Criadores de conteúdo”. Entradas de sections usam uma única instância local do ScrollReveal 4.0.9, com fade de 650 ms sem deslocamento em reduced motion e conteúdo estático sem biblioteca ou sem JavaScript.
 
 ## Gate R0 — pesquisa e direção, sem UI
 
@@ -94,7 +94,7 @@ Matriz mínima por container: 320, 360, 390, 430 e 1440 px; teclado; zoom 200%; 
 |---|---:|---|---|---|
 | JRN-001 | P0 | Em validação | Narrativa completa | Transições entre perguntas não repetem argumento nem criam salto lógico. |
 | JRN-002 | P0 | Em validação | Consistência visual | Grid, tipo, cor, cards e CTA seguem o mesmo sistema em toda a página. |
-| JRN-003 | P0 | Em validação | Motion global | Entradas de sections executam uma vez com ScrollReveal local e bootstrap clássico independente dos ES Modules; o perfil reduzido usa no máximo 12 px por 480 ms e os trilhos contínuos mantêm seus contratos. `file://`, reduced motion, âncora direta e falha da biblioteca são cobertos pela suíte. Falta aprovação visual. |
+| JRN-003 | P0 | Em validação | Motion global | Entradas de sections executam uma vez com ScrollReveal local e bootstrap clássico independente dos ES Modules; o perfil reduzido usa fade de 650 ms sem deslocamento e os trilhos contínuos mantêm seus contratos. Go Live, `file://`, frames intermediários, âncora direta e falha da biblioteca são cobertos pela suíte. Falta aprovação visual. |
 | JRN-004 | P0 | Pendente | Oferta ponta a ponta | CTA, checkout, pagamento, confirmação e acesso funcionam. |
 | JRN-005 | P0 | Em validação | Captura e intenção | Seis respostas criam um único lead com atribuição; `lead_id` libera a condição; a intenção atualiza o mesmo registro e permanece distinta de compra. Entrada, passos, oferta e confirmação possuem motion curta com fallback reduced motion. Teste automatizado usa webhooks simulados; homologação real do n8n/Notion segue pendente. |
 

@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { readFile } from "node:fs/promises";
 
 const port = process.argv[2] || "9222";
 const pageUrl = "http://127.0.0.1:4173/";
@@ -57,7 +58,8 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-const assetVersion = "v=20260808-4";
+const assetVersion = "v=20260808-5";
+const liveServerSettings = JSON.parse(await readFile(resolve(".vscode", "settings.json"), "utf8"));
 const [servedHtml, servedMainCss, servedMainJs, servedPhotoRail, servedLeadModal, servedSectionMotion, servedMotionCss, servedScrollReveal] = await Promise.all([
   fetch(pageUrl).then((response) => response.text()),
   fetch(`${pageUrl}assets/css/main.css?${assetVersion}`).then((response) => response.text()),
@@ -83,6 +85,7 @@ assert(cssImports.length > 0 && cssImports.every((asset) => asset.endsWith(`?${a
 assert(moduleImports.length > 0 && moduleImports.every((asset) => asset.endsWith(`?${assetVersion}`)), "Every JavaScript module import must share the release version");
 assert(servedSectionMotion.includes("window.ScrollReveal") && !servedSectionMotion.includes("IntersectionObserver"), "Section motion must use only the ScrollReveal runtime");
 assert(!servedMotionCss.includes("animation-timeline") && !servedMotionCss.includes("@keyframes motion-"), "Motion CSS must not retain a competing View Timeline engine");
+assert(!servedMotionCss.includes("transition: none") && liveServerSettings["liveServer.settings.root"] === "/public" && liveServerSettings["liveServer.settings.port"] === 4173, "Go Live must serve the published root without a CSS rule cancelling ScrollReveal transitions");
 
 async function readState() {
   return evaluate(`(() => {
@@ -257,10 +260,12 @@ async function readState() {
       brandRailAnimationCount: document.querySelector('[data-js="brand-rail-track"]')?.getAnimations().length,
       brandRailPlayState: document.querySelector('[data-js="brand-rail-track"]')?.getAnimations()[0]?.playState,
       motionEngine: document.documentElement.dataset.motionEngine,
-      motionContentReadable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.75),
+      motionContentReadable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.25),
       scrollMotion: (() => {
         const target = document.querySelector('#metodo [data-motion="rise"]');
+        const scaleTarget = document.querySelector('#metodo [data-motion="scale"]');
         const style = getComputedStyle(target);
+        const scaleStyle = getComputedStyle(scaleTarget);
         const scrollReveal = typeof window.ScrollReveal === 'function' ? window.ScrollReveal() : null;
         return {
           libraryReady: Boolean(scrollReveal),
@@ -270,6 +275,8 @@ async function readState() {
           animationTimeline: style.animationTimeline,
           opacity: Number.parseFloat(style.opacity),
           transform: style.transform,
+          scaleOpacity: Number.parseFloat(scaleStyle.opacity),
+          scaleTransform: scaleStyle.transform,
         };
       })(),
     };
@@ -348,7 +355,41 @@ assert(initial.brandRailImagesReady && !initial.brandRailHasToggle && initial.br
 assert(initial.motionEngine === "scrollreveal", `The independent section motion bootstrap must report its active engine: ${JSON.stringify(initial.motionEngine)}`);
 assert(initial.motionContentReadable, "Motion enhancement must keep all content visibly readable before reveal completion");
 assert(initial.scrollMotion.libraryReady && initial.scrollMotion.version === "4.0.9" && initial.scrollMotion.registered, `ScrollReveal 4.0.9 must register off-screen data-motion targets: ${JSON.stringify(initial.scrollMotion)}`);
-assert(initial.scrollMotion.animationName === "none" && initial.scrollMotion.animationTimeline === "auto" && initial.scrollMotion.opacity >= 0.75 && initial.scrollMotion.opacity < 1 && initial.scrollMotion.transform !== "none", `Section motion must use ScrollReveal without a competing CSS timeline: ${JSON.stringify(initial.scrollMotion)}`);
+assert(initial.scrollMotion.animationName === "none" && initial.scrollMotion.animationTimeline === "auto" && initial.scrollMotion.opacity === 0.25 && initial.scrollMotion.transform !== "none" && initial.scrollMotion.scaleOpacity === 0.3 && initial.scrollMotion.scaleTransform !== "none", `Section motion must expose the approved, perceptible normal profile without a competing CSS timeline: ${JSON.stringify(initial.scrollMotion)}`);
+
+const normalMotionBefore = await evaluate(`(() => {
+  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const style = getComputedStyle(target);
+  return { opacity: Number.parseFloat(style.opacity), transform: style.transform };
+})()`);
+await evaluate(`(() => {
+  document.documentElement.style.scrollBehavior = 'auto';
+  document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' });
+})()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 120));
+const normalMotionMid = await evaluate(`(() => {
+  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const style = getComputedStyle(target);
+  return {
+    opacity: Number.parseFloat(style.opacity),
+    transform: style.transform,
+    duration: style.transitionDuration,
+    registered: target.hasAttribute('data-sr-id'),
+  };
+})()`);
+assert(normalMotionMid.registered && normalMotionMid.opacity > normalMotionBefore.opacity && normalMotionMid.opacity < 1 && normalMotionMid.transform !== normalMotionBefore.transform && normalMotionMid.duration.includes('0.72s'), `Normal ScrollReveal must visibly progress through an intermediate frame: ${JSON.stringify({ normalMotionBefore, normalMotionMid })}`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 760));
+const normalMotionAfter = await evaluate(`(() => {
+  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const style = getComputedStyle(target);
+  return { state: target.dataset.motionState, opacity: style.opacity, transform: style.transform, registered: target.hasAttribute('data-sr-id') };
+})()`);
+assert(normalMotionAfter.state === 'visible' && !normalMotionAfter.registered && normalMotionAfter.opacity === '1' && ['none', 'matrix(1, 0, 0, 1, 0, 0)'].includes(normalMotionAfter.transform), `Normal ScrollReveal must settle after its visible transition: ${JSON.stringify(normalMotionAfter)}`);
+await evaluate(`(() => {
+  window.scrollTo(0, 0);
+  document.documentElement.style.removeProperty('scroll-behavior');
+})()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 120));
 
 await evaluate(`document.querySelector('[data-js="site-nav-toggle"]').click()`);
 const navigationOpen = await evaluate(`(() => {
@@ -366,7 +407,7 @@ const navigationOpen = await evaluate(`(() => {
   };
 })()`);
 assert(navigationOpen.open === "true" && navigationOpen.expanded === "true" && navigationOpen.label.startsWith("Fechar") && navigationOpen.hidden === "false" && !navigationOpen.inert && navigationOpen.visibility === "visible", `Menu button must expose the mobile navigation state: ${JSON.stringify(navigationOpen)}`);
-assert(navigationOpen.minimumLinkHeight >= 48, "Every mobile navigation destination must expose a comfortable touch target");
+assert(navigationOpen.minimumLinkHeight >= 47.9, `Every mobile navigation destination must expose the 48 px touch target within sub-pixel rendering tolerance: ${JSON.stringify(navigationOpen)}`);
 await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27, nativeVirtualKeyCode: 27 });
 await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27, nativeVirtualKeyCode: 27 });
 const navigationClosed = await evaluate(`(() => {
@@ -1055,11 +1096,15 @@ const reducedMotion = await evaluate(`({
   brandOverflow: getComputedStyle(document.querySelector('.c-brand-rail__viewport')).overflowX,
   sectionMotionProfile: (() => {
     const target = document.querySelector('#metodo [data-motion="rise"]');
+    const scaleTarget = document.querySelector('#metodo [data-motion="scale"]');
     const style = getComputedStyle(target);
+    const scaleStyle = getComputedStyle(scaleTarget);
     return {
       registered: target.hasAttribute('data-sr-id'),
       opacity: Number.parseFloat(style.opacity),
       transform: style.transform,
+      scaleOpacity: Number.parseFloat(scaleStyle.opacity),
+      scaleTransform: scaleStyle.transform,
     };
   })(),
   offerStepsStatic: [...document.querySelectorAll('.c-offer__step')].every((step) => getComputedStyle(step).transform === 'none' && getComputedStyle(step).transitionDuration === '0s'),
@@ -1072,10 +1117,25 @@ assert(reducedMotion.automaticMotion === null, "Deck must not autoplay a teaser"
 assert(reducedMotion.railAnimations === 0 && reducedMotion.railPaused === "true" && reducedMotion.railDuplicateDisplay === "none" && reducedMotion.railToggleDisplay === "none", "Reduced motion must stop and simplify the photo rail");
 assert(reducedMotion.promoAnimations === 1 && reducedMotion.promoPlayState === "running" && reducedMotion.promoPaused === "false" && reducedMotion.promoDuplicateDisplay === "flex" && reducedMotion.promoOverflow === "clip", "The explicitly approved promo rail must keep moving under reduced motion");
 assert(reducedMotion.brandAnimations === 1 && reducedMotion.brandPlayState === "running" && reducedMotion.brandPaused === "false" && reducedMotion.brandDuplicateDisplay === "flex" && !reducedMotion.brandHasToggle, "The explicitly approved brand rail exception must keep running without a control under reduced motion");
-assert(reducedMotion.motionEngine === "scrollreveal-reduced" && reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionProfile.registered && reducedMotion.sectionMotionProfile.opacity === 0.84 && reducedMotion.sectionMotionProfile.transform !== "none" && reducedMotion.offerStepsStatic, `Reduced motion must use the short, readable section entrance profile while preserving isolated component safeguards: ${JSON.stringify(reducedMotion.sectionMotionProfile)}`);
+assert(reducedMotion.motionEngine === "scrollreveal-reduced" && reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionProfile.registered && reducedMotion.sectionMotionProfile.opacity === 0.35 && reducedMotion.sectionMotionProfile.scaleOpacity === 0.35 && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(reducedMotion.sectionMotionProfile.transform) && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(reducedMotion.sectionMotionProfile.scaleTransform) && reducedMotion.offerStepsStatic, `Reduced motion must begin with the approved fade-only profile while preserving isolated component safeguards: ${JSON.stringify(reducedMotion.sectionMotionProfile)}`);
 
-await evaluate(`document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' })`);
-await new Promise((resolveDelay) => setTimeout(resolveDelay, 800));
+await evaluate(`(() => {
+  document.documentElement.style.scrollBehavior = 'auto';
+  document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' });
+})()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 140));
+const reducedSectionMid = await evaluate(`(() => {
+  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const style = getComputedStyle(target);
+  return {
+    opacity: Number.parseFloat(style.opacity),
+    transform: style.transform,
+    duration: style.transitionDuration,
+    registered: target.hasAttribute('data-sr-id'),
+  };
+})()`);
+assert(reducedSectionMid.registered && reducedSectionMid.opacity > 0.35 && reducedSectionMid.opacity < 1 && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(reducedSectionMid.transform) && reducedSectionMid.duration.includes('0.65s'), `Reduced ScrollReveal must visibly progress through a fade-only intermediate frame: ${JSON.stringify(reducedSectionMid)}`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 650));
 const reducedSectionAfter = await evaluate(`(() => {
   const target = document.querySelector('#metodo [data-motion="rise"]');
   const style = getComputedStyle(target);
@@ -1186,10 +1246,11 @@ const historyReturn = await evaluate(`(async () => {
   });
   return {
     hash: location.hash,
-    readable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.75),
+    readable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.25),
+    destinationSettled: [...document.querySelectorAll('#operacao [data-motion]')].every((target) => getComputedStyle(target).opacity === '1' && !target.hasAttribute('data-sr-id')),
   };
 })()`, true);
-assert(historyReturn.hash === "#operacao" && historyReturn.readable, `History navigation must restore a readable section state: ${JSON.stringify(historyReturn)}`);
+assert(historyReturn.hash === "#operacao" && historyReturn.readable && historyReturn.destinationSettled, `History navigation must restore a readable, settled destination state: ${JSON.stringify(historyReturn)}`);
 
 const fileLoaded = waitForEvent("Page.loadEventFired");
 await send("Page.navigate", { url: fileUrl });
@@ -1241,7 +1302,7 @@ const fileCarouselAfter = await evaluate(`(() => ({
   promoOffset: new DOMMatrix(getComputedStyle(document.querySelector('[data-js="promo-rail-track"]')).transform).m41,
 }))()`);
 assert(fileCarouselBefore.className.includes("no-js") && fileCarouselBefore.ready === "true" && fileCarouselBefore.engine === "web-animations-api", `Direct-file preview must initialize the JavaScript carousel: ${JSON.stringify(fileCarouselBefore)}`);
-assert(fileCarouselBefore.motionEngine === "scrollreveal" && fileCarouselBefore.motionRegistered && fileCarouselBefore.motionOpacity === 0.75 && fileCarouselBefore.motionTransform !== "none", `Direct-file preview must initialize ScrollReveal independently from ES Modules: ${JSON.stringify(fileCarouselBefore)}`);
+assert(fileCarouselBefore.motionEngine === "scrollreveal" && fileCarouselBefore.motionRegistered && fileCarouselBefore.motionOpacity === 0.25 && fileCarouselBefore.motionTransform !== "none", `Direct-file preview must initialize ScrollReveal independently from ES Modules: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselBefore.speed === 56 && fileCarouselBefore.groupCount === 2 && fileCarouselBefore.duplicateDisplay === "flex" && !fileCarouselBefore.hasToggle && fileCarouselBefore.animationCount === 1 && fileCarouselBefore.playState === "running", `Direct-file preview must auto-start one continuous animation without a control: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselBefore.promoReady === "true" && fileCarouselBefore.promoEngine === "web-animations-api" && fileCarouselBefore.promoSpeed === 72 && fileCarouselBefore.promoAnimationCount === 1 && fileCarouselBefore.promoPlayState === "running", `Direct-file preview must auto-start the promo carousel: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselMoving.offset < fileCarouselBefore.offset - 12, `Direct-file JavaScript carousel must move horizontally: ${JSON.stringify({ fileCarouselBefore, fileCarouselMoving })}`);
@@ -1263,4 +1324,4 @@ const fileMotionAfter = await evaluate(`(() => {
 assert(fileMotionAfter.state === "visible" && !fileMotionAfter.registered && fileMotionAfter.opacity === "1" && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(fileMotionAfter.transform), `Direct-file ScrollReveal must settle after the target enters the viewport: ${JSON.stringify(fileMotionAfter)}`);
 
 socket.close();
-console.log(JSON.stringify({ initial, promoBefore, promoAfter, brandMotion, brandHoverBefore, brandHoverAfter, railViewports, railPaused, railResumed, hoverPaused, hoverResumed, pageVisibility, resizeBefore, resizeAfter, sectionMotion, second, fourth, keyboard, dragFeedback, dragged, draggedBack, verticalGesture, reducedMotion, reducedSectionAfter, noScript, missingLibrary, deepLinkMotion, historyReturn, fileCarouselBefore, fileCarouselMoving, fileCarouselAfter, fileMotionAfter }, null, 2));
+console.log(JSON.stringify({ initial, normalMotionBefore, normalMotionMid, normalMotionAfter, promoBefore, promoAfter, brandMotion, brandHoverBefore, brandHoverAfter, railViewports, railPaused, railResumed, hoverPaused, hoverResumed, pageVisibility, resizeBefore, resizeAfter, sectionMotion, second, fourth, keyboard, dragFeedback, dragged, draggedBack, verticalGesture, reducedMotion, reducedSectionMid, reducedSectionAfter, noScript, missingLibrary, deepLinkMotion, historyReturn, fileCarouselBefore, fileCarouselMoving, fileCarouselAfter, fileMotionAfter }, null, 2));

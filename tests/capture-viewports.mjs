@@ -9,6 +9,7 @@ const viewports = [
   { name: "hero-360x800.png", width: 360, height: 800, mobile: true },
   { name: "hero-390x844.png", width: 390, height: 844, mobile: true },
   { name: "hero-430x932.png", width: 430, height: 932, mobile: true },
+  { name: "hero-720x900.png", width: 720, height: 900, mobile: false },
   { name: "hero-1440x900.png", width: 1440, height: 900, mobile: false },
 ];
 
