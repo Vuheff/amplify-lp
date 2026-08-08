@@ -1,0 +1,10 @@
+{
+  "name": "webinar-amplify",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npm run check:js --prefix v0",
+    "preview": "npm run preview --prefix v0"
+  }
+}
