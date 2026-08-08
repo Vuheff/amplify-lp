@@ -1,4 +1,4 @@
-.c-comparison { background: #eef1f7; }
+.c-comparison { overflow: clip; background: #eef1f7; }
 .c-comparison__grid { display: grid; gap: var(--space-4); }
 
 .c-comparison__card {

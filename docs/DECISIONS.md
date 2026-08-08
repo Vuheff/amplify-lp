@@ -324,10 +324,22 @@ Estados: `Proposta`, `Aceita`, `Substituída`.
 
 ## ADR-033 — Go Live alinhado e fade perceptível em motion reduzida
 
-- Estado: `Aceita`
+- Estado: `Substituída`
 - Data: 2026-08-08
 - Diagnóstico: a extensão Live Server entrega HTML, vendor e inicializador com status 200 e o ScrollReveal registra os alvos. O ambiente local mantém `ClientAreaAnimation` desativado, ativando `prefers-reduced-motion`; o perfil anterior mudava pouco a opacidade e era visualmente imperceptível. Uma regra CSS ainda declarava `transition: none` para os mesmos alvos.
 - Decisão: Go Live passa a servir `public/` na porta preferencial 4173. O CSS deixa de cancelar transições de `data-motion`. O perfil normal usa 40 px/opacidade 0,25 para `rise` e 20 px/escala 0,96/opacidade 0,30 para `scale`, durante 720 ms. O perfil reduzido usa somente opacidade 0,35→1 durante 650 ms.
 - Contratos: uma instância local, `reset: false`, `cleanup: true`, execução única, âncoras estabilizadas e fallback estático sem biblioteca ou JavaScript. Os motores do modal, deck e trilhos não mudam.
 - Verificação: a suíte mede estados inicial, intermediário e final nos dois perfis; os diagnósticos públicos permanecem `scrollreveal`, `scrollreveal-reduced` e `static`.
 - Substituição: esta decisão substitui os perfis visuais descritos nos `ADR-031` e `ADR-032`, preservando seus contratos de bootstrap e fallback.
+
+## ADR-034 — Coreografia editorial durante o scroll
+
+- Estado: `Aceita`
+- Data: 2026-08-08
+- Contexto: as entradas únicas já funcionavam no Go Live, mas repetir subida e fade em toda a jornada não criava hierarquia nem momentos perceptíveis durante a rolagem.
+- Decisão: preservar uma única instância local do ScrollReveal e ampliar o contrato `data-motion` com `cascade`, `slide-left`, `slide-right` e `zoom`, mantendo `rise` e `scale`. Cascatas sobem 32 px em intervalos de 90 ms, laterais usam 56 px e zoom combina subida de 16 px com escala 0,94. As durações ficam entre 720 e 760 ms.
+- Coreografia: Método separa fotografia e decisões em direções opostas; produto e comparação usam pares laterais; marcas animam somente o título; case separa copy e fotografias; crescimento revela barras pela base; CTA final combina zoom e duas camadas internas. Hero, deck, modal e trilhos não recebem ScrollReveal.
+- Perfil reduzido: laterais ficam limitadas a 20 px, subida e cascata a 16–18 px e zoom começa em 0,98 durante 650 ms. Não existem rotações, repetições ou novos loops.
+- Organização: sequências genéricas ficam em `motion.css`; camadas da condição comercial, barras e CTA permanecem em seus componentes. Sections com entrada lateral usam `overflow: clip` para que transforms não ampliem a página.
+- Verificação: a suíte isolada mede frames inicial, intermediário e final dos quatro novos perfis nos modos normal e reduzido, além do `scaleY`, origem inferior e stagger das barras. Go Live, `file://`, hash, fallback estático, overflow e ausência de interferência nos motores isolados permanecem cobertos.
+- Substituição: esta decisão substitui somente os perfis visuais do `ADR-033`, preservando sua configuração de Go Live, singleton, bootstrap, limpeza e fallbacks.

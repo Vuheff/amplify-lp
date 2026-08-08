@@ -58,7 +58,7 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-const assetVersion = "v=20260808-5";
+const assetVersion = "v=20260808-6";
 const liveServerSettings = JSON.parse(await readFile(resolve(".vscode", "settings.json"), "utf8"));
 const [servedHtml, servedMainCss, servedMainJs, servedPhotoRail, servedLeadModal, servedSectionMotion, servedMotionCss, servedScrollReveal] = await Promise.all([
   fetch(pageUrl).then((response) => response.text()),
@@ -260,10 +260,10 @@ async function readState() {
       brandRailAnimationCount: document.querySelector('[data-js="brand-rail-track"]')?.getAnimations().length,
       brandRailPlayState: document.querySelector('[data-js="brand-rail-track"]')?.getAnimations()[0]?.playState,
       motionEngine: document.documentElement.dataset.motionEngine,
-      motionContentReadable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.25),
+      motionContentReadable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.2),
       scrollMotion: (() => {
-        const target = document.querySelector('#metodo [data-motion="rise"]');
-        const scaleTarget = document.querySelector('#metodo [data-motion="scale"]');
+        const target = document.querySelector('#metodo [data-motion="slide-right"]');
+        const scaleTarget = document.querySelector('#metodo [data-motion="zoom"]');
         const style = getComputedStyle(target);
         const scaleStyle = getComputedStyle(scaleTarget);
         const scrollReveal = typeof window.ScrollReveal === 'function' ? window.ScrollReveal() : null;
@@ -355,20 +355,20 @@ assert(initial.brandRailImagesReady && !initial.brandRailHasToggle && initial.br
 assert(initial.motionEngine === "scrollreveal", `The independent section motion bootstrap must report its active engine: ${JSON.stringify(initial.motionEngine)}`);
 assert(initial.motionContentReadable, "Motion enhancement must keep all content visibly readable before reveal completion");
 assert(initial.scrollMotion.libraryReady && initial.scrollMotion.version === "4.0.9" && initial.scrollMotion.registered, `ScrollReveal 4.0.9 must register off-screen data-motion targets: ${JSON.stringify(initial.scrollMotion)}`);
-assert(initial.scrollMotion.animationName === "none" && initial.scrollMotion.animationTimeline === "auto" && initial.scrollMotion.opacity === 0.25 && initial.scrollMotion.transform !== "none" && initial.scrollMotion.scaleOpacity === 0.3 && initial.scrollMotion.scaleTransform !== "none", `Section motion must expose the approved, perceptible normal profile without a competing CSS timeline: ${JSON.stringify(initial.scrollMotion)}`);
+assert(initial.scrollMotion.animationName === "none" && initial.scrollMotion.animationTimeline === "auto" && initial.scrollMotion.opacity === 0.2 && initial.scrollMotion.transform !== "none" && initial.scrollMotion.scaleOpacity === 0.2 && initial.scrollMotion.scaleTransform !== "none", `Section motion must expose the approved editorial profiles without a competing CSS timeline: ${JSON.stringify(initial.scrollMotion)}`);
 
 const normalMotionBefore = await evaluate(`(() => {
-  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const target = document.querySelector('#metodo [data-motion="slide-right"]');
   const style = getComputedStyle(target);
   return { opacity: Number.parseFloat(style.opacity), transform: style.transform };
 })()`);
 await evaluate(`(() => {
   document.documentElement.style.scrollBehavior = 'auto';
-  document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' });
+  document.querySelector('#metodo [data-motion="slide-right"]').scrollIntoView({ block: 'center' });
 })()`);
-await new Promise((resolveDelay) => setTimeout(resolveDelay, 120));
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 320));
 const normalMotionMid = await evaluate(`(() => {
-  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const target = document.querySelector('#metodo [data-motion="slide-right"]');
   const style = getComputedStyle(target);
   return {
     opacity: Number.parseFloat(style.opacity),
@@ -377,10 +377,10 @@ const normalMotionMid = await evaluate(`(() => {
     registered: target.hasAttribute('data-sr-id'),
   };
 })()`);
-assert(normalMotionMid.registered && normalMotionMid.opacity > normalMotionBefore.opacity && normalMotionMid.opacity < 1 && normalMotionMid.transform !== normalMotionBefore.transform && normalMotionMid.duration.includes('0.72s'), `Normal ScrollReveal must visibly progress through an intermediate frame: ${JSON.stringify({ normalMotionBefore, normalMotionMid })}`);
-await new Promise((resolveDelay) => setTimeout(resolveDelay, 760));
+assert(normalMotionMid.registered && normalMotionMid.opacity > normalMotionBefore.opacity && normalMotionMid.opacity < 1 && normalMotionMid.transform !== normalMotionBefore.transform && normalMotionMid.duration.includes('0.76s'), `Normal ScrollReveal must visibly progress through an intermediate editorial frame: ${JSON.stringify({ normalMotionBefore, normalMotionMid })}`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 900));
 const normalMotionAfter = await evaluate(`(() => {
-  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const target = document.querySelector('#metodo [data-motion="slide-right"]');
   const style = getComputedStyle(target);
   return { state: target.dataset.motionState, opacity: style.opacity, transform: style.transform, registered: target.hasAttribute('data-sr-id') };
 })()`);
@@ -764,6 +764,8 @@ for (const viewport of [
     const close = root.querySelector('[data-js="lead-modal-close"]').getBoundingClientRect();
     return {
       open: root.open,
+      viewportWidth: innerWidth,
+      viewportHeight: innerHeight,
       width: box.width,
       height: box.height,
       left: box.left,
@@ -784,7 +786,7 @@ for (const viewport of [
       })(),
     };
   })()`);
-  assert(modalState.open && modalState.width <= viewport.width && modalState.height <= viewport.height && modalState.left >= 0 && modalState.right <= viewport.width, `Modal must remain inside the ${viewport.width}px viewport: ${JSON.stringify(modalState)}`);
+  assert(modalState.open && modalState.width <= modalState.viewportWidth && modalState.height <= modalState.viewportHeight && modalState.left >= 0 && modalState.right <= modalState.viewportWidth, `Modal must remain inside the ${viewport.width}px emulated viewport: ${JSON.stringify(modalState)}`);
   assert(modalState.closeWidth >= 44 && modalState.closeHeight >= 44 && modalState.bodyOverflow && modalState.focused === "lead", `Modal controls and focus must remain usable at ${viewport.width}px: ${JSON.stringify(modalState)}`);
   if (viewport.width >= 704) assert(modalState.navigation.toggleDisplay === "none" && modalState.navigation.visibility === "visible" && !modalState.navigation.inert && modalState.navigation.iconDisplay === "none", `Desktop navigation must remain text-only and visible at ${viewport.width}px: ${JSON.stringify(modalState.navigation)}`);
   else assert(modalState.navigation.toggleDisplay === "grid" && modalState.navigation.visibility === "hidden" && modalState.navigation.inert && modalState.navigation.iconDisplay === "grid", `Mobile navigation must remain controlled and expose its orientation icons at ${viewport.width}px: ${JSON.stringify(modalState.navigation)}`);
@@ -952,7 +954,7 @@ await evaluate(`(() => {
 await evaluate(`window.scrollTo(0, 0)`);
 await new Promise((resolveDelay) => setTimeout(resolveDelay, 80));
 const scrollMotionBefore = await evaluate(`(() => {
-  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const target = document.querySelector('#metodo [data-motion="slide-right"]');
   const style = getComputedStyle(target);
   return { opacity: Number.parseFloat(style.opacity), transform: style.transform, registered: target.hasAttribute('data-sr-id') };
 })()`);
@@ -1095,8 +1097,8 @@ const reducedMotion = await evaluate(`({
   brandHasToggle: Boolean(document.querySelector('[data-js="brand-rail-toggle"]')),
   brandOverflow: getComputedStyle(document.querySelector('.c-brand-rail__viewport')).overflowX,
   sectionMotionProfile: (() => {
-    const target = document.querySelector('#metodo [data-motion="rise"]');
-    const scaleTarget = document.querySelector('#metodo [data-motion="scale"]');
+    const target = document.querySelector('#metodo [data-motion="slide-right"]');
+    const scaleTarget = document.querySelector('#metodo [data-motion="zoom"]');
     const style = getComputedStyle(target);
     const scaleStyle = getComputedStyle(scaleTarget);
     return {
@@ -1117,15 +1119,15 @@ assert(reducedMotion.automaticMotion === null, "Deck must not autoplay a teaser"
 assert(reducedMotion.railAnimations === 0 && reducedMotion.railPaused === "true" && reducedMotion.railDuplicateDisplay === "none" && reducedMotion.railToggleDisplay === "none", "Reduced motion must stop and simplify the photo rail");
 assert(reducedMotion.promoAnimations === 1 && reducedMotion.promoPlayState === "running" && reducedMotion.promoPaused === "false" && reducedMotion.promoDuplicateDisplay === "flex" && reducedMotion.promoOverflow === "clip", "The explicitly approved promo rail must keep moving under reduced motion");
 assert(reducedMotion.brandAnimations === 1 && reducedMotion.brandPlayState === "running" && reducedMotion.brandPaused === "false" && reducedMotion.brandDuplicateDisplay === "flex" && !reducedMotion.brandHasToggle, "The explicitly approved brand rail exception must keep running without a control under reduced motion");
-assert(reducedMotion.motionEngine === "scrollreveal-reduced" && reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionProfile.registered && reducedMotion.sectionMotionProfile.opacity === 0.35 && reducedMotion.sectionMotionProfile.scaleOpacity === 0.35 && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(reducedMotion.sectionMotionProfile.transform) && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(reducedMotion.sectionMotionProfile.scaleTransform) && reducedMotion.offerStepsStatic, `Reduced motion must begin with the approved fade-only profile while preserving isolated component safeguards: ${JSON.stringify(reducedMotion.sectionMotionProfile)}`);
+assert(reducedMotion.motionEngine === "scrollreveal-reduced" && reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionProfile.registered && reducedMotion.sectionMotionProfile.opacity === 0.35 && reducedMotion.sectionMotionProfile.scaleOpacity === 0.35 && reducedMotion.sectionMotionProfile.transform !== "none" && reducedMotion.sectionMotionProfile.scaleTransform !== "none" && reducedMotion.offerStepsStatic, `Reduced motion must begin with the approved controlled editorial movement while preserving isolated component safeguards: ${JSON.stringify(reducedMotion.sectionMotionProfile)}`);
 
 await evaluate(`(() => {
   document.documentElement.style.scrollBehavior = 'auto';
-  document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' });
+  document.querySelector('#metodo [data-motion="slide-right"]').scrollIntoView({ block: 'center' });
 })()`);
-await new Promise((resolveDelay) => setTimeout(resolveDelay, 140));
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 240));
 const reducedSectionMid = await evaluate(`(() => {
-  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const target = document.querySelector('#metodo [data-motion="slide-right"]');
   const style = getComputedStyle(target);
   return {
     opacity: Number.parseFloat(style.opacity),
@@ -1134,10 +1136,10 @@ const reducedSectionMid = await evaluate(`(() => {
     registered: target.hasAttribute('data-sr-id'),
   };
 })()`);
-assert(reducedSectionMid.registered && reducedSectionMid.opacity > 0.35 && reducedSectionMid.opacity < 1 && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(reducedSectionMid.transform) && reducedSectionMid.duration.includes('0.65s'), `Reduced ScrollReveal must visibly progress through a fade-only intermediate frame: ${JSON.stringify(reducedSectionMid)}`);
-await new Promise((resolveDelay) => setTimeout(resolveDelay, 650));
+assert(reducedSectionMid.registered && reducedSectionMid.opacity > 0.35 && reducedSectionMid.opacity < 1 && reducedSectionMid.duration.includes('0.65s'), `Reduced ScrollReveal must visibly progress through a controlled intermediate frame: ${JSON.stringify(reducedSectionMid)}`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 750));
 const reducedSectionAfter = await evaluate(`(() => {
-  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const target = document.querySelector('#metodo [data-motion="slide-right"]');
   const style = getComputedStyle(target);
   return {
     state: target.dataset.motionState,
@@ -1246,7 +1248,7 @@ const historyReturn = await evaluate(`(async () => {
   });
   return {
     hash: location.hash,
-    readable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.25),
+    readable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.2),
     destinationSettled: [...document.querySelectorAll('#operacao [data-motion]')].every((target) => getComputedStyle(target).opacity === '1' && !target.hasAttribute('data-sr-id')),
   };
 })()`, true);
@@ -1262,7 +1264,7 @@ const fileCarouselBefore = await evaluate(`(() => {
   const track = root.querySelector('[data-js="brand-rail-track"]');
   const promoRoot = document.querySelector('[data-js="promo-rail"]');
   const promoTrack = promoRoot.querySelector('[data-js="promo-rail-track"]');
-  const motionTarget = document.querySelector('#metodo [data-motion="rise"]');
+  const motionTarget = document.querySelector('#metodo [data-motion="slide-right"]');
   const motionStyle = getComputedStyle(motionTarget);
   return {
     className: document.documentElement.className,
@@ -1302,17 +1304,17 @@ const fileCarouselAfter = await evaluate(`(() => ({
   promoOffset: new DOMMatrix(getComputedStyle(document.querySelector('[data-js="promo-rail-track"]')).transform).m41,
 }))()`);
 assert(fileCarouselBefore.className.includes("no-js") && fileCarouselBefore.ready === "true" && fileCarouselBefore.engine === "web-animations-api", `Direct-file preview must initialize the JavaScript carousel: ${JSON.stringify(fileCarouselBefore)}`);
-assert(fileCarouselBefore.motionEngine === "scrollreveal" && fileCarouselBefore.motionRegistered && fileCarouselBefore.motionOpacity === 0.25 && fileCarouselBefore.motionTransform !== "none", `Direct-file preview must initialize ScrollReveal independently from ES Modules: ${JSON.stringify(fileCarouselBefore)}`);
+assert(fileCarouselBefore.motionEngine === "scrollreveal" && fileCarouselBefore.motionRegistered && fileCarouselBefore.motionOpacity === 0.2 && fileCarouselBefore.motionTransform !== "none", `Direct-file preview must initialize ScrollReveal independently from ES Modules: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselBefore.speed === 56 && fileCarouselBefore.groupCount === 2 && fileCarouselBefore.duplicateDisplay === "flex" && !fileCarouselBefore.hasToggle && fileCarouselBefore.animationCount === 1 && fileCarouselBefore.playState === "running", `Direct-file preview must auto-start one continuous animation without a control: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselBefore.promoReady === "true" && fileCarouselBefore.promoEngine === "web-animations-api" && fileCarouselBefore.promoSpeed === 72 && fileCarouselBefore.promoAnimationCount === 1 && fileCarouselBefore.promoPlayState === "running", `Direct-file preview must auto-start the promo carousel: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselMoving.offset < fileCarouselBefore.offset - 12, `Direct-file JavaScript carousel must move horizontally: ${JSON.stringify({ fileCarouselBefore, fileCarouselMoving })}`);
 assert(fileCarouselMoving.promoOffset < fileCarouselBefore.promoOffset - 16, `Direct-file promo carousel must move horizontally: ${JSON.stringify({ fileCarouselBefore, fileCarouselMoving })}`);
 assert(fileCarouselAfter.offset < fileCarouselMoving.offset - 8 && fileCarouselAfter.promoOffset < fileCarouselMoving.promoOffset - 10, `Direct-file JavaScript carousels must continue without stopping: ${JSON.stringify({ fileCarouselMoving, fileCarouselAfter })}`);
 
-await evaluate(`document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' })`);
+await evaluate(`document.querySelector('#metodo [data-motion="slide-right"]').scrollIntoView({ block: 'center' })`);
 await new Promise((resolveDelay) => setTimeout(resolveDelay, 1200));
 const fileMotionAfter = await evaluate(`(() => {
-  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const target = document.querySelector('#metodo [data-motion="slide-right"]');
   const style = getComputedStyle(target);
   return {
     state: target.dataset.motionState,

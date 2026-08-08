@@ -1,4 +1,4 @@
-.c-method-timeline { background: var(--color-canvas); }
+.c-method-timeline { overflow: clip; background: var(--color-canvas); }
 .c-method-timeline__layout { display: grid; gap: var(--space-5); }
 
 .c-method-timeline__media {

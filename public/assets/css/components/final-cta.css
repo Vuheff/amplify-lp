@@ -48,6 +48,20 @@
 .c-final-cta__action .c-conversion-cta span { background: var(--color-brand); color: white; }
 .c-final-cta__action small { color: rgb(255 255 255 / 48%); font-size: 0.6875rem; text-align: center; }
 
+.sr .c-final-cta__card[data-motion] > * {
+  opacity: 0.45;
+  transform: translate3d(0, 1.75rem, 0);
+  transition: opacity 720ms var(--ease-emphasized), transform 720ms var(--ease-emphasized);
+}
+
+.sr .c-final-cta__card[data-motion] > :nth-child(2) { transition-delay: 140ms; }
+.sr .c-final-cta__card[data-motion][data-motion-state="visible"] > * { opacity: 1; transform: none; }
+
 @media (min-width: 50rem) {
   .c-final-cta__card { grid-template-columns: minmax(0, 1fr) minmax(20rem, 0.6fr); align-items: end; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sr .c-final-cta__card[data-motion] > * { opacity: 0.65; transform: translate3d(0, 0.75rem, 0); transition-duration: 650ms; }
+  .sr .c-final-cta__card[data-motion] > :nth-child(2) { transition-delay: 80ms; }
 }

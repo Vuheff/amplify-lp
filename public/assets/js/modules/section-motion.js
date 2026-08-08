@@ -22,6 +22,14 @@ function initSectionMotion(root) {
   const duration = reducedProfile ? 650 : 720;
   const stepDelay = reducedProfile ? 50 : 80;
   const maximumDelay = reducedProfile ? 150 : 240;
+  const profiles = {
+    cascade: { distance: "0px", duration, opacity: 1, origin: "bottom", scale: 1 },
+    rise: { distance: reducedProfile ? "18px" : "40px", duration, opacity: reducedProfile ? 0.35 : 0.25, origin: "bottom", scale: 1 },
+    scale: { distance: reducedProfile ? "10px" : "20px", duration, opacity: reducedProfile ? 0.35 : 0.3, origin: "bottom", scale: reducedProfile ? 0.98 : 0.96 },
+    "slide-left": { distance: reducedProfile ? "20px" : "56px", duration: reducedProfile ? 650 : 760, opacity: reducedProfile ? 0.35 : 0.2, origin: "left", scale: 1 },
+    "slide-right": { distance: reducedProfile ? "20px" : "56px", duration: reducedProfile ? 650 : 760, opacity: reducedProfile ? 0.35 : 0.2, origin: "right", scale: 1 },
+    zoom: { distance: reducedProfile ? "8px" : "16px", duration: reducedProfile ? 650 : 760, opacity: reducedProfile ? 0.35 : 0.2, origin: "bottom", scale: reducedProfile ? 0.98 : 0.94 },
+  };
 
   const scrollReveal = window.ScrollReveal({
     cleanup: true,
@@ -42,14 +50,11 @@ function initSectionMotion(root) {
     const groupTargets = targets.filter((target) => (target.closest("section") || target.parentElement) === group);
 
     groupTargets.forEach((target, index) => {
-      const scales = target.dataset.motion === "scale";
+      const profile = profiles[target.dataset.motion] || profiles.rise;
 
       scrollReveal.reveal(target, {
         delay: Math.min(index * stepDelay, maximumDelay),
-        distance: reducedProfile ? "0px" : (scales ? "20px" : "40px"),
-        opacity: reducedProfile ? 0.35 : (scales ? 0.3 : 0.25),
-        origin: "bottom",
-        scale: scales && !reducedProfile ? 0.96 : 1,
+        ...profile,
         beforeReveal: show,
       });
     });

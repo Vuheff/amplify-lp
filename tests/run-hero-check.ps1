@@ -82,6 +82,10 @@ try {
     if ($LASTEXITCODE -ne 0) {
       throw "Hero browser check failed with exit code $LASTEXITCODE"
     }
+    & $nodePath tests/motion-profile-check.mjs $debugPort
+    if ($LASTEXITCODE -ne 0) {
+      throw "Motion profile check failed with exit code $LASTEXITCODE"
+    }
   } finally {
     Pop-Location
   }

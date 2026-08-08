@@ -1,1 +1,20 @@
 .js [data-motion][data-motion-state="visible"] { will-change: auto; }
+
+.sr [data-motion="cascade"] > * {
+  opacity: 0.2;
+  transform: translate3d(0, 2rem, 0);
+  transition: opacity 720ms var(--ease-emphasized), transform 720ms var(--ease-emphasized);
+}
+
+.sr [data-motion="cascade"] > :nth-child(2) { transition-delay: 90ms; }
+.sr [data-motion="cascade"] > :nth-child(3) { transition-delay: 180ms; }
+.sr [data-motion="cascade"] > :nth-child(n + 4) { transition-delay: 270ms; }
+.sr [data-motion="cascade"][data-motion-state="visible"] > * { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sr [data-motion="cascade"] > * {
+    opacity: 0.35;
+    transform: translate3d(0, 1rem, 0);
+    transition-duration: 650ms;
+  }
+}
