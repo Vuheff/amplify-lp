@@ -20,6 +20,7 @@
 @import url("./components/proof-section.css") layer(components);
 @import url("./components/offer-section.css") layer(components);
 @import url("./components/final-cta.css") layer(components);
+@import url("./components/lead-modal.css") layer(components);
 @import url("./components/site-footer.css") layer(components);
 @import url("./components/motion.css") layer(components);
 @import url("./utilities/accessibility.css") layer(utilities);

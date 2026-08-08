@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "assets:photo-rail": "powershell -NoProfile -ExecutionPolicy Bypass -File tests/run-photo-asset-generation.ps1",
-    "check:js": "node --check assets/js/main.js && node --check assets/js/brand-carousel.js && node --check assets/js/promo-carousel.js && node --check assets/js/core/document-state.js && node --check assets/js/modules/continuous-rail.js && node --check assets/js/modules/hero-decision-deck.js && node --check assets/js/modules/photo-rail.js && node --check assets/js/modules/section-motion.js && node --check tests/static-server.mjs && node --check tests/generate-photo-rail-assets.mjs && node --check tests/browser-metrics.mjs && node --check tests/capture-viewports.mjs && node --check tests/hero-browser-check.mjs",
+    "check:js": "node --check assets/js/main.js && node --check assets/js/brand-carousel.js && node --check assets/js/promo-carousel.js && node --check assets/js/core/document-state.js && node --check assets/js/modules/continuous-rail.js && node --check assets/js/modules/hero-decision-deck.js && node --check assets/js/modules/lead-funnel-api.js && node --check assets/js/modules/lead-modal.js && node --check assets/js/modules/photo-rail.js && node --check assets/js/modules/section-motion.js && node --check assets/js/modules/site-navigation.js && node --check tests/static-server.mjs && node --check tests/generate-photo-rail-assets.mjs && node --check tests/browser-metrics.mjs && node --check tests/capture-viewports.mjs && node --check tests/hero-browser-check.mjs",
     "check:hero": "powershell -NoProfile -ExecutionPolicy Bypass -File tests/run-hero-check.ps1",
     "preview": "node tests/static-server.mjs",
     "preview:open": "node tests/static-server.mjs --open"

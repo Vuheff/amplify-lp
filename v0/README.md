@@ -29,6 +29,7 @@ Abrir `index.html` diretamente por `file://` mantém o conteúdo e executa o con
 - a próxima arquitetura narrativa segue `Oportunidade → Produto/experiência → Método → Dor/fit → Prova → Oferta/risco → Objeções/CTA final`;
 - o Hero aprovado como candidato usa o posicionamento “A nova era das vendas no Brasil começa no feed”, preserva a pilha fotográfica e reduz a copy concorrente;
 - uma faixa promocional inclinada abaixo da navegação identifica o webinar e apresenta a condição confirmada de R$ 1.632 por R$ 97 em carrossel JavaScript contínuo, sem prazo ou escassez inventados;
+- todos os CTAs de captura abrem o mesmo modal acessível em 6 passos; a condição detalhada aparece somente depois que o webhook confirma o `lead_id`, e o clique final registra intenção sem marcar compra ou cobrança;
 - uma faixa com 8 registros reais da Amplify cria continuidade visual abaixo do Hero; o loop em JavaScript nativo possui pausa, fallback estático e reduced motion;
 - a prova de operação começa com 9 logos autorizados em um carrossel JavaScript infinito e acessível; a relação exata de cada marca ainda bloqueia a publicação do claim;
 - a implementação anterior permanece congelada em [`../_legacy/`](../_legacy/);

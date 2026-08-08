@@ -16,6 +16,12 @@ WIP: **um container em execução; nenhum container posterior começa antes da a
 
 > Prova por repertório — 2026-08-07: por solicitação do usuário, `CNT-005` começa com a composição editorial e o carrossel infinito da referência fornecida. Nove logos autorizados entram no protótipo; a relação exata de cada marca continua bloqueada em `BUS-003` antes da publicação.
 
+> Captura e intenção — 2026-08-07: sem alterar a ordem ou o layout dos containers, todos os CTAs de captura passam a abrir um único modal de 6 perguntas. O navegador envia lead e atribuição ao n8n; somente uma resposta válida com `lead_id` libera o detalhamento da condição. O segundo webhook registra intenção no mesmo lead, nunca compra, pagamento ou vaga confirmada. A urgência visual usa apenas preço e entrega confirmados, sem contador, lote ou estoque inventado.
+
+> Marca da navegação — 2026-08-07: o símbolo textual provisório da navbar foi substituído pelo PNG 512 × 512 fornecido pelo usuário. O texto Amplify e o nome acessível do link permanecem; SVG e wordmark oficiais continuam pendentes em G0.
+
+> Navegação e scroll — 2026-08-07: a navbar recebe menu mobile, fallback sem JavaScript, seção ativa, progresso de leitura e ocultação ao descer/revelação ao subir. Quatro Material Symbols Rounded locais ajudam a reconhecer os destinos no menu mobile sem carregar fonte ou runtime externo; o desktop preserva a leitura textual limpa. O comportamento permanece dentro do componente de navegação e não altera a ordem dos containers.
+
 ## Gate R0 — pesquisa e direção, sem UI
 
 | ID | P | Status | Entrega | Critério de aceite |
@@ -82,6 +88,7 @@ Matriz mínima por container: 320, 360, 390, 430 e 1440 px; teclado; zoom 200%; 
 | JRN-002 | P0 | Em validação | Consistência visual | Grid, tipo, cor, cards e CTA seguem o mesmo sistema em toda a página. |
 | JRN-003 | P0 | Em validação | Motion global | Trilho fotográfico usa Web Animations API com pausa; faixas promocional e de marcas reutilizam o mesmo motor nativo em autoplay contínuo, sem controle visual. Todos tratam resize e fallback; por decisão explícita, os dois loops comerciais continuam em reduced motion. Falta aprovação visual. |
 | JRN-004 | P0 | Pendente | Oferta ponta a ponta | CTA, checkout, pagamento, confirmação e acesso funcionam. |
+| JRN-005 | P0 | Em validação | Captura e intenção | Seis respostas criam um único lead com atribuição; `lead_id` libera a condição; a intenção atualiza o mesmo registro e permanece distinta de compra. Entrada, passos, oferta e confirmação possuem motion curta com fallback reduced motion. Teste automatizado usa webhooks simulados; homologação real do n8n/Notion segue pendente. |
 
 ## Gate G4 — publicação
 
@@ -104,4 +111,4 @@ Matriz mínima por container: 320, 360, 390, 430 e 1440 px; teclado; zoom 200%; 
 
 ## Próxima decisão
 
-Validar o ritmo e a leitura do novo trilho de marcas em `CNT-005` antes de iniciar outra alteração visual. A publicação comercial continua bloqueada por checkout, processo de reembolso, relação/fonte das marcas e owner dos claims.
+Validar a leitura do modal e homologar os dois contratos n8n/Notion com um lead autorizado. A publicação comercial continua bloqueada por checkout, pagamento, processo de reembolso, relação/fonte das marcas e owner dos claims.

@@ -188,3 +188,35 @@ Estados: `Proposta`, `Aceita`, `Substituída`.
 - Motion: usar um controlador JavaScript clássico e independente com Web Animations API a 72 px/s, dois grupos idênticos, duplicata `aria-hidden`, progresso preservado no resize e autoplay sem botão. Por escolha explícita do usuário e para corresponder ao ambiente local já diagnosticado, este loop continua em `prefers-reduced-motion`.
 - Fallback: sem JavaScript, somente o grupo semântico aparece em uma faixa horizontal navegável manualmente.
 - Consequência: o `ADR-016` permanece histórico quanto à verdade da oferta, mas sua posição, aparência e motion são substituídas por esta decisão.
+
+## ADR-020 — Modal de captura e intenção sem falsa compra
+
+- Estado: `Aceita`
+- Data: 2026-08-07
+- Contexto: o checkout ainda não está disponível, mas a nova jornada precisa qualificar o lead, preservar atribuição e registrar o interesse na condição atual sem alterar a estrutura visual da landing.
+- Decisão: todos os CTAs de captura abrem o mesmo `<dialog>` progressivo com 6 perguntas e validação por etapa. O primeiro webhook n8n recebe respostas, atribuição e metadados; somente `ok: true` com `lead_id` não vazio libera o estado de oferta. O segundo webhook envia `lead_id` e e-mail para registrar intenção no mesmo lead.
+- Regra de negócio: envio do formulário e clique de intenção mantêm `Comprou? = Não`. Somente um webhook futuro autenticado de pagamento poderá registrar compra real. O evento de intenção declara `charged: false`.
+- Persuasão: o modal apresenta o contraste confirmado de R$ 1.632 por R$ 97, 4 blocos, 29 temas, 12 meses de acesso e 7 dias de garantia. Aversão à perda fica limitada à natureza promocional da condição; não entram contador, vagas limitadas, prazo ou reserva fictícia.
+- Acessibilidade e fallback: o diálogo fecha por botão, Escape e backdrop, restaura o foco e bloqueia a rolagem de fundo. Sem JavaScript, os links continuam levando à section `#inscricao` e nenhum dado é enviado.
+- Motion: backdrop, superfície e controle de fechamento entram de forma coordenada; perguntas usam transição direcional de 14 px via Web Animations API; preço, entregas e confirmação recebem revelação curta em cascata. Tudo usa apenas `transform`/`opacity` e é removido em `prefers-reduced-motion`.
+- Limite: o teste automatizado substitui `fetch` e não grava dados em produção. Homologação real do n8n/Notion, checkout, pagamento e confirmação de acesso permanecem pendentes.
+
+## ADR-021 — Símbolo Amplify fornecido para a navbar
+
+- Estado: `Aceita`
+- Data: 2026-08-07
+- Contexto: a navegação usava o caractere provisório `≫`; o usuário forneceu o símbolo visual que deve identificar a marca no menu.
+- Decisão: preservar o PNG original de 512 × 512 px em `assets/images/web/amplify-nav-logo.png` e exibi-lo a 36 px ao lado do texto Amplify. O arquivo possui dimensões explícitas, 28 KB e não recebe transformação gráfica.
+- Acessibilidade: a imagem é decorativa (`alt=""`) porque o próprio link mantém `aria-label="Amplify, início"` e o nome visível.
+- Limite: o ativo resolve somente o símbolo da navbar; manual de marca, SVG e wordmark oficiais continuam pendentes.
+
+## ADR-022 — Navegação mobile e resposta à direção do scroll
+
+- Estado: `Aceita`
+- Data: 2026-08-07
+- Contexto: os destinos da navbar ficavam ocultos no mobile e não havia resposta visual à posição ou direção de leitura.
+- Decisão: adicionar menu mobile controlado por botão, manter os quatro destinos visíveis no desktop e expor o destino ativo com `aria-current`. A navbar se oculta após scroll descendente deliberado e reaparece ao subir, receber foco ou abrir o menu; uma linha de 2 px representa o progresso da página.
+- Implementação: controlador nativo isolado agrupa atualizações de scroll em `requestAnimationFrame`, altera somente atributos/variável CSS e usa `inert`/`aria-hidden` no menu mobile fechado. Não há biblioteca ou listener por section.
+- Acessibilidade: botão de 44 px informa expansão, Escape fecha e restaura foco, clique externo fecha, links possuem alvos mínimos de 48 px e reduced motion reduz as transições a 1 ms.
+- Fallback: sem JavaScript, o botão não aparece e os quatro links ficam disponíveis em uma linha horizontal navegável.
+- Iconografia: o menu mobile usa quatro SVGs locais da coleção oficial Google Material Symbols Rounded (`home`, `route`, `compare_arrows` e `verified`). Os ícones são decorativos, possuem texto adjacente e ficam ocultos no desktop; não há fonte externa, pacote ou nova dependência de runtime.

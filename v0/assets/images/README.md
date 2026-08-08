@@ -14,6 +14,13 @@ Para migrar de `research/assets-candidates/`, o ativo precisa ter:
 
 Logos e cases não entram apenas por já existirem no workspace.
 
+## Marca da navegação
+
+- `web/amplify-nav-logo.png`, 512 × 512 px e 28 KB;
+- PNG fornecido e aprovado pelo usuário em 2026-08-07;
+- usado como símbolo visual de 36 px ao lado do nome Amplify, com dimensões reservadas e `alt=""` porque o link já possui nome acessível;
+- não substitui a futura validação do SVG/wordmark oficial.
+
 ## Trilho fotográfico do Hero
 
 - 8 arquivos `photo-rail-*.webp`, 480 × 640 px;

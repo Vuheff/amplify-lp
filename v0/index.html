@@ -22,21 +22,48 @@
 
     <header class="c-site-nav">
       <div class="c-site-nav__inner o-container">
-        <a class="c-site-nav__brand" href="#main-content" aria-label="Amplify — início">
-          <span aria-hidden="true">≫</span> <span translate="no">Amplify</span>
+        <a class="c-site-nav__brand" href="#main-content" aria-label="Amplify, início">
+          <img src="./assets/images/web/amplify-nav-logo.png" width="512" height="512" alt="" decoding="async">
+          <span translate="no">Amplify</span>
         </a>
-        <nav aria-label="Navegação principal">
-          <a href="#metodo">Como funciona</a>
-          <a href="#comparacao">Por que o mapa</a>
-          <a href="#prova">Case</a>
-          <a class="c-site-nav__cta" href="#inscricao">Quero participar</a>
+        <nav id="site-navigation" data-js="site-nav-menu" aria-label="Navegação principal">
+          <a href="#main-content">
+            <span class="c-site-nav__link-icon" aria-hidden="true"><img src="./assets/icons/google/home-rounded.svg" width="24" height="24" alt=""></span>
+            <span>Início</span>
+          </a>
+          <a href="#metodo">
+            <span class="c-site-nav__link-icon" aria-hidden="true"><img src="./assets/icons/google/route-rounded.svg" width="24" height="24" alt=""></span>
+            <span>Como funciona</span>
+          </a>
+          <a href="#comparacao">
+            <span class="c-site-nav__link-icon" aria-hidden="true"><img src="./assets/icons/google/compare-arrows-rounded.svg" width="24" height="24" alt=""></span>
+            <span>Por que o mapa</span>
+          </a>
+          <a href="#prova">
+            <span class="c-site-nav__link-icon" aria-hidden="true"><img src="./assets/icons/google/verified-rounded.svg" width="24" height="24" alt=""></span>
+            <span>Case</span>
+          </a>
         </nav>
+        <div class="c-site-nav__actions">
+          <a class="c-site-nav__cta" href="#inscricao" data-js="open-lead-modal">Quero participar</a>
+          <button
+            class="c-site-nav__menu-toggle"
+            type="button"
+            data-js="site-nav-toggle"
+            aria-controls="site-navigation"
+            aria-expanded="false"
+            aria-label="Abrir menu de navegação"
+          >
+            <span class="c-site-nav__menu-line" aria-hidden="true"></span>
+            <span class="c-site-nav__menu-line" aria-hidden="true"></span>
+          </button>
+        </div>
       </div>
     </header>
 
     <aside class="c-promo-strip" data-js="promo-rail" aria-label="Condição atual do Webinar TikTok Shop">
       <div class="c-promo-strip__ribbon">
-        <a class="c-promo-strip__link" href="#inscricao">
+        <a class="c-promo-strip__link" href="#inscricao" data-js="open-lead-modal">
           <span class="c-promo-strip__viewport">
             <span class="c-promo-strip__track" data-js="promo-rail-track">
               <span class="c-promo-strip__group" data-js="promo-rail-group">
@@ -75,7 +102,7 @@
               Você termina o webinar com critérios para escolher o produto, ativar creators, orientar conteúdo e decidir o que merece escala.
             </p>
 
-            <a class="c-conversion-cta" href="#inscricao">
+            <a class="c-conversion-cta" href="#inscricao" data-js="open-lead-modal">
               Quero acessar o webinar
               <span aria-hidden="true">↘</span>
             </a>
@@ -251,7 +278,7 @@
             </figure>
 
             <div class="c-method-timeline__steps">
-              <article data-motion="rise"><span>01<small>Produto</small></span><div><h3>Escolha o que vale testar.</h3><p>Comece por oferta, margem e prioridade — antes de comprometer estoque.</p></div></article>
+              <article data-motion="rise"><span>01<small>Produto</small></span><div><h3>Escolha o que vale testar.</h3><p>Comece por oferta, margem e prioridade antes de comprometer estoque.</p></div></article>
               <article data-motion="rise"><span>02<small>Creators</small></span><div><h3>Organize quem coloca a oferta em circulação.</h3><p>Selecione perfis aderentes e transforme convites em uma rotina de ativação.</p></div></article>
               <article data-motion="rise"><span>03<small>Conteúdo</small></span><div><h3>Dê uma função comercial à atenção.</h3><p>Conecte vídeos e lives ao caminho que leva da descoberta ao pedido.</p></div></article>
               <article data-motion="rise"><span>04<small>Escala</small></span><div><h3>Amplie somente o que demonstra sinal.</h3><p>Use dados para decidir onde colocar mais verba, energia e recorrência.</p></div></article>
@@ -305,7 +332,7 @@
           </div>
 
           <div class="c-comparison__action" data-motion="rise">
-            <a class="c-conversion-cta" href="#inscricao">Quero operar com um mapa <span aria-hidden="true">↓</span></a>
+            <a class="c-conversion-cta" href="#inscricao" data-js="open-lead-modal">Quero operar com um mapa <span aria-hidden="true">↓</span></a>
             <p>Primeiro clareza. Depois execução.</p>
           </div>
         </div>
@@ -350,7 +377,7 @@
           <div class="o-container">
             <header class="c-section-intro" data-tone="dark" data-motion="rise">
               <p class="c-section-intro__eyebrow">Case real</p>
-              <h3>Uma operação real, com contexto — não um depoimento solto.</h3>
+              <h3>Uma operação real e com contexto, não um depoimento solto.</h3>
               <p>O método ganha credibilidade quando é possível enxergar as decisões trabalhando juntas no campo.</p>
             </header>
 
@@ -386,7 +413,7 @@
         <div class="o-container">
           <header class="c-section-intro" data-motion="rise">
             <p class="c-section-intro__eyebrow">Inscrição</p>
-            <h2 id="offer-title">Entre pela proposta certa — com clareza antes do próximo passo.</h2>
+            <h2 id="offer-title">Entre pela proposta certa, com clareza antes do próximo passo.</h2>
             <p>Revise o que o webinar organiza e fale com a Amplify para receber as condições de acesso e a disponibilidade atual.</p>
           </header>
 
@@ -394,18 +421,18 @@
             <article class="c-offer__scope" data-motion="rise">
               <p class="c-offer__label">No webinar</p>
               <h3>Você percorre o mapa completo.</h3>
-              <div><span aria-hidden="true">✓</span><p><strong>Produto</strong> — critérios para escolher o primeiro teste.</p></div>
-              <div><span aria-hidden="true">✓</span><p><strong>Creators</strong> — seleção e rotina de ativação.</p></div>
-              <div><span aria-hidden="true">✓</span><p><strong>Conteúdo</strong> — função comercial para vídeos e lives.</p></div>
-              <div><span aria-hidden="true">✓</span><p><strong>Escala</strong> — sinais para decidir o próximo investimento.</p></div>
+              <div><span aria-hidden="true">✓</span><p><strong>Produto:</strong> critérios para escolher o primeiro teste.</p></div>
+              <div><span aria-hidden="true">✓</span><p><strong>Creators:</strong> seleção e rotina de ativação.</p></div>
+              <div><span aria-hidden="true">✓</span><p><strong>Conteúdo:</strong> função comercial para vídeos e lives.</p></div>
+              <div><span aria-hidden="true">✓</span><p><strong>Escala:</strong> sinais para decidir o próximo investimento.</p></div>
             </article>
 
             <article class="c-offer__action" data-motion="scale">
               <p class="c-offer__label">Próximo passo</p>
               <h3>Veja se o conteúdo combina com o seu momento.</h3>
               <p>A landing apresenta primeiro a proposta completa. A etapa de compra será conectada somente depois da aprovação.</p>
-              <span class="c-conversion-cta" aria-disabled="true">Quero acessar o webinar <span aria-hidden="true">→</span></span>
-              <small>Prévia visual — sem redirecionamento externo.</small>
+              <a class="c-conversion-cta" href="#inscricao" data-js="open-lead-modal">Quero acessar o webinar <span aria-hidden="true">→</span></a>
+              <small>Prévia visual, sem redirecionamento externo.</small>
             </article>
           </div>
         </div>
@@ -425,7 +452,7 @@
                 <li><strong>4</strong><span>decisões conectadas</span></li>
                 <li><strong>1</strong><span>mapa operacional</span></li>
               </ul>
-              <a class="c-conversion-cta" href="#inscricao">
+              <a class="c-conversion-cta" href="#inscricao" data-js="open-lead-modal">
                 Rever conteúdo e acesso
                 <span aria-hidden="true">↑</span>
               </a>
@@ -435,6 +462,135 @@
         </div>
       </section>
     </main>
+
+    <dialog
+      class="c-lead-modal"
+      data-js="lead-modal"
+      aria-label="Acesso ao Webinar TikTok Shop"
+    >
+      <div class="c-lead-modal__panel">
+        <button class="c-lead-modal__close" type="button" data-js="lead-modal-close" aria-label="Fechar janela">
+          <span aria-hidden="true">×</span>
+        </button>
+
+        <section class="c-lead-modal__view" data-js="lead-form-view">
+          <header class="c-lead-modal__header">
+            <p class="c-lead-modal__eyebrow">Condição de acesso</p>
+            <h2 id="lead-form-title">Vamos entender o momento da sua marca.</h2>
+            <p>São 6 respostas. No final, você vê a condição atual do webinar.</p>
+          </header>
+
+          <div class="c-lead-modal__progress" aria-label="Progresso do formulário">
+            <span data-js="lead-step-label">Pergunta 1 de 6</span>
+            <progress data-js="lead-progress" max="6" value="1">1 de 6</progress>
+          </div>
+
+          <form class="c-lead-modal__form" data-js="lead-form" novalidate>
+            <fieldset class="c-lead-modal__step" data-js="lead-step">
+              <legend>Como você se chama?</legend>
+              <label class="c-lead-modal__field">
+                <span>Nome completo</span>
+                <input name="lead" type="text" placeholder="Nome completo" autocomplete="name" required>
+              </label>
+            </fieldset>
+
+            <fieldset class="c-lead-modal__step" data-js="lead-step" hidden>
+              <legend>Qual é o seu WhatsApp?</legend>
+              <label class="c-lead-modal__field">
+                <span>WhatsApp com DDD</span>
+                <input name="whats" type="tel" placeholder="(11) 99999-9999" autocomplete="tel" inputmode="tel" required>
+              </label>
+            </fieldset>
+
+            <fieldset class="c-lead-modal__step" data-js="lead-step" hidden>
+              <legend>Qual é o seu melhor e-mail?</legend>
+              <label class="c-lead-modal__field">
+                <span>E-mail</span>
+                <input name="email" type="email" placeholder="voce@sualoja.com.br" autocomplete="email" inputmode="email" required>
+              </label>
+            </fieldset>
+
+            <fieldset class="c-lead-modal__step" data-js="lead-step" hidden>
+              <legend>Qual é o nome da sua loja ou empresa?</legend>
+              <label class="c-lead-modal__field">
+                <span>Nome da empresa</span>
+                <input name="empresa" type="text" placeholder="Nome da empresa" autocomplete="organization" required>
+              </label>
+            </fieldset>
+
+            <fieldset class="c-lead-modal__step" data-js="lead-step" hidden>
+              <legend>Qual é o faturamento mensal da empresa?</legend>
+              <div class="c-lead-modal__choices">
+                <label><input name="faturamentoMensal" type="radio" value="Até R$ 50 mil" required><span>Até R$ 50 mil</span></label>
+                <label><input name="faturamentoMensal" type="radio" value="R$ 50 mil a R$ 100 mil"><span>R$ 50 mil a R$ 100 mil</span></label>
+                <label><input name="faturamentoMensal" type="radio" value="R$ 100 mil a R$ 300 mil"><span>R$ 100 mil a R$ 300 mil</span></label>
+                <label><input name="faturamentoMensal" type="radio" value="R$ 300 mil a R$ 1 milhão"><span>R$ 300 mil a R$ 1 milhão</span></label>
+                <label><input name="faturamentoMensal" type="radio" value="Acima de R$ 1 milhão"><span>Acima de R$ 1 milhão</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="c-lead-modal__step" data-js="lead-step" hidden>
+              <legend>Em que momento você está no TikTok Shop?</legend>
+              <div class="c-lead-modal__choices">
+                <label><input name="jaTemLoja" type="radio" value="Ainda não conheço direito" required><span>Ainda não conheço direito</span></label>
+                <label><input name="jaTemLoja" type="radio" value="Conheço, mas ainda não comecei"><span>Conheço, mas ainda não comecei</span></label>
+                <label><input name="jaTemLoja" type="radio" value="Já abri a loja, mas não vendo"><span>Já abri a loja, mas não vendo</span></label>
+                <label><input name="jaTemLoja" type="radio" value="Já vendo e quero crescer"><span>Já vendo e quero crescer</span></label>
+              </div>
+            </fieldset>
+
+            <p id="lead-form-error" class="c-lead-modal__error" data-js="lead-error" role="alert" hidden></p>
+
+            <div class="c-lead-modal__actions">
+              <button class="c-lead-modal__secondary" type="button" data-js="lead-back" disabled>Voltar</button>
+              <button class="c-lead-modal__primary" type="submit" data-js="lead-next">Continuar <span aria-hidden="true">→</span></button>
+              <button class="c-lead-modal__primary" type="submit" data-js="lead-submit" hidden>
+                <span data-js="lead-submit-label">Ver minha condição</span> <span aria-hidden="true">→</span>
+              </button>
+            </div>
+
+            <p class="c-lead-modal__privacy">Seus dados serão enviados à Amplify para dar sequência ao seu interesse no webinar.</p>
+          </form>
+        </section>
+
+        <section class="c-lead-modal__view c-lead-modal__offer" data-js="lead-offer-view" hidden>
+          <p class="c-lead-modal__eyebrow">Condição liberada</p>
+          <h2 id="lead-offer-title" tabindex="-1">Sua condição promocional está disponível.</h2>
+          <p class="c-lead-modal__offer-lead">Agora você já sabe o que recebe. Registre sua intenção para não perder o aviso de disponibilidade.</p>
+
+          <div class="c-lead-modal__price" aria-label="De R$ 1.632 por R$ 97 à vista">
+            <span>De <s>R$&nbsp;1.632</s> por</span>
+            <div><strong>R$&nbsp;97</strong><small>à vista</small></div>
+          </div>
+
+          <ul class="c-lead-modal__value" aria-label="O que está incluído">
+            <li><strong>4 blocos</strong><span>Produto, Creators, Conteúdo e Escala</span></li>
+            <li><strong>29 temas</strong><span>Do primeiro critério à decisão de escala</span></li>
+            <li><strong>12 meses</strong><span>Para assistir e revisar o conteúdo</span></li>
+            <li><strong>7 dias</strong><span>De garantia após a compra</span></li>
+          </ul>
+
+          <div class="c-lead-modal__notice">
+            <strong>Condição promocional atual</strong>
+            <span>O valor regular não é R$ 97. Não deixe de registrar seu interesse nesta condição.</span>
+          </div>
+
+          <p class="c-lead-modal__error" data-js="lead-intent-error" role="alert" hidden></p>
+          <button class="c-lead-modal__primary c-lead-modal__primary--wide" type="button" data-js="lead-intent">
+            <span data-js="lead-intent-label">Quero garantir acesso</span> <span aria-hidden="true">→</span>
+          </button>
+          <p class="c-lead-modal__disclaimer">Nenhuma cobrança acontece agora. Este clique registra sua intenção; o acesso só é confirmado quando estiver disponível.</p>
+        </section>
+
+        <section class="c-lead-modal__view c-lead-modal__success" data-js="lead-success-view" hidden>
+          <span class="c-lead-modal__success-icon" aria-hidden="true">✓</span>
+          <p class="c-lead-modal__eyebrow">Intenção registrada</p>
+          <h2 id="lead-success-title" tabindex="-1">Seu interesse foi registrado.</h2>
+          <p>Avisaremos quando o Webinar TikTok Shop estiver disponível.</p>
+          <button class="c-lead-modal__primary c-lead-modal__primary--wide" type="button" data-js="lead-success-close">Fechar</button>
+        </section>
+      </div>
+    </dialog>
 
     <footer class="c-site-footer">
       <div class="o-container">

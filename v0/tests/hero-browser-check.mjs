@@ -105,6 +105,40 @@ async function readState() {
       inactiveInert: slides.filter((slide) => slide !== activeSlide).every((slide) => slide.hasAttribute('inert') && slide.getAttribute('aria-hidden') === 'true'),
       minimumButtonSize: Math.min(...buttons.map((button) => button.getBoundingClientRect().width)),
       activeCardBorder: getComputedStyle(activeSlide.querySelector('.c-decision-card')).borderTopWidth,
+      navLogo: (() => {
+        const image = document.querySelector('.c-site-nav__brand img');
+        return {
+          source: image?.getAttribute('src'),
+          width: image?.getAttribute('width'),
+          height: image?.getAttribute('height'),
+          naturalWidth: image?.naturalWidth,
+          renderedSize: image?.getBoundingClientRect().width,
+          alt: image?.getAttribute('alt'),
+        };
+      })(),
+      navigation: (() => {
+        const nav = document.querySelector('.c-site-nav');
+        const menu = nav.querySelector('[data-js="site-nav-menu"]');
+        const toggle = nav.querySelector('[data-js="site-nav-toggle"]');
+        const icons = [...menu.querySelectorAll('.c-site-nav__link-icon img')];
+        return {
+          ready: nav.dataset.navigationReady,
+          open: nav.dataset.menuOpen,
+          scrollState: nav.dataset.scrollState,
+          direction: nav.dataset.scrollDirection,
+          toggleDisplay: getComputedStyle(toggle).display,
+          expanded: toggle.getAttribute('aria-expanded'),
+          menuHidden: menu.getAttribute('aria-hidden'),
+          menuInert: menu.hasAttribute('inert'),
+          linkCount: menu.querySelectorAll('a').length,
+          iconCount: icons.length,
+          iconsReady: icons.every((icon) => icon.complete && icon.naturalWidth === 24 && icon.getAttribute('width') === '24' && icon.getAttribute('height') === '24' && icon.alt === ''),
+          iconsLocal: icons.every((icon) => icon.getAttribute('src')?.startsWith('./assets/icons/google/')),
+          iconDisplay: getComputedStyle(icons[0]?.parentElement).display,
+          currentTarget: menu.querySelector('[aria-current="location"]')?.getAttribute('href'),
+        };
+      })(),
+      publicCopyUsesEmDash: document.body.innerText.includes('\u2014') || [...document.querySelectorAll('[aria-label]')].some((element) => element.getAttribute('aria-label')?.includes('\u2014')),
       requiredSections: ['metodo', 'operacao', 'comparacao', 'prova', 'inscricao', 'proximo-passo'].every((id) => Boolean(document.getElementById(id))),
       heroCtaTarget: document.querySelector('.c-hero .c-conversion-cta')?.getAttribute('href'),
       proofImageDimensions: [...document.querySelectorAll('.c-proof img')].every((image) => Number(image.getAttribute('width')) > 0 && Number(image.getAttribute('height')) > 0 && image.loading === 'lazy'),
@@ -182,6 +216,11 @@ assert(initial.bodyScrollWidth === initial.viewportWidth, "Page must not overflo
 assert(!initial.hasHorizontalRail, "Enhanced deck must not remain a horizontal scroll rail");
 assert(initial.minimumButtonSize >= 44, "Deck controls must be at least 44 CSS pixels");
 assert(initial.activeCardBorder === "0px", "Decision card must not render the rejected outline");
+assert(initial.navLogo.source === "./assets/images/web/amplify-nav-logo.png" && initial.navLogo.width === "512" && initial.navLogo.height === "512" && initial.navLogo.naturalWidth === 512 && initial.navLogo.renderedSize === 36 && initial.navLogo.alt === "", `Navigation must use the supplied Amplify symbol without layout shift: ${JSON.stringify(initial.navLogo)}`);
+assert(initial.navigation.ready === "true" && initial.navigation.open === "false" && initial.navigation.toggleDisplay === "grid" && initial.navigation.expanded === "false", `Mobile navigation must initialize as a closed menu with an explicit control: ${JSON.stringify(initial.navigation)}`);
+assert(initial.navigation.menuHidden === "true" && initial.navigation.menuInert && initial.navigation.linkCount === 4 && initial.navigation.currentTarget === "#main-content", "Closed mobile navigation must be inert while preserving all four destinations");
+assert(initial.navigation.iconCount === 4 && initial.navigation.iconsReady && initial.navigation.iconsLocal && initial.navigation.iconDisplay === "grid", `Mobile navigation must use four local, decorative Material Symbols without layout shift: ${JSON.stringify(initial.navigation)}`);
+assert(!initial.publicCopyUsesEmDash, "Public landing copy and accessible labels must not use em dashes");
 assert(initial.requiredSections, "The full reference structure must exist in the correct journey");
 assert(initial.heroCtaTarget === "#inscricao", "Hero CTA must lead to the final conversion section");
 assert(initial.proofImageDimensions, "Proof images must reserve dimensions and lazy load");
@@ -196,6 +235,224 @@ assert(initial.brandRailTitle === "Estratégias construídas ao lado de marcas q
 assert(initial.brandRailReady && initial.brandRailDuplicateHidden && initial.brandRailGroupsEqual, "Brand rail must initialize with two equal groups and an assistive-technology-safe duplicate");
 assert(initial.brandRailImagesReady && !initial.brandRailHasToggle && initial.brandRailEngine === "web-animations-api" && initial.brandRailSpeed === 56 && initial.brandRailAnimationCount === 1 && initial.brandRailPlayState === "running", `Brand rail must auto-start one Web Animation without a control: ${JSON.stringify({ images: initial.brandRailImagesReady, hasToggle: initial.brandRailHasToggle, engine: initial.brandRailEngine, speed: initial.brandRailSpeed, animations: initial.brandRailAnimationCount, playState: initial.brandRailPlayState })}`);
 assert(initial.motionContentVisible, "Motion enhancement must never hide content");
+
+await evaluate(`document.querySelector('[data-js="site-nav-toggle"]').click()`);
+const navigationOpen = await evaluate(`(() => {
+  const root = document.querySelector('.c-site-nav');
+  const menu = root.querySelector('[data-js="site-nav-menu"]');
+  const toggle = root.querySelector('[data-js="site-nav-toggle"]');
+  return {
+    open: root.dataset.menuOpen,
+    expanded: toggle.getAttribute('aria-expanded'),
+    label: toggle.getAttribute('aria-label'),
+    hidden: menu.getAttribute('aria-hidden'),
+    inert: menu.hasAttribute('inert'),
+    visibility: getComputedStyle(menu).visibility,
+    minimumLinkHeight: Math.min(...[...menu.querySelectorAll('a')].map((link) => link.getBoundingClientRect().height)),
+  };
+})()`);
+assert(navigationOpen.open === "true" && navigationOpen.expanded === "true" && navigationOpen.label.startsWith("Fechar") && navigationOpen.hidden === "false" && !navigationOpen.inert && navigationOpen.visibility === "visible", `Menu button must expose the mobile navigation state: ${JSON.stringify(navigationOpen)}`);
+assert(navigationOpen.minimumLinkHeight >= 48, "Every mobile navigation destination must expose a comfortable touch target");
+await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27, nativeVirtualKeyCode: 27 });
+await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27, nativeVirtualKeyCode: 27 });
+const navigationClosed = await evaluate(`(() => {
+  const root = document.querySelector('.c-site-nav');
+  const toggle = root.querySelector('[data-js="site-nav-toggle"]');
+  return { open: root.dataset.menuOpen, expanded: toggle.getAttribute('aria-expanded'), focused: document.activeElement === toggle };
+})()`);
+assert(navigationClosed.open === "false" && navigationClosed.expanded === "false" && navigationClosed.focused, "Escape must close the mobile menu and restore focus to its trigger");
+
+await evaluate(`(() => {
+  window.__webinarRequests = [];
+  window.fetch = async (url, options = {}) => {
+    const payload = options.body ? JSON.parse(options.body) : null;
+    window.__webinarRequests.push({ url: String(url), payload });
+    const body = String(url).endsWith('webinar-tiktok-shop-lead')
+      ? { ok: true, lead_id: 'lead-browser-check' }
+      : { ok: true, stage: 'purchase_intent' };
+    return new Response(JSON.stringify(body), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  };
+  document.querySelector('.c-hero [data-js="open-lead-modal"]').click();
+})()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 60));
+
+const modalInitial = await evaluate(`(() => {
+  const root = document.querySelector('[data-js="lead-modal"]');
+  return {
+    open: root.open,
+    state: root.dataset.state,
+    triggerCount: document.querySelectorAll('[data-js="open-lead-modal"]').length,
+    stepCount: root.querySelectorAll('[data-js="lead-step"]').length,
+    visibleSteps: [...root.querySelectorAll('[data-js="lead-step"]')].filter((step) => !step.hidden).length,
+    label: root.querySelector('[data-js="lead-step-label"]').textContent,
+    bodyLocked: document.body.dataset.modalOpen,
+    activeName: document.activeElement?.name,
+    closeSize: root.querySelector('[data-js="lead-modal-close"]').getBoundingClientRect().height,
+    fitsViewport: root.getBoundingClientRect().width <= innerWidth && root.getBoundingClientRect().height <= innerHeight,
+    entranceAnimation: getComputedStyle(root).animationName,
+    backdropAnimation: getComputedStyle(root, '::backdrop').animationName,
+    closeAnimation: getComputedStyle(root.querySelector('[data-js="lead-modal-close"]')).animationName,
+    pageViewCount: window.dataLayer.filter((entry) => entry.event === 'page_view_webinar').length,
+    formStartCount: window.dataLayer.filter((entry) => entry.event === 'form_start_webinar').length,
+  };
+})()`);
+assert(modalInitial.open && modalInitial.state === "form" && modalInitial.stepCount === 6 && modalInitial.visibleSteps === 1, `Every CTA must open the same six-step modal: ${JSON.stringify(modalInitial)}`);
+assert(modalInitial.triggerCount === 6 && modalInitial.label === "Pergunta 1 de 6" && modalInitial.bodyLocked === "true", "Modal opening must reset the journey and lock background scroll");
+assert(modalInitial.activeName === "lead" && modalInitial.closeSize >= 44 && modalInitial.fitsViewport, `Mobile modal must focus the first field, fit the viewport and expose a 44px close target: ${JSON.stringify(modalInitial)}`);
+assert(modalInitial.entranceAnimation === "lead-modal-in" && modalInitial.backdropAnimation === "lead-modal-backdrop-in" && modalInitial.closeAnimation === "lead-modal-close-in", `Modal, backdrop and close control must enter with coordinated motion: ${JSON.stringify(modalInitial)}`);
+assert(modalInitial.pageViewCount === 1 && modalInitial.formStartCount === 1, "Webinar page and form-start events must be deduplicated");
+
+await evaluate(`document.querySelector('[data-js="lead-form"]').requestSubmit()`);
+const modalValidation = await evaluate(`(() => ({
+  message: document.querySelector('[data-js="lead-error"]').textContent,
+  invalid: document.querySelector('input[name="lead"]').getAttribute('aria-invalid'),
+}))()`);
+assert(modalValidation.message === "Preencha este campo." && modalValidation.invalid === "true", "Empty fields must use the approved validation message and invalid state");
+
+await evaluate(`(() => {
+  const form = document.querySelector('[data-js="lead-form"]');
+  form.elements.lead.value = 'Pessoa Teste';
+  form.elements.lead.dispatchEvent(new Event('input', { bubbles: true }));
+  form.requestSubmit();
+})()`);
+const modalStepMotion = await evaluate(`(() => {
+  const step = document.querySelector('input[name="whats"]').closest('[data-js="lead-step"]');
+  const animation = step.getAnimations()[0];
+  return {
+    label: document.querySelector('[data-js="lead-step-label"]').textContent,
+    animationCount: step.getAnimations().length,
+    startTransform: animation?.effect.getKeyframes()[0]?.transform,
+    duration: Number(animation?.effect.getTiming().duration || 0),
+  };
+})()`);
+assert(modalStepMotion.label === "Pergunta 2 de 6" && modalStepMotion.animationCount === 1 && modalStepMotion.startTransform.includes("translateX") && modalStepMotion.duration === 240, `Each question must enter with a short directional motion: ${JSON.stringify(modalStepMotion)}`);
+
+await evaluate(`(() => {
+  const form = document.querySelector('[data-js="lead-form"]');
+  const submitText = (name, value) => {
+    const input = form.elements[name];
+    input.value = value;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    form.requestSubmit();
+  };
+  submitText('whats', '(11) 99999-9999');
+  submitText('email', 'pessoa@empresa.com.br');
+  submitText('empresa', 'Empresa Teste');
+  const revenue = form.querySelector('input[name="faturamentoMensal"]');
+  revenue.checked = true;
+  revenue.dispatchEvent(new Event('change', { bubbles: true }));
+})()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 220));
+
+const choiceAdvanced = await evaluate(`document.querySelector('[data-js="lead-step-label"]').textContent`);
+assert(choiceAdvanced === "Pergunta 6 de 6", "A choice must advance automatically after the short feedback delay");
+
+await evaluate(`(() => {
+  const option = document.querySelector('input[name="jaTemLoja"]');
+  option.checked = true;
+  option.dispatchEvent(new Event('change', { bubbles: true }));
+  document.querySelector('[data-js="lead-form"]').requestSubmit();
+})()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 80));
+
+const modalOffer = await evaluate(`(() => {
+  const root = document.querySelector('[data-js="lead-modal"]');
+  const requests = window.__webinarRequests;
+  const first = requests[0];
+  return {
+    state: root.dataset.state,
+    price: root.querySelector('.c-lead-modal__price').textContent.replace(/\\s+/g, ' ').trim(),
+    values: [...root.querySelectorAll('.c-lead-modal__value li')].map((item) => item.textContent.replace(/\\s+/g, ' ').trim()),
+    notice: root.querySelector('.c-lead-modal__notice').textContent.replace(/\\s+/g, ' ').trim(),
+    disclaimer: root.querySelector('.c-lead-modal__disclaimer').textContent.replace(/\\s+/g, ' ').trim(),
+    requestCount: requests.length,
+    leadUrl: first?.url,
+    payload: first?.payload,
+    formSubmitCount: window.dataLayer.filter((entry) => entry.event === 'form_submit_webinar').length,
+    bodyOverflow: document.body.scrollWidth <= innerWidth,
+    animations: root.querySelector('[data-js="lead-offer-view"]').getAnimations({ subtree: true }).map((animation) => animation.animationName),
+  };
+})()`);
+assert(modalOffer.state === "offer" && modalOffer.price.includes("R$ 1.632") && modalOffer.price.includes("R$ 97"), `Confirmed lead creation must reveal the current value contrast: ${JSON.stringify(modalOffer)}`);
+assert(modalOffer.animations.includes("lead-modal-content-in") && modalOffer.animations.includes("lead-modal-price-in"), `Offer value must reveal in a controlled stagger: ${JSON.stringify(modalOffer.animations)}`);
+assert(modalOffer.values.length === 4 && modalOffer.values.join(" ").includes("29 temas") && modalOffer.values.join(" ").includes("12 meses") && modalOffer.values.join(" ").includes("7 dias"), "Offer state must explain topics, access and guarantee without a fake countdown");
+assert(modalOffer.notice.includes("Condição promocional atual") && modalOffer.disclaimer.includes("Nenhuma cobrança acontece agora"), "Loss framing must remain honest about promotion and the absence of a charge");
+assert(modalOffer.requestCount === 1 && modalOffer.leadUrl.endsWith("webinar-tiktok-shop-lead") && modalOffer.formSubmitCount === 1 && modalOffer.bodyOverflow, "Lead submission must be deduplicated and keep the mobile viewport stable");
+assert(modalOffer.payload.lead === "Pessoa Teste" && modalOffer.payload.whats === "(11) 99999-9999" && modalOffer.payload.email === "pessoa@empresa.com.br" && modalOffer.payload.empresa === "Empresa Teste", "Lead payload must preserve the four text answers");
+assert(modalOffer.payload.faturamentoMensal === "Até R$ 50 mil" && modalOffer.payload.jaTemLoja === "Ainda não conheço direito", "Lead payload must preserve the two exact choice values");
+assert(modalOffer.payload.variante === "lp_victor_intent_validation" && modalOffer.payload.produto === "Webinar TikTok Shop para Marcas" && modalOffer.payload.oferta === "97 reais", "Lead payload must include the approved funnel metadata");
+assert(["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid", "fbclid"].every((key) => key in modalOffer.payload), "Lead payload must always include attribution fields");
+
+await evaluate(`document.querySelector('[data-js="lead-intent"]').click()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 80));
+const modalSuccess = await evaluate(`(() => {
+  const root = document.querySelector('[data-js="lead-modal"]');
+  const requests = window.__webinarRequests;
+  const intentRequest = requests[1];
+  return {
+    state: root.dataset.state,
+    message: root.querySelector('[data-js="lead-success-view"]').textContent.replace(/\\s+/g, ' ').trim(),
+    requestCount: requests.length,
+    intentUrl: intentRequest?.url,
+    intentPayload: intentRequest?.payload,
+    checkoutEvents: window.dataLayer.filter((entry) => entry.event === 'checkout_click_webinar'),
+  };
+})()`);
+assert(modalSuccess.state === "success" && modalSuccess.message.includes("Avisaremos quando o Webinar TikTok Shop estiver disponível"), "Intent confirmation must not imply a completed purchase");
+assert(modalSuccess.requestCount === 2 && modalSuccess.intentUrl.endsWith("webinar-tiktok-shop-intencao") && modalSuccess.intentPayload.lead_id === "lead-browser-check", "Intent must update the same confirmed lead instead of creating another one");
+assert(modalSuccess.checkoutEvents.length === 1 && modalSuccess.checkoutEvents[0].charged === false, "Intent analytics must explicitly record that no charge occurred");
+
+await evaluate(`document.querySelector('[data-js="lead-success-close"]').click()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 50));
+const modalClosed = await evaluate(`(() => ({
+  open: document.querySelector('[data-js="lead-modal"]').open,
+  bodyLocked: document.body.hasAttribute('data-modal-open'),
+  focusRestored: document.activeElement === document.querySelector('.c-hero [data-js="open-lead-modal"]'),
+}))()`);
+assert(!modalClosed.open && !modalClosed.bodyLocked && modalClosed.focusRestored, "Closing must restore page scroll and focus to the CTA that opened the modal");
+
+await evaluate(`document.querySelector('.c-hero [data-js="open-lead-modal"]').click()`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 40));
+await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27, nativeVirtualKeyCode: 27 });
+await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27, nativeVirtualKeyCode: 27 });
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 40));
+const modalEscape = await evaluate(`(() => ({
+  open: document.querySelector('[data-js="lead-modal"]').open,
+  bodyLocked: document.body.hasAttribute('data-modal-open'),
+}))()`);
+assert(!modalEscape.open && !modalEscape.bodyLocked, "Escape must close the modal and unlock the page");
+
+await evaluate(`(() => {
+  document.querySelector('.c-hero [data-js="open-lead-modal"]').click();
+  const root = document.querySelector('[data-js="lead-modal"]');
+  root.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+  root.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+})()`);
+const modalBackdrop = await evaluate(`document.querySelector('[data-js="lead-modal"]').open`);
+assert(!modalBackdrop, "A pointer click on the backdrop must close the modal");
+
+await evaluate(`document.querySelector('#metodo').scrollIntoView({ block: 'start' })`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 180));
+const navigationDown = await evaluate(`(() => {
+  const root = document.querySelector('.c-site-nav');
+  return {
+    state: root.dataset.scrollState,
+    direction: root.dataset.scrollDirection,
+    transform: getComputedStyle(root).transform,
+    progress: parseFloat(getComputedStyle(root).getPropertyValue('--nav-scroll-progress')),
+    current: root.querySelector('[data-js="site-nav-menu"] [aria-current="location"]')?.getAttribute('href'),
+  };
+})()`);
+assert(navigationDown.state === "scrolled" && navigationDown.direction === "down" && navigationDown.transform !== "none" && navigationDown.progress > 0 && navigationDown.current === "#metodo", `Scrolling down must hide the navbar, advance progress and update the active destination: ${JSON.stringify(navigationDown)}`);
+await evaluate(`window.scrollBy(0, -320)`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 180));
+const navigationUp = await evaluate(`(() => {
+  const root = document.querySelector('.c-site-nav');
+  return { direction: root.dataset.scrollDirection, transform: getComputedStyle(root).transform };
+})()`);
+assert(navigationUp.direction === "up", `Scrolling up must reveal the navigation again: ${JSON.stringify(navigationUp)}`);
+await evaluate(`window.scrollTo(0, 0)`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 120));
 
 const promoBefore = await evaluate(`new DOMMatrix(getComputedStyle(document.querySelector('[data-js="promo-rail-track"]')).transform).m41`);
 await new Promise((resolveDelay) => setTimeout(resolveDelay, 520));
@@ -303,7 +560,40 @@ for (const viewport of [
   })()`);
   assert(promoState.transform !== promoBeforeViewport && promoState.animations === 1 && promoState.playState === "running", `Promo rail must auto-start below the navigation at ${viewport.width}px: ${JSON.stringify(promoState)}`);
   assert(Math.abs(promoState.calculatedSpeed - 72) < 0.01 && promoState.exactDistance, `Promo rail must use the measured group width at 72px/s: ${JSON.stringify(promoState)}`);
-  railViewports.push({ width: viewport.width, ...state, brand: brandState, promo: promoState });
+  await evaluate(`document.querySelector('.c-hero [data-js="open-lead-modal"]').click()`);
+  await new Promise((resolveDelay) => setTimeout(resolveDelay, 70));
+  const modalState = await evaluate(`(() => {
+    const root = document.querySelector('[data-js="lead-modal"]');
+    const box = root.getBoundingClientRect();
+    const close = root.querySelector('[data-js="lead-modal-close"]').getBoundingClientRect();
+    return {
+      open: root.open,
+      width: box.width,
+      height: box.height,
+      left: box.left,
+      right: box.right,
+      closeWidth: close.width,
+      closeHeight: close.height,
+      bodyOverflow: document.body.scrollWidth <= innerWidth,
+      focused: document.activeElement?.name,
+      navigation: (() => {
+        const navigation = document.querySelector('.c-site-nav');
+        const menu = navigation.querySelector('[data-js="site-nav-menu"]');
+        return {
+          toggleDisplay: getComputedStyle(navigation.querySelector('[data-js="site-nav-toggle"]')).display,
+          visibility: getComputedStyle(menu).visibility,
+          inert: menu.hasAttribute('inert'),
+          iconDisplay: getComputedStyle(menu.querySelector('.c-site-nav__link-icon')).display,
+        };
+      })(),
+    };
+  })()`);
+  assert(modalState.open && modalState.width <= viewport.width && modalState.height <= viewport.height && modalState.left >= 0 && modalState.right <= viewport.width, `Modal must remain inside the ${viewport.width}px viewport: ${JSON.stringify(modalState)}`);
+  assert(modalState.closeWidth >= 44 && modalState.closeHeight >= 44 && modalState.bodyOverflow && modalState.focused === "lead", `Modal controls and focus must remain usable at ${viewport.width}px: ${JSON.stringify(modalState)}`);
+  if (viewport.width >= 704) assert(modalState.navigation.toggleDisplay === "none" && modalState.navigation.visibility === "visible" && !modalState.navigation.inert && modalState.navigation.iconDisplay === "none", `Desktop navigation must remain text-only and visible at ${viewport.width}px: ${JSON.stringify(modalState.navigation)}`);
+  else assert(modalState.navigation.toggleDisplay === "grid" && modalState.navigation.visibility === "hidden" && modalState.navigation.inert && modalState.navigation.iconDisplay === "grid", `Mobile navigation must remain controlled and expose its orientation icons at ${viewport.width}px: ${JSON.stringify(modalState.navigation)}`);
+  await evaluate(`document.querySelector('[data-js="lead-modal-close"]').click()`);
+  railViewports.push({ width: viewport.width, ...state, brand: brandState, promo: promoState, modal: modalState });
 }
 
 await send("Emulation.setDeviceMetricsOverride", {
@@ -531,6 +821,24 @@ const reducedLoaded = waitForEvent("Page.loadEventFired");
 await send("Page.navigate", { url: pageUrl });
 await reducedLoaded;
 
+const reducedModal = await evaluate(`(() => {
+  document.querySelector('.c-hero [data-js="open-lead-modal"]').click();
+  const root = document.querySelector('[data-js="lead-modal"]');
+  const form = root.querySelector('[data-js="lead-form"]');
+  form.elements.lead.value = 'Pessoa Teste';
+  form.requestSubmit();
+  const step = form.elements.whats.closest('[data-js="lead-step"]');
+  const state = {
+    rootAnimation: getComputedStyle(root).animationName,
+    backdropAnimation: getComputedStyle(root, '::backdrop').animationName,
+    stepAnimations: step.getAnimations().length,
+    label: root.querySelector('[data-js="lead-step-label"]').textContent,
+  };
+  root.querySelector('[data-js="lead-modal-close"]').click();
+  return state;
+})()`);
+assert(reducedModal.rootAnimation === "none" && reducedModal.backdropAnimation === "none" && reducedModal.stepAnimations === 0 && reducedModal.label === "Pergunta 2 de 6", `Reduced motion must preserve the modal journey without spatial animation: ${JSON.stringify(reducedModal)}`);
+
 const reducedMotion = await evaluate(`({
   matches: matchMedia('(prefers-reduced-motion: reduce)').matches,
   duration: getComputedStyle(document.querySelector('.c-conversion-cta')).transitionDuration,
@@ -552,9 +860,11 @@ const reducedMotion = await evaluate(`({
   brandHasToggle: Boolean(document.querySelector('[data-js="brand-rail-toggle"]')),
   brandOverflow: getComputedStyle(document.querySelector('.c-brand-rail__viewport')).overflowX,
   sectionTransforms: [...document.querySelectorAll('[data-motion]')].every((target) => getComputedStyle(target).transform === 'none'),
+  navigationDuration: getComputedStyle(document.querySelector('.c-site-nav')).transitionDuration,
 })`);
 assert(reducedMotion.matches, "Reduced motion emulation must be active");
 assert(reducedMotion.duration === "0.001s", "CTA transition must collapse under reduced motion");
+assert(reducedMotion.navigationDuration.split(',').every((duration) => duration.trim() === "0.001s"), "Navigation scroll transitions must collapse under reduced motion");
 assert(reducedMotion.automaticMotion === null, "Deck must not autoplay a teaser");
 assert(reducedMotion.railAnimations === 0 && reducedMotion.railPaused === "true" && reducedMotion.railDuplicateDisplay === "none" && reducedMotion.railToggleDisplay === "none", "Reduced motion must stop and simplify the photo rail");
 assert(reducedMotion.promoAnimations === 1 && reducedMotion.promoPlayState === "running" && reducedMotion.promoPaused === "false" && reducedMotion.promoDuplicateDisplay === "flex" && reducedMotion.promoOverflow === "clip", "The explicitly approved promo rail must keep moving under reduced motion");
@@ -593,6 +903,10 @@ const noScript = await evaluate(`(() => {
     promoRailOverflow: getComputedStyle(promoRail.querySelector('.c-promo-strip__viewport')).overflowX,
     promoText: document.querySelector('.c-promo-strip')?.textContent.replace(/\\s+/g, ' ').trim(),
     promoTarget: document.querySelector('.c-promo-strip__link')?.getAttribute('href'),
+    navigationToggleDisplay: getComputedStyle(document.querySelector('[data-js="site-nav-toggle"]')).display,
+    navigationLinkCount: document.querySelectorAll('[data-js="site-nav-menu"] a').length,
+    navigationLinksVisible: [...document.querySelectorAll('[data-js="site-nav-menu"] a')].every((link) => getComputedStyle(link).display !== 'none'),
+    navigationMenuHidden: document.querySelector('[data-js="site-nav-menu"]').hasAttribute('aria-hidden'),
   };
 })()`);
 assert(noScript.className.includes("no-js"), "No-script fallback must preserve the technical no-js state");
@@ -601,6 +915,7 @@ assert(noScript.allReadable && noScript.verticalFlow, "No-script fallback must r
 assert(noScript.railReady === null && !noScript.railToggleVisible && noScript.railImageCount === 8 && noScript.railOverflow === "auto", "No-script photo rail must stay static, readable and manually scrollable");
 assert(noScript.brandRailReady === null && !noScript.brandRailHasToggle && noScript.brandRailImageCount === 9 && noScript.brandRailDuplicateDisplay === "none" && noScript.brandRailOverflow === "auto", "No-script brand rail must stay static, readable and manually scrollable");
 assert(noScript.promoRailReady === null && noScript.promoRailDuplicateDisplay === "none" && noScript.promoRailOverflow === "auto" && noScript.promoText.includes("Webinar TikTok Shop") && noScript.promoTarget === "#inscricao", "No-script promo strip must remain readable, manually scrollable and linked to the offer");
+assert(noScript.navigationToggleDisplay === "none" && noScript.navigationLinkCount === 4 && noScript.navigationLinksVisible && !noScript.navigationMenuHidden, "No-script navigation must expose every destination without an inactive menu control");
 await send("Emulation.setScriptExecutionDisabled", { value: false });
 
 await send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: "no-preference" }] });

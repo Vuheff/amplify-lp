@@ -1,21 +1,43 @@
 .c-site-nav {
+  --nav-scroll-progress: 0%;
   position: sticky;
   z-index: 20;
   top: 0;
   border-bottom: 1px solid rgb(255 255 255 / 10%);
   background: rgb(6 27 43 / 90%);
   backdrop-filter: blur(1rem);
+  transition: transform var(--duration-base) var(--ease-standard), background var(--duration-base), box-shadow var(--duration-base);
 }
 
+.c-site-nav::after {
+  position: absolute;
+  right: auto;
+  bottom: -1px;
+  left: 0;
+  width: var(--nav-scroll-progress);
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-violet));
+  content: "";
+  transition: width 80ms linear;
+}
+
+.c-site-nav[data-scroll-state="scrolled"] { background: rgb(6 27 43 / 97%); box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 18%); }
+.c-site-nav[data-scroll-direction="down"][data-menu-open="false"] { transform: translateY(calc(-100% - 2px)); }
+
 .c-site-nav__inner {
+  position: relative;
   display: flex;
   min-height: 4.25rem;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 .c-site-nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   color: var(--color-on-dark);
   font-size: 1rem;
   font-weight: 800;
@@ -23,10 +45,21 @@
   text-decoration: none;
 }
 
-.c-site-nav__brand span[aria-hidden="true"] { color: var(--color-accent-cyan); }
-.c-site-nav nav { display: flex; align-items: center; gap: clamp(var(--space-3), 3vw, var(--space-6)); }
-.c-site-nav nav > a:not(.c-site-nav__cta) { display: none; color: rgb(255 255 255 / 68%); font-size: 0.8125rem; font-weight: 700; text-decoration: none; }
-.c-site-nav nav > a:not(.c-site-nav__cta):hover { color: var(--color-on-dark); }
+.c-site-nav__brand img { width: 2.25rem; height: 2.25rem; flex: 0 0 auto; border-radius: 0.625rem; }
+.c-site-nav nav { display: flex; order: 3; width: 100%; gap: var(--space-2); overflow-x: auto; padding-bottom: var(--space-3); scrollbar-width: none; }
+.c-site-nav nav::-webkit-scrollbar { display: none; }
+.c-site-nav nav > a { display: inline-flex; min-height: 2.75rem; flex: 0 0 auto; align-items: center; gap: var(--space-2); padding: 0 var(--space-3); border-radius: 999px; color: rgb(255 255 255 / 68%); font-size: 0.8125rem; font-weight: 700; text-decoration: none; }
+.c-site-nav nav > a:hover,
+.c-site-nav nav > a[aria-current="location"] { background: rgb(255 255 255 / 8%); color: var(--color-on-dark); }
+
+.c-site-nav__link-icon { display: grid; width: 2rem; height: 2rem; flex: 0 0 auto; place-items: center; border: 1px solid rgb(255 255 255 / 10%); border-radius: 0.75rem; background: rgb(255 255 255 / 6%); }
+.c-site-nav__link-icon img { width: 1.125rem; height: 1.125rem; opacity: 0.72; }
+.c-site-nav nav > a:hover .c-site-nav__link-icon,
+.c-site-nav nav > a[aria-current="location"] .c-site-nav__link-icon { border-color: rgb(54 215 240 / 28%); background: rgb(54 215 240 / 12%); }
+.c-site-nav nav > a:hover .c-site-nav__link-icon img,
+.c-site-nav nav > a[aria-current="location"] .c-site-nav__link-icon img { opacity: 1; }
+
+.c-site-nav__actions { display: flex; margin-left: auto; align-items: center; gap: var(--space-2); }
 
 .c-site-nav__cta {
   padding: 0.65rem 1rem;
@@ -39,9 +72,39 @@
   text-decoration: none;
 }
 
+.c-site-nav__menu-toggle { display: none; width: 2.75rem; min-height: 2.75rem; place-items: center; gap: 0.3rem; padding: 0.75rem; border: 1px solid rgb(255 255 255 / 16%); border-radius: 50%; background: rgb(255 255 255 / 8%); color: var(--color-on-dark); cursor: pointer; }
+.c-site-nav__menu-line { display: block; width: 1.1rem; height: 2px; border-radius: 999px; background: currentColor; transition: transform var(--duration-base) var(--ease-emphasized); }
+.c-site-nav[data-menu-open="true"] .c-site-nav__menu-line:first-child { transform: translateY(0.25rem) rotate(45deg); }
+.c-site-nav[data-menu-open="true"] .c-site-nav__menu-line:last-child { transform: translateY(-0.25rem) rotate(-45deg); }
 .c-site-nav :focus-visible { outline-color: var(--color-accent-cyan); }
 
+.js .c-site-nav[data-navigation-ready="true"] .c-site-nav__menu-toggle { display: grid; }
+.js .c-site-nav[data-navigation-ready="true"] nav { position: absolute; top: calc(100% + var(--space-2)); right: 0; left: 0; display: grid; width: auto; gap: var(--space-1); overflow: visible; padding: var(--space-2); border: 1px solid rgb(255 255 255 / 12%); border-radius: var(--radius-card); background: rgb(6 27 43 / 98%); box-shadow: var(--shadow-floating); opacity: 0; transform: translateY(-0.5rem) scale(0.98); transform-origin: top; visibility: hidden; }
+.js .c-site-nav[data-navigation-ready="true"] nav > a { width: 100%; min-height: 3rem; }
+.js .c-site-nav[data-navigation-ready="true"][data-menu-open="true"] nav { opacity: 1; transform: translateY(0) scale(1); visibility: visible; }
+
+@media (max-width: 22.99rem) {
+  .c-site-nav__brand > span { display: none; }
+}
+
 @media (min-width: 44rem) {
-  .c-site-nav nav > a:not(.c-site-nav__cta) { display: inline-flex; }
+  .c-site-nav__inner { flex-wrap: nowrap; }
+  .c-site-nav nav,
+  .js .c-site-nav[data-navigation-ready="true"] nav { position: static; display: flex; order: initial; width: auto; margin-left: auto; gap: clamp(var(--space-3), 3vw, var(--space-6)); overflow: visible; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; opacity: 1; transform: none; visibility: visible; }
+  .c-site-nav nav > a,
+  .js .c-site-nav[data-navigation-ready="true"] nav > a { width: auto; min-height: 2.75rem; padding: 0; border-radius: 0; }
+  .c-site-nav nav > a:hover,
+  .c-site-nav nav > a[aria-current="location"] { background: transparent; }
+  .c-site-nav nav > a[aria-current="location"] { color: var(--color-accent-cyan); }
+  .c-site-nav__link-icon { display: none; }
+  .c-site-nav__actions { margin-left: 0; }
+  .js .c-site-nav[data-navigation-ready="true"] .c-site-nav__menu-toggle { display: none; }
   .c-site-nav__cta { padding-inline: var(--space-5); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-site-nav,
+  .c-site-nav::after,
+  .c-site-nav__menu-line,
+  .js .c-site-nav[data-navigation-ready="true"] nav { transition-duration: 1ms; }
 }

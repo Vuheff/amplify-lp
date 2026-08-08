@@ -154,6 +154,22 @@ const railLoaded = waitForEvent("Page.loadEventFired");
 await send("Page.navigate", { url: pageUrl });
 await railLoaded;
 await send("Runtime.evaluate", {
+  expression: "document.querySelector('[data-js=\"site-nav-toggle\"]').click()",
+});
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 300));
+
+const navigationCapture = await send("Page.captureScreenshot", {
+  format: "png",
+  fromSurface: true,
+  captureBeyondViewport: false,
+});
+
+await writeFile(resolve(outputDirectory, "navigation-open-390.png"), Buffer.from(navigationCapture.data, "base64"));
+console.log("navigation-open-390.png", { width: 390, height: 844, state: "menu-open" });
+await send("Runtime.evaluate", {
+  expression: "document.querySelector('[data-js=\"site-nav-toggle\"]').click()",
+});
+await send("Runtime.evaluate", {
   awaitPromise: true,
   expression: `(async () => {
     const rail = document.querySelector('.c-photo-rail');
@@ -206,6 +222,44 @@ const brandRailCapture = await send("Page.captureScreenshot", {
 
 await writeFile(resolve(outputDirectory, "brand-rail-390.png"), Buffer.from(brandRailCapture.data, "base64"));
 console.log("brand-rail-390.png", brandRailBox.result.value);
+
+await send("Runtime.evaluate", {
+  awaitPromise: true,
+  expression: `(async () => {
+    window.scrollTo(0, 0);
+    document.querySelector('.c-hero [data-js="open-lead-modal"]').click();
+    await new Promise((resolve) => setTimeout(resolve, 450));
+  })()`,
+});
+
+const modalFormCapture = await send("Page.captureScreenshot", {
+  format: "png",
+  fromSurface: true,
+  captureBeyondViewport: false,
+});
+
+await writeFile(resolve(outputDirectory, "modal-form-390.png"), Buffer.from(modalFormCapture.data, "base64"));
+console.log("modal-form-390.png", { width: 390, height: 844, state: "form" });
+
+await send("Runtime.evaluate", {
+  expression: `(() => {
+    const root = document.querySelector('[data-js="lead-modal"]');
+    root.querySelector('[data-js="lead-form-view"]').hidden = true;
+    root.querySelector('[data-js="lead-offer-view"]').hidden = false;
+    root.dataset.state = 'offer';
+    root.querySelector('.c-lead-modal__panel').scrollTop = 0;
+  })()`,
+});
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 80));
+
+const modalOfferCapture = await send("Page.captureScreenshot", {
+  format: "png",
+  fromSurface: true,
+  captureBeyondViewport: false,
+});
+
+await writeFile(resolve(outputDirectory, "modal-offer-390.png"), Buffer.from(modalOfferCapture.data, "base64"));
+console.log("modal-offer-390.png", { width: 390, height: 844, state: "offer" });
 
 await send("Emulation.setDeviceMetricsOverride", {
   width: 1440,
