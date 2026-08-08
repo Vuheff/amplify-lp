@@ -15,7 +15,7 @@ preview.cmd
 npm run preview:open
 ```
 
-O acesso oficial é `http://127.0.0.1:4173`. A abertura direta de `public/index.html` por `file://` preserva o fallback estático, mas pode bloquear os ES Modules e, portanto, não valida motion ou interações.
+O acesso oficial é `http://127.0.0.1:4173`. A abertura direta de `public/index.html` por `file://` pode bloquear os ES Modules do deck e do modal, mas o bootstrap clássico valida as entradas do ScrollReveal e os trilhos independentes também nesse modo.
 
 Validação reproduzível do Hero em Edge headless:
 

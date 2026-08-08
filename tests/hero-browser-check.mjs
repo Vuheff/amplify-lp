@@ -57,7 +57,7 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-const assetVersion = "v=20260808-2";
+const assetVersion = "v=20260808-3";
 const [servedHtml, servedMainCss, servedMainJs, servedPhotoRail, servedLeadModal, servedSectionMotion, servedMotionCss, servedScrollReveal] = await Promise.all([
   fetch(pageUrl).then((response) => response.text()),
   fetch(`${pageUrl}assets/css/main.css?${assetVersion}`).then((response) => response.text()),
@@ -75,6 +75,7 @@ assert([
   "assets/css/main.css",
   "assets/js/main.js",
   "assets/js/brand-carousel.js",
+  "assets/js/modules/section-motion.js",
   "assets/js/promo-carousel.js",
 ].every((asset) => servedHtml.includes(`${asset}?${assetVersion}`)), "HTML entries must share one cache-busting version");
 assert(servedHtml.includes("assets/vendor/scrollreveal.min.js?v=4.0.9") && servedScrollReveal.includes("ScrollReveal v4.0.9"), "HTML must load the approved local ScrollReveal 4.0.9 asset");
@@ -255,6 +256,7 @@ async function readState() {
       brandRailSpeed: Number(document.querySelector('[data-js="brand-rail"]')?.dataset.railSpeed),
       brandRailAnimationCount: document.querySelector('[data-js="brand-rail-track"]')?.getAnimations().length,
       brandRailPlayState: document.querySelector('[data-js="brand-rail-track"]')?.getAnimations()[0]?.playState,
+      motionEngine: document.documentElement.dataset.motionEngine,
       motionContentReadable: [...document.querySelectorAll('[data-motion]')].every((target) => Number.parseFloat(getComputedStyle(target).opacity) >= 0.75),
       scrollMotion: (() => {
         const target = document.querySelector('#metodo [data-motion="rise"]');
@@ -343,6 +345,7 @@ assert(initial.photoRailAnimationCount === 1, "Photo rail must use one Web Anima
 assert(initial.brandRailTitle === "Estratégias construídas ao lado de marcas que já vendem no digital.", `Brand rail must lead with the approved operational proof: ${JSON.stringify(initial.brandRailTitle)}`);
 assert(initial.brandRailReady && initial.brandRailDuplicateHidden && initial.brandRailGroupsEqual, "Brand rail must initialize with two equal groups and an assistive-technology-safe duplicate");
 assert(initial.brandRailImagesReady && !initial.brandRailHasToggle && initial.brandRailEngine === "web-animations-api" && initial.brandRailSpeed === 56 && initial.brandRailAnimationCount === 1 && initial.brandRailPlayState === "running", `Brand rail must auto-start one Web Animation without a control: ${JSON.stringify({ images: initial.brandRailImagesReady, hasToggle: initial.brandRailHasToggle, engine: initial.brandRailEngine, speed: initial.brandRailSpeed, animations: initial.brandRailAnimationCount, playState: initial.brandRailPlayState })}`);
+assert(initial.motionEngine === "scrollreveal", `The independent section motion bootstrap must report its active engine: ${JSON.stringify(initial.motionEngine)}`);
 assert(initial.motionContentReadable, "Motion enhancement must keep all content visibly readable before reveal completion");
 assert(initial.scrollMotion.libraryReady && initial.scrollMotion.version === "4.0.9" && initial.scrollMotion.registered, `ScrollReveal 4.0.9 must register off-screen data-motion targets: ${JSON.stringify(initial.scrollMotion)}`);
 assert(initial.scrollMotion.animationName === "none" && initial.scrollMotion.animationTimeline === "auto" && initial.scrollMotion.opacity >= 0.75 && initial.scrollMotion.opacity < 1 && initial.scrollMotion.transform !== "none", `Section motion must use ScrollReveal without a competing CSS timeline: ${JSON.stringify(initial.scrollMotion)}`);
@@ -578,9 +581,12 @@ const navigationUp = await evaluate(`(() => {
 assert(navigationUp.direction === "up", `Scrolling up must reveal the navigation again: ${JSON.stringify(navigationUp)}`);
 const offerMotionBefore = await evaluate(`[...document.querySelectorAll('.c-offer__step')].map((step) => getComputedStyle(step).transform)`);
 await evaluate(`document.querySelector('.c-offer__card').scrollIntoView({ block: 'center' })`);
-await new Promise((resolveDelay) => setTimeout(resolveDelay, 700));
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 1100));
 const offerMotionAfter = await evaluate(`(() => ({
   state: document.querySelector('.c-offer__card').dataset.motionState,
+  registered: document.querySelector('.c-offer__card').hasAttribute('data-sr-id'),
+  engine: document.documentElement.dataset.motionEngine,
+  scrollY,
   transforms: [...document.querySelectorAll('.c-offer__step')].map((step) => getComputedStyle(step).transform),
 }))()`);
 assert(offerMotionBefore.every((transform) => transform !== "none") && offerMotionAfter.state === "visible" && offerMotionAfter.transforms.every((transform) => transform === "none"), `Offer steps must rise once when the card enters the viewport: ${JSON.stringify({ offerMotionBefore, offerMotionAfter })}`);
@@ -1028,6 +1034,7 @@ assert(reducedModal.rootAnimation === "none" && reducedModal.backdropAnimation =
 
 const reducedMotion = await evaluate(`({
   matches: matchMedia('(prefers-reduced-motion: reduce)').matches,
+  motionEngine: document.documentElement.dataset.motionEngine,
   duration: getComputedStyle(document.querySelector('.c-conversion-cta')).transitionDuration,
   automaticMotion: document.querySelector('[data-js="hero-decision-deck"]').dataset.hinting || null,
   railAnimations: document.querySelector('[data-js="photo-rail-track"]').getAnimations().length,
@@ -1060,7 +1067,7 @@ assert(reducedMotion.automaticMotion === null, "Deck must not autoplay a teaser"
 assert(reducedMotion.railAnimations === 0 && reducedMotion.railPaused === "true" && reducedMotion.railDuplicateDisplay === "none" && reducedMotion.railToggleDisplay === "none", "Reduced motion must stop and simplify the photo rail");
 assert(reducedMotion.promoAnimations === 1 && reducedMotion.promoPlayState === "running" && reducedMotion.promoPaused === "false" && reducedMotion.promoDuplicateDisplay === "flex" && reducedMotion.promoOverflow === "clip", "The explicitly approved promo rail must keep moving under reduced motion");
 assert(reducedMotion.brandAnimations === 1 && reducedMotion.brandPlayState === "running" && reducedMotion.brandPaused === "false" && reducedMotion.brandDuplicateDisplay === "flex" && !reducedMotion.brandHasToggle, "The explicitly approved brand rail exception must keep running without a control under reduced motion");
-assert(reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionStatic && reducedMotion.offerStepsStatic, "Reduced motion must remove section timelines and keep offer steps static while preserving the approved nonstop brand rail exception");
+assert(reducedMotion.motionEngine === "static" && reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionStatic && reducedMotion.offerStepsStatic, "Reduced motion must keep section entrances static while preserving the approved nonstop brand rail exception");
 
 await send("Emulation.setScriptExecutionDisabled", { value: true });
 const noScriptLoaded = waitForEvent("Page.loadEventFired");
@@ -1120,13 +1127,14 @@ await new Promise((resolveDelay) => setTimeout(resolveDelay, 300));
 const missingLibrary = await evaluate(`(() => ({
   libraryMissing: typeof window.ScrollReveal === 'undefined',
   javascriptReady: document.documentElement.classList.contains('js'),
+  motionEngine: document.documentElement.dataset.motionEngine,
   deckReady: document.querySelector('[data-js="hero-decision-deck"]')?.dataset.deckReady,
   targetsStatic: [...document.querySelectorAll('[data-motion]')].every((target) => {
     const style = getComputedStyle(target);
     return target.dataset.motionState === 'visible' && !target.hasAttribute('data-sr-id') && style.opacity === '1' && style.transform === 'none';
   }),
 }))()`);
-assert(missingLibrary.libraryMissing && missingLibrary.javascriptReady && missingLibrary.deckReady === "true" && missingLibrary.targetsStatic, `A missing ScrollReveal asset must degrade to static content without stopping other modules: ${JSON.stringify(missingLibrary)}`);
+assert(missingLibrary.libraryMissing && missingLibrary.javascriptReady && missingLibrary.motionEngine === "static" && missingLibrary.deckReady === "true" && missingLibrary.targetsStatic, `A missing ScrollReveal asset must degrade to static content without stopping other modules: ${JSON.stringify(missingLibrary)}`);
 
 await send("Network.setBlockedURLs", { urls: [] });
 const deepLinkLoaded = waitForEvent("Page.loadEventFired");
@@ -1174,8 +1182,14 @@ const fileCarouselBefore = await evaluate(`(() => {
   const track = root.querySelector('[data-js="brand-rail-track"]');
   const promoRoot = document.querySelector('[data-js="promo-rail"]');
   const promoTrack = promoRoot.querySelector('[data-js="promo-rail-track"]');
+  const motionTarget = document.querySelector('#metodo [data-motion="rise"]');
+  const motionStyle = getComputedStyle(motionTarget);
   return {
     className: document.documentElement.className,
+    motionEngine: document.documentElement.dataset.motionEngine,
+    motionRegistered: motionTarget.hasAttribute('data-sr-id'),
+    motionOpacity: Number.parseFloat(motionStyle.opacity),
+    motionTransform: motionStyle.transform,
     ready: root.dataset.railReady,
     engine: root.dataset.railEngine,
     speed: Number(root.dataset.railSpeed),
@@ -1208,11 +1222,26 @@ const fileCarouselAfter = await evaluate(`(() => ({
   promoOffset: new DOMMatrix(getComputedStyle(document.querySelector('[data-js="promo-rail-track"]')).transform).m41,
 }))()`);
 assert(fileCarouselBefore.className.includes("no-js") && fileCarouselBefore.ready === "true" && fileCarouselBefore.engine === "web-animations-api", `Direct-file preview must initialize the JavaScript carousel: ${JSON.stringify(fileCarouselBefore)}`);
+assert(fileCarouselBefore.motionEngine === "scrollreveal" && fileCarouselBefore.motionRegistered && fileCarouselBefore.motionOpacity === 0.75 && fileCarouselBefore.motionTransform !== "none", `Direct-file preview must initialize ScrollReveal independently from ES Modules: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselBefore.speed === 56 && fileCarouselBefore.groupCount === 2 && fileCarouselBefore.duplicateDisplay === "flex" && !fileCarouselBefore.hasToggle && fileCarouselBefore.animationCount === 1 && fileCarouselBefore.playState === "running", `Direct-file preview must auto-start one continuous animation without a control: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselBefore.promoReady === "true" && fileCarouselBefore.promoEngine === "web-animations-api" && fileCarouselBefore.promoSpeed === 72 && fileCarouselBefore.promoAnimationCount === 1 && fileCarouselBefore.promoPlayState === "running", `Direct-file preview must auto-start the promo carousel: ${JSON.stringify(fileCarouselBefore)}`);
 assert(fileCarouselMoving.offset < fileCarouselBefore.offset - 12, `Direct-file JavaScript carousel must move horizontally: ${JSON.stringify({ fileCarouselBefore, fileCarouselMoving })}`);
 assert(fileCarouselMoving.promoOffset < fileCarouselBefore.promoOffset - 16, `Direct-file promo carousel must move horizontally: ${JSON.stringify({ fileCarouselBefore, fileCarouselMoving })}`);
 assert(fileCarouselAfter.offset < fileCarouselMoving.offset - 8 && fileCarouselAfter.promoOffset < fileCarouselMoving.promoOffset - 10, `Direct-file JavaScript carousels must continue without stopping: ${JSON.stringify({ fileCarouselMoving, fileCarouselAfter })}`);
 
+await evaluate(`document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' })`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 1200));
+const fileMotionAfter = await evaluate(`(() => {
+  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const style = getComputedStyle(target);
+  return {
+    state: target.dataset.motionState,
+    registered: target.hasAttribute('data-sr-id'),
+    opacity: style.opacity,
+    transform: style.transform,
+  };
+})()`);
+assert(fileMotionAfter.state === "visible" && !fileMotionAfter.registered && fileMotionAfter.opacity === "1" && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(fileMotionAfter.transform), `Direct-file ScrollReveal must settle after the target enters the viewport: ${JSON.stringify(fileMotionAfter)}`);
+
 socket.close();
-console.log(JSON.stringify({ initial, promoBefore, promoAfter, brandMotion, brandHoverBefore, brandHoverAfter, railViewports, railPaused, railResumed, hoverPaused, hoverResumed, pageVisibility, resizeBefore, resizeAfter, sectionMotion, second, fourth, keyboard, dragFeedback, dragged, draggedBack, verticalGesture, reducedMotion, noScript, missingLibrary, deepLinkMotion, historyReturn, fileCarouselBefore, fileCarouselMoving, fileCarouselAfter }, null, 2));
+console.log(JSON.stringify({ initial, promoBefore, promoAfter, brandMotion, brandHoverBefore, brandHoverAfter, railViewports, railPaused, railResumed, hoverPaused, hoverResumed, pageVisibility, resizeBefore, resizeAfter, sectionMotion, second, fourth, keyboard, dragFeedback, dragged, draggedBack, verticalGesture, reducedMotion, noScript, missingLibrary, deepLinkMotion, historyReturn, fileCarouselBefore, fileCarouselMoving, fileCarouselAfter, fileMotionAfter }, null, 2));

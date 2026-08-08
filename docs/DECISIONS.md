@@ -301,3 +301,13 @@ Estados: `Proposta`, `Aceita`, `Substituída`.
 - Fallback: sem biblioteca, sem JavaScript ou em `prefers-reduced-motion`, todo conteúdo permanece visível e estático. Navbar, modal, deck e trilhos contínuos preservam seus motores isolados.
 - Substituição: esta decisão substitui as restrições de biblioteca do `ADR-004` e os motores de entrada descritos nos `ADR-012`, `ADR-026` e `ADR-028`, sem alterar seus demais contratos.
 - Consequência: View Timelines e o observador de entrada são removidos; ScrollReveal passa a ser a única dependência de motion e sua licença MIT fica registrada em `THIRD_PARTY_NOTICES.md`.
+
+## ADR-031 — Bootstrap clássico e geometria estável da motion
+
+- Estado: `Aceita`
+- Data: 2026-08-08
+- Contexto: o inicializador do ScrollReveal fazia parte do grafo de ES Modules. Em `file://`, a biblioteca carregava, mas o módulo era bloqueado e nenhuma entrada era registrada. Inicializar o script clássico antes do carregamento completo também podia medir a página antes da geometria final.
+- Decisão: carregar o inicializador como script clássico independente, após o vendor e fora de `main.js`. O registro ocorre no evento `load`, quando estilos e dimensões estão estabilizados. Entradas `rise` usam 32 px e opacidade 0,75; entradas `scale` usam 16 px e escala 0,965 para tornar o efeito perceptível sem alterar o layout.
+- Âncoras: ao abrir uma URL com hash, os elementos do destino são estabilizados imediatamente para nunca permanecerem no estado inicial fora da zona de disparo.
+- Fallback: biblioteca ausente e reduced motion continuam marcando todo o conteúdo como estático. O atributo `data-motion-engine` permite verificar `scrollreveal` ou `static` sem depender da aparência.
+- Consequência: ScrollReveal funciona no servidor oficial e na abertura direta do arquivo, enquanto deck, modal e demais ES Modules preservam seus contratos atuais.

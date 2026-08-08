@@ -1,20 +1,27 @@
-export function initSectionMotion(root = document) {
+(function bootstrapSectionMotion() {
+function initSectionMotion(root) {
   const targets = [...root.querySelectorAll("[data-motion]")];
-  if (!targets.length) return () => {};
+  if (!targets.length) return;
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const show = (target) => { target.dataset.motionState = "visible"; };
   const showAll = () => targets.forEach(show);
+  const settle = (target) => {
+    show(target);
+    ["visibility", "opacity", "transform", "transition"].forEach((property) => target.style.removeProperty(property));
+  };
+  const setEngine = (engine) => { root.documentElement.dataset.motionEngine = engine; };
 
   if (reducedMotion.matches || typeof window.ScrollReveal !== "function") {
     showAll();
-    return () => {};
+    setEngine("static");
+    return;
   }
 
   const scrollReveal = window.ScrollReveal({
     cleanup: true,
     desktop: true,
-    duration: 680,
+    duration: 760,
     easing: "cubic-bezier(0.22, 1, 0.36, 1)",
     mobile: true,
     reset: false,
@@ -22,6 +29,7 @@ export function initSectionMotion(root = document) {
     viewFactor: 0.08,
     viewOffset: { top: 0, right: 0, bottom: 40, left: 0 },
   });
+  setEngine("scrollreveal");
 
   const groups = [...new Set(targets.map((target) => target.closest("section") || target.parentElement))];
 
@@ -32,27 +40,47 @@ export function initSectionMotion(root = document) {
       const scales = target.dataset.motion === "scale";
 
       scrollReveal.reveal(target, {
-        delay: Math.min(index * 70, 210),
-        distance: scales ? "12px" : "24px",
-        opacity: scales ? 0.84 : 0.78,
+        delay: Math.min(index * 80, 240),
+        distance: scales ? "16px" : "32px",
+        opacity: scales ? 0.8 : 0.75,
         origin: "bottom",
-        scale: scales ? 0.975 : 1,
+        scale: scales ? 0.965 : 1,
         beforeReveal: show,
       });
     });
   });
 
+  const settleHashDestination = () => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+
+    const destination = root.getElementById(id);
+    if (!destination) return;
+
+    const destinationTargets = [...destination.querySelectorAll("[data-motion]")];
+    scrollReveal.clean(destinationTargets);
+    destinationTargets.forEach(settle);
+  };
+
+  if (window.location.hash) {
+    window.requestAnimationFrame(() => window.requestAnimationFrame(settleHashDestination));
+  }
+
   const handleReducedMotion = (event) => {
     if (!event.matches) return;
     scrollReveal.destroy();
     showAll();
+    setEngine("static");
   };
 
   reducedMotion.addEventListener("change", handleReducedMotion);
-
-  return () => {
+  window.addEventListener("pagehide", () => {
     reducedMotion.removeEventListener("change", handleReducedMotion);
     scrollReveal.destroy();
     showAll();
-  };
+  }, { once: true });
 }
+
+if (document.readyState === "complete") initSectionMotion(document);
+else window.addEventListener("load", () => initSectionMotion(document), { once: true });
+}());

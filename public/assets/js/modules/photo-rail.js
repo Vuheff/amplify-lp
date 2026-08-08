@@ -1,4 +1,4 @@
-import { initContinuousRail } from "./continuous-rail.js?v=20260808-2";
+import { initContinuousRail } from "./continuous-rail.js?v=20260808-3";
 
 export function initPhotoRail(root) {
   return initContinuousRail(root, {
