@@ -311,3 +311,13 @@ Estados: `Proposta`, `Aceita`, `Substituída`.
 - Âncoras: ao abrir uma URL com hash, os elementos do destino são estabilizados imediatamente para nunca permanecerem no estado inicial fora da zona de disparo.
 - Fallback: biblioteca ausente e reduced motion continuam marcando todo o conteúdo como estático. O atributo `data-motion-engine` permite verificar `scrollreveal` ou `static` sem depender da aparência.
 - Consequência: ScrollReveal funciona no servidor oficial e na abertura direta do arquivo, enquanto deck, modal e demais ES Modules preservam seus contratos atuais.
+
+## ADR-032 — Entrada perceptível no perfil de motion reduzida
+
+- Estado: `Aceita`
+- Data: 2026-08-08
+- Contexto: o ambiente de revisão reporta `prefers-reduced-motion: reduce`. O fallback totalmente estático impedia que qualquer entrada de seção fosse percebida, embora o ScrollReveal estivesse carregado corretamente.
+- Decisão: manter uma entrada única e curta também nesse perfil. `rise` usa 12 px e opacidade 0,84; `scale` usa 8 px, escala 0,985 e opacidade 0,88; a duração é 480 ms e a sequência é limitada a 150 ms.
+- Limites: `reset: false`, sem loop e sem autoplay. Modal, deck e trilhos mantêm seus contratos próprios. Sem biblioteca ou JavaScript, o conteúdo continua integralmente visível e estático.
+- Diagnóstico: `data-motion-engine="scrollreveal-reduced"` diferencia esse perfil do motor normal e do fallback `static`.
+- Substituição: esta decisão substitui apenas o fallback estático para reduced motion descrito nos `ADR-030` e `ADR-031`.

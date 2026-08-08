@@ -57,7 +57,7 @@ function assert(condition, message) {
   if (!condition) throw new Error(message);
 }
 
-const assetVersion = "v=20260808-3";
+const assetVersion = "v=20260808-4";
 const [servedHtml, servedMainCss, servedMainJs, servedPhotoRail, servedLeadModal, servedSectionMotion, servedMotionCss, servedScrollReveal] = await Promise.all([
   fetch(pageUrl).then((response) => response.text()),
   fetch(`${pageUrl}assets/css/main.css?${assetVersion}`).then((response) => response.text()),
@@ -1053,10 +1053,15 @@ const reducedMotion = await evaluate(`({
   brandDuplicateDisplay: getComputedStyle(document.querySelector('.c-brand-rail__group[aria-hidden="true"]')).display,
   brandHasToggle: Boolean(document.querySelector('[data-js="brand-rail-toggle"]')),
   brandOverflow: getComputedStyle(document.querySelector('.c-brand-rail__viewport')).overflowX,
-  sectionMotionStatic: [...document.querySelectorAll('[data-motion]')].every((target) => {
+  sectionMotionProfile: (() => {
+    const target = document.querySelector('#metodo [data-motion="rise"]');
     const style = getComputedStyle(target);
-    return style.transform === 'none' && style.animationName === 'none' && style.opacity === '1';
-  }),
+    return {
+      registered: target.hasAttribute('data-sr-id'),
+      opacity: Number.parseFloat(style.opacity),
+      transform: style.transform,
+    };
+  })(),
   offerStepsStatic: [...document.querySelectorAll('.c-offer__step')].every((step) => getComputedStyle(step).transform === 'none' && getComputedStyle(step).transitionDuration === '0s'),
   navigationDuration: getComputedStyle(document.querySelector('.c-site-nav')).transitionDuration,
 })`);
@@ -1067,7 +1072,21 @@ assert(reducedMotion.automaticMotion === null, "Deck must not autoplay a teaser"
 assert(reducedMotion.railAnimations === 0 && reducedMotion.railPaused === "true" && reducedMotion.railDuplicateDisplay === "none" && reducedMotion.railToggleDisplay === "none", "Reduced motion must stop and simplify the photo rail");
 assert(reducedMotion.promoAnimations === 1 && reducedMotion.promoPlayState === "running" && reducedMotion.promoPaused === "false" && reducedMotion.promoDuplicateDisplay === "flex" && reducedMotion.promoOverflow === "clip", "The explicitly approved promo rail must keep moving under reduced motion");
 assert(reducedMotion.brandAnimations === 1 && reducedMotion.brandPlayState === "running" && reducedMotion.brandPaused === "false" && reducedMotion.brandDuplicateDisplay === "flex" && !reducedMotion.brandHasToggle, "The explicitly approved brand rail exception must keep running without a control under reduced motion");
-assert(reducedMotion.motionEngine === "static" && reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionStatic && reducedMotion.offerStepsStatic, "Reduced motion must keep section entrances static while preserving the approved nonstop brand rail exception");
+assert(reducedMotion.motionEngine === "scrollreveal-reduced" && reducedMotion.railOverflow === "auto" && reducedMotion.brandOverflow === "clip" && reducedMotion.sectionMotionProfile.registered && reducedMotion.sectionMotionProfile.opacity === 0.84 && reducedMotion.sectionMotionProfile.transform !== "none" && reducedMotion.offerStepsStatic, `Reduced motion must use the short, readable section entrance profile while preserving isolated component safeguards: ${JSON.stringify(reducedMotion.sectionMotionProfile)}`);
+
+await evaluate(`document.querySelector('#metodo [data-motion="rise"]').scrollIntoView({ block: 'center' })`);
+await new Promise((resolveDelay) => setTimeout(resolveDelay, 800));
+const reducedSectionAfter = await evaluate(`(() => {
+  const target = document.querySelector('#metodo [data-motion="rise"]');
+  const style = getComputedStyle(target);
+  return {
+    state: target.dataset.motionState,
+    registered: target.hasAttribute('data-sr-id'),
+    opacity: style.opacity,
+    transform: style.transform,
+  };
+})()`);
+assert(reducedSectionAfter.state === "visible" && !reducedSectionAfter.registered && reducedSectionAfter.opacity === "1" && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(reducedSectionAfter.transform), `Reduced section motion must visibly enter once and settle: ${JSON.stringify(reducedSectionAfter)}`);
 
 await send("Emulation.setScriptExecutionDisabled", { value: true });
 const noScriptLoaded = waitForEvent("Page.loadEventFired");
@@ -1244,4 +1263,4 @@ const fileMotionAfter = await evaluate(`(() => {
 assert(fileMotionAfter.state === "visible" && !fileMotionAfter.registered && fileMotionAfter.opacity === "1" && ["none", "matrix(1, 0, 0, 1, 0, 0)"].includes(fileMotionAfter.transform), `Direct-file ScrollReveal must settle after the target enters the viewport: ${JSON.stringify(fileMotionAfter)}`);
 
 socket.close();
-console.log(JSON.stringify({ initial, promoBefore, promoAfter, brandMotion, brandHoverBefore, brandHoverAfter, railViewports, railPaused, railResumed, hoverPaused, hoverResumed, pageVisibility, resizeBefore, resizeAfter, sectionMotion, second, fourth, keyboard, dragFeedback, dragged, draggedBack, verticalGesture, reducedMotion, noScript, missingLibrary, deepLinkMotion, historyReturn, fileCarouselBefore, fileCarouselMoving, fileCarouselAfter, fileMotionAfter }, null, 2));
+console.log(JSON.stringify({ initial, promoBefore, promoAfter, brandMotion, brandHoverBefore, brandHoverAfter, railViewports, railPaused, railResumed, hoverPaused, hoverResumed, pageVisibility, resizeBefore, resizeAfter, sectionMotion, second, fourth, keyboard, dragFeedback, dragged, draggedBack, verticalGesture, reducedMotion, reducedSectionAfter, noScript, missingLibrary, deepLinkMotion, historyReturn, fileCarouselBefore, fileCarouselMoving, fileCarouselAfter, fileMotionAfter }, null, 2));

@@ -12,16 +12,21 @@ function initSectionMotion(root) {
   };
   const setEngine = (engine) => { root.documentElement.dataset.motionEngine = engine; };
 
-  if (reducedMotion.matches || typeof window.ScrollReveal !== "function") {
+  if (typeof window.ScrollReveal !== "function") {
     showAll();
     setEngine("static");
     return;
   }
 
+  const reducedProfile = reducedMotion.matches;
+  const duration = reducedProfile ? 480 : 760;
+  const stepDelay = reducedProfile ? 50 : 80;
+  const maximumDelay = reducedProfile ? 150 : 240;
+
   const scrollReveal = window.ScrollReveal({
     cleanup: true,
     desktop: true,
-    duration: 760,
+    duration,
     easing: "cubic-bezier(0.22, 1, 0.36, 1)",
     mobile: true,
     reset: false,
@@ -29,7 +34,7 @@ function initSectionMotion(root) {
     viewFactor: 0.08,
     viewOffset: { top: 0, right: 0, bottom: 40, left: 0 },
   });
-  setEngine("scrollreveal");
+  setEngine(reducedProfile ? "scrollreveal-reduced" : "scrollreveal");
 
   const groups = [...new Set(targets.map((target) => target.closest("section") || target.parentElement))];
 
@@ -40,11 +45,11 @@ function initSectionMotion(root) {
       const scales = target.dataset.motion === "scale";
 
       scrollReveal.reveal(target, {
-        delay: Math.min(index * 80, 240),
-        distance: scales ? "16px" : "32px",
-        opacity: scales ? 0.8 : 0.75,
+        delay: Math.min(index * stepDelay, maximumDelay),
+        distance: reducedProfile ? (scales ? "8px" : "12px") : (scales ? "16px" : "32px"),
+        opacity: reducedProfile ? (scales ? 0.88 : 0.84) : (scales ? 0.8 : 0.75),
         origin: "bottom",
-        scale: scales ? 0.965 : 1,
+        scale: scales ? (reducedProfile ? 0.985 : 0.965) : 1,
         beforeReveal: show,
       });
     });
@@ -70,7 +75,7 @@ function initSectionMotion(root) {
     if (!event.matches) return;
     scrollReveal.destroy();
     showAll();
-    setEngine("static");
+    setEngine("static-changed-preference");
   };
 
   reducedMotion.addEventListener("change", handleReducedMotion);
